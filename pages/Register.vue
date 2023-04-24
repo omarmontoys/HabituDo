@@ -12,23 +12,36 @@
                   max-width="400"
                   src="login1.png"
                 ></v-img>
+                <!-- <img src="login1.png" /> -->
                 <h6
                   class="text-h6 text text-center"
-                  style="color: rgba(166, 45, 45, 1)"
+                  style="color: rgba(198, 125, 77, 1)"
                 >
-                  Iniciar Sesión
+                  Registro
                 </h6>
               </v-card-subtitle>
               <v-card-text>
                 <v-form ref="form">
                   <v-text-field
+                    outlined
+                    label="Nombre"
+                    prepend-inner-icon="mdi-account"
+                  ></v-text-field>
+
+                  <v-text-field
+                    outlined
+                    label="Apellidos"
+                    prepend-inner-icon="mdi-account"
+                  ></v-text-field>
+
+                  <v-text-field
                     :rules="[rules.required, rules.email]"
                     outlined
-                    label="Correo eléctronico"
+                    label="Correo Electronico"
                     prepend-inner-icon="mdi-email"
                   ></v-text-field>
                   <v-text-field
-                    :rules="[rules.required]"
+                    :rules="[rules.required, rules.regex]"
                     :append-icon="show1 ? 'mdi-eye' : 'mdi-eye-off'"
                     :type="show1 ? 'text' : 'password'"
                     name="input-10-2"
@@ -36,27 +49,34 @@
                     outlined
                     @click:append="show1 = !show1"
                   ></v-text-field>
+                  <v-text-field
+                    :rules="[
+                      rules.required,
+                      rules.regex,
+                      /* rules.confirmPassword, */
+                    ]"
+                    :append-icon="show2 ? 'mdi-eye' : 'mdi-eye-off'"
+                    :type="show2 ? 'text' : 'password'"
+                    name="input-10-2"
+                    label="Confirmar Contraseña"
+                    outlined
+                    @click:append="show2 = !show2"
+                  ></v-text-field>
                   <v-row justify="center" no-gutters>
                     <v-col cols="12">
                       <!--Mensaje de error-->
                     </v-col>
                   </v-row>
-                  <v-row justify="center" no-gutters>
-                    <v-col cols="12">
-                      <!-- <v-alert v-if="errorMessage" outlined dense type="error">
-                        {{ errorMessage }}
-                      </v-alert> -->
-                    </v-col>
-                  </v-row>
+
                   <v-row no-gutters justify="center" align="center">
                     <v-col cols="12">
                       <v-btn
-                        class="mx-auto col-md-11 text text--darken-2"
+                        class="mx-auto col-md-11"
                         color="primary"
                         dense
                         block
                       >
-                        Iniciar Sesión
+                        Registarme
                       </v-btn>
                     </v-col>
                   </v-row>
@@ -66,11 +86,11 @@
                         class="text-subtitle-1 primary--text text--darken-2"
                         style="
                           text-decoration: none;
-                          color: rgba(166, 45, 45, 1);
+                          color: rgba(18, 51, 255, 1);
                         "
-                        to="/Register"
+                        to="/"
                       >
-                        <h1 class="text-subtitle-1">Crear cuenta</h1>
+                        <h1 class="text-subtitle-1">Ya tengo una cuenta</h1>
                       </NuxtLink>
                     </span>
                   </v-row>
@@ -90,9 +110,15 @@ import Vue from "vue";
 
 export default class Login extends Vue {
   public show1 = false;
+  public show2 = false;
+  public repeatpassword = "";
   public rules = {
     required: (value: string) => !!value || "Required.",
-    min: (v: string) => v.length >= 8 || "Min 6 characters",
+    regex: (v: string): string | boolean =>
+      /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)[A-Za-z\d\S]{8,}$/.test(v) ||
+      "La contraseña debe contener al menos un número y una mayúscula. Vuelve a intentarlo. Minimo 8 caracteres",
+    /* confirmPassword: (v: string): string | boolean =>
+      v === this.dataRegister.password || "Las contraseñas no coinciden", */
     email: (v: string): string | boolean =>
       /.+@.+\..+/.test(v) || "El email no es válido. Vuelve a intentalo.",
   };
@@ -101,7 +127,7 @@ export default class Login extends Vue {
 
 <style scoped>
 .v-card {
-  background: transparent !important;
+  background: rgba(255, 255, 255, 0.468) !important;
 }
 .v-card-title {
   display: block !important;
