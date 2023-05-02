@@ -55,6 +55,7 @@
                         color="primary"
                         dense
                         block
+                        to="/Habitos"
                       >
                         Iniciar Sesión
                       </v-btn>
@@ -86,9 +87,10 @@
 </template>
 
 <script lang="ts">
-import Vue from "vue";
+import { Component, Vue, Watch } from "vue-property-decorator";
 
-export default class Login extends Vue {
+@Component
+export default class home extends Vue {
   public show1 = false;
   public rules = {
     required: (value: string) => !!value || "Required.",
