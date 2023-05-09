@@ -1,6 +1,6 @@
 <template>
   <v-container fill-height>
-    <v-row align="left" justify="left">
+    <v-row>
       <!-- <v-col class="col-md-10 offset-md-1"> -->
       <v-col class="pt-0 pb-2" xl="4" md="6" lg="6" sm="10" xs="12">
         <v-card class="elevation-2 pa-4" rounded="lg">
@@ -23,42 +23,49 @@
               <v-card-text>
                 <v-form ref="form">
                   <v-text-field
+                    v-model="dataRegister.names"
                     outlined
                     label="Nombre"
                     prepend-inner-icon="mdi-account"
                   ></v-text-field>
 
                   <v-text-field
+                    v-model="dataRegister.lastNames"
                     outlined
                     label="Apellidos"
                     prepend-inner-icon="mdi-account"
                   ></v-text-field>
 
                   <v-text-field
+                    v-model="dataRegister.email"
                     :rules="[rules.required, rules.email]"
                     outlined
                     label="Correo Electronico"
                     prepend-inner-icon="mdi-email"
                   ></v-text-field>
                   <v-text-field
+                    v-model="dataRegister.password"
                     :rules="[rules.required, rules.regex]"
                     :append-icon="show1 ? 'mdi-eye' : 'mdi-eye-off'"
                     :type="show1 ? 'text' : 'password'"
                     name="input-10-2"
                     label="Contraseña"
+                    filled
                     outlined
                     @click:append="show1 = !show1"
                   ></v-text-field>
                   <v-text-field
+                    v-model="repeatpassword"
                     :rules="[
                       rules.required,
                       rules.regex,
-                      /* rules.confirmPassword, */
+                      rules.confirmPassword,
                     ]"
                     :append-icon="show2 ? 'mdi-eye' : 'mdi-eye-off'"
                     :type="show2 ? 'text' : 'password'"
                     name="input-10-2"
                     label="Confirmar Contraseña"
+                    filled
                     outlined
                     @click:append="show2 = !show2"
                   ></v-text-field>
@@ -75,6 +82,7 @@
                         color="primary"
                         dense
                         block
+                        @click="handleRegister()"
                       >
                         Registarme
                       </v-btn>
@@ -106,9 +114,17 @@
 </template>
 
 <script lang="ts">
-import { Component, Vue, Watch } from "vue-property-decorator";
+import Vue from "vue";
+import Component from "vue-class-component";
+import { namespace } from "vuex-class";
+import { CreateUserInput } from "~/gql/graphql";
 
-@Component
+const Auth = namespace("AuthModule");
+@Component({
+  layout(context) {
+    return "default";
+  },
+})
 export default class Register extends Vue {
   public show1 = false;
   public show2 = false;
@@ -118,11 +134,23 @@ export default class Register extends Vue {
     regex: (v: string): string | boolean =>
       /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)[A-Za-z\d\S]{8,}$/.test(v) ||
       "La contraseña debe contener al menos un número y una mayúscula. Vuelve a intentarlo. Minimo 8 caracteres",
-    /* confirmPassword: (v: string): string | boolean =>
-      v === this.dataRegister.password || "Las contraseñas no coinciden", */
+    confirmPassword: (v: string): string | boolean =>
+      v === this.dataRegister.password || "Las contraseñas no coinciden",
     email: (v: string): string | boolean =>
       /.+@.+\..+/.test(v) || "El email no es válido. Vuelve a intentalo.",
   };
+  public dataRegister: CreateUserInput = {
+    names: "",
+    lastNames: "",
+    email: "",
+    password: "",
+  };
+  @Auth.Action
+  private registerUser!: (data: CreateUserInput) => Promise<void>;
+
+  async handleRegister() {
+    await this.registerUser(this.dataRegister);
+  }
 }
 </script>
 

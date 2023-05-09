@@ -1,0 +1,17 @@
+query CurrentUser {
+  currentUser {
+    id
+    names
+    lastNames
+    email
+    tasks {
+      id
+      title
+      description
+      cratedAt
+      status
+      finishDate
+      authorId
+    }
+  }
+}

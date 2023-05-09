@@ -1,6 +1,6 @@
 <template>
   <v-container fill-height>
-    <v-row align="left" justify="left">
+    <v-row>
       <!-- <v-col class="col-md-10 offset-md-1"> -->
       <v-col class="pt-0 pb-2" xl="4" md="6" lg="6" sm="10" xs="12">
         <v-card class="elevation-2 pa-4" rounded="lg">
@@ -24,15 +24,18 @@
                   <v-text-field
                     :rules="[rules.required, rules.email]"
                     outlined
+                    v-model="datalogin.email"
                     label="Correo eléctronico"
                     prepend-inner-icon="mdi-email"
                   ></v-text-field>
                   <v-text-field
-                    :rules="[rules.required]"
+                    v-model="datalogin.password"
+                    :rules="[rules.required, rules.min]"
                     :append-icon="show1 ? 'mdi-eye' : 'mdi-eye-off'"
                     :type="show1 ? 'text' : 'password'"
                     name="input-10-2"
                     label="Contraseña"
+                    filled
                     outlined
                     @click:append="show1 = !show1"
                   ></v-text-field>
@@ -43,9 +46,9 @@
                   </v-row>
                   <v-row justify="center" no-gutters>
                     <v-col cols="12">
-                      <!-- <v-alert v-if="errorMessage" outlined dense type="error">
+                      <v-alert v-if="errorMessage" outlined dense type="error">
                         {{ errorMessage }}
-                      </v-alert> -->
+                      </v-alert>
                     </v-col>
                   </v-row>
                   <v-row no-gutters justify="center" align="center">
@@ -55,7 +58,8 @@
                         color="primary"
                         dense
                         block
-                        to="/Habitos"
+                        @click="handleLogin()"
+                        :loading="loadingLoginStatus"
                       >
                         Iniciar Sesión
                       </v-btn>
@@ -87,23 +91,45 @@
 </template>
 
 <script lang="ts">
-import { Component, Vue, Watch } from "vue-property-decorator";
+import { data } from "browserslist";
+import Vue from "vue";
+import Component from "vue-class-component";
+import { namespace } from "vuex-class";
+import { LoginInput } from "~/gql/graphql";
 
-@Component
-export default class home extends Vue {
+const Auth = namespace("AuthModule");
+@Component({
+  layout(context) {
+    return "default";
+  },
+})
+export default class Login extends Vue {
   public show1 = false;
   public rules = {
     required: (value: string) => !!value || "Required.",
-    min: (v: string) => v.length >= 8 || "Min 6 characters",
+    min: (v: string) => v.length >= 8 || "Min 8 characters",
     email: (v: string): string | boolean =>
       /.+@.+\..+/.test(v) || "El email no es válido. Vuelve a intentalo.",
   };
+  public datalogin: LoginInput = {
+    email: "",
+    password: "",
+  };
+  @Auth.State("errorMessage")
+  public errorMessage?: string;
+  @Auth.State("loadingLoginStatus")
+  public loadingLoginStatus?: boolean;
+  @Auth.Action
+  private login!: (data: LoginInput) => Promise<void>;
+  async handleLogin() {
+    await this.login(this.datalogin);
+  }
 }
 </script>
 
 <style scoped>
 .v-card {
-  background: transparent !important;
+  background: rgba(255, 255, 255, 0.468) !important;
 }
 .v-card-title {
   display: block !important;

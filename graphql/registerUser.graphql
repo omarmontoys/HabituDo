@@ -1,0 +1,17 @@
+mutation RegisterUser($create: CreateUserInput!) {
+  registerUser(create: $create) {
+    id
+    names
+    lastNames
+    email
+    tasks {
+      id
+      title
+      description
+      cratedAt
+      status
+      finishDate
+      authorId
+    }
+  }
+}
