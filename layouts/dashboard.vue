@@ -1,5 +1,5 @@
 <template>
-  <v-app id="default">
+  <v-app>
     <v-navigation-drawer v-model="drawer" absolute temporary app>
       <v-list nav dense>
         <v-list-item-group
@@ -41,9 +41,4 @@ export default class Dashboard extends Vue {
   private logOut!: () => void;
 }
 </script>
-<style>
-#default {
-  background-image: url("../assets/Fondoletravino.png");
-  background-size: cover;
-}
-</style>
+<style></style>
