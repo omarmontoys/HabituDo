@@ -42,27 +42,36 @@
                   outlined
                 ></v-textarea>
                 <v-menu
-                  ref="menu1"
+
+                  ref="menu"
+                  v-model="menu"
                   :close-on-content-click="false"
+                  :return-value.sync="date"
                   transition="scale-transition"
                   offset-y
-                  max-width="290px"
                   min-width="auto"
                 >
                   <template v-slot:activator="{ on, attrs }">
                     <v-text-field
-                      label="Fecha Limite"
-                      hint="YYYY/MM/DD format"
-                      persistent-hint
+                      v-model="dataRegister.birthday"
+                      label="Fecha limite"
                       prepend-icon="mdi-calendar"
+                      readonly
                       v-bind="attrs"
                       v-on="on"
                     ></v-text-field>
                   </template>
                   <v-date-picker
+                    v-model="dataRegister.birthday"
                     no-title
-                    @input="menu1 = false"
-                  ></v-date-picker>
+                    scrollable
+                  >
+                    <v-spacer></v-spacer>
+                    <v-btn text color="primary" @click="menu = false">
+                      Cancel
+                    </v-btn>
+                    <v-btn text color="primary"> OK </v-btn>
+                  </v-date-picker>
                 </v-menu>
               </v-card-text>
               <v-container fluid>
@@ -193,31 +202,18 @@ export default class CardTask extends Vue {
   public column = null;
   public row = null;
 
-  // Decorador @Prop para indicar a Vue que la propiedad existe en la clase
-  @Prop({ default: null }) public dateFormatted!: string | null;
-  public date: string = new Date(
-    Date.now() - new Date().getTimezoneOffset() * 60000
-  )
+  public dataRegister = {
+    name: "",
+    lastname: "",
+    email: "",
+    password: "",
+    birthday: new Date(Date.now() - new Date().getTimezoneOffset() * 60000)
+      .toISOString()
+      .substr(0, 10),
+  };
+  date = new Date(Date.now() - new Date().getTimezoneOffset() * 60000)
     .toISOString()
     .substr(0, 10);
-
-  public get computedDateFormatted(): string | null {
-    return this.formatDate(this.date);
-  }
-
-  public formatDate(date: string | null): string {
-    if (!date) {
-      return "";
-    }
-
-    const [year, month, day] = date.split("-");
-    return `${month}/${day}/${year}`;
-  }
-
-  public parseDate(date: string): string | null {
-    if (!date) return null;
-    const [month, day, year] = date.split("/");
-    return `${year}-${month.padStart(2, "0")}-${day.padStart(2, "0")}`;
-  }
+  public menu = false;
 }
 </script>

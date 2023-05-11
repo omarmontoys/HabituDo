@@ -72,12 +72,13 @@ class AuthModule extends VuexModule {
             this.context.commit("loadingRegister", false);
           })
           .catch((error) => {
+            this.context.commit("loadingRegister", false);
             console.log(error);
           });
       })
       .catch((error) => {
         console.log(error);
-        window.$nuxt.$router.push("/");
+        this.context.commit("loadingRegister", false);
       });
   }
   @Mutation
@@ -86,6 +87,7 @@ class AuthModule extends VuexModule {
     window.$nuxt.$cookies.set("token", auth.token, {
       path: "/",
     });
+    window.$nuxt.$router.push("/");
   }
 
   @Mutation

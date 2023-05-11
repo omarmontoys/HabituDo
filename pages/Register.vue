@@ -82,6 +82,7 @@
                         color="primary"
                         dense
                         block
+                        :loading="loadingRegisterStatus"
                         @click="handleRegister()"
                       >
                         Registarme
@@ -120,11 +121,7 @@ import { namespace } from "vuex-class";
 import { CreateUserInput } from "~/gql/graphql";
 
 const Auth = namespace("AuthModule");
-@Component({
-  layout(context) {
-    return "default";
-  },
-})
+@Component
 export default class Register extends Vue {
   public show1 = false;
   public show2 = false;
@@ -147,7 +144,8 @@ export default class Register extends Vue {
   };
   @Auth.Action
   private registerUser!: (data: CreateUserInput) => Promise<void>;
-
+  @Auth.State("loadingRegisterStatus")
+  private loadingRegisterStatus!: boolean;
   async handleRegister() {
     await this.registerUser(this.dataRegister);
   }
