@@ -1,45 +1,31 @@
 <template>
-
   <v-app>
     <v-navigation-drawer v-model="drawer" absolute temporary app>
       <v-list nav dense>
         <v-list-item-group
           v-model="group"
-          active-class="deep-purple--text text--accent-4"
+          active-class="primary--text text--accent-4"
         >
-        </v-list-item-group>
-
-
-        <v-list-item>
-          <v-list-item-title>
-            <router-link to="/PagPrin/Tasks">Tareas</router-link>
-          </v-list-item-title>
-        </v-list-item>
-
-        <v-list-item>
-          <v-list-item-title>
-            <router-link to="/PagPrin/Calendar">Calendario</router-link>
-          </v-list-item-title>
-        </v-list-item>
-
-        <v-list-item>
-          <v-list-item-title>
-            <router-link to="/PagPrin/Habits">Habitos</router-link>
-          </v-list-item-title>
-        </v-list-item>
-
-        <!-- <v-list-item-group
-          v-model="group"
-          active-class="deep-purple--text text--accent-4"
-        > 
-          <v-list-item-icon>
-              <v-icon> mdi-calendar-month</v-icon>
+          <v-list-item to="/PagPrin/Calendar">
+            <v-list-item-icon>
+              <v-icon>mdi-calendar-check</v-icon>
             </v-list-item-icon>
-            <v-list-item-content>
-              <v-list-item-title>Calendario</v-list-item-title>
-            </v-list-item-content>
-        
-        </v-list-item-group> -->
+            <v-list-item-title>Calendario</v-list-item-title>
+          </v-list-item>
+
+          <v-list-item to="/PagPrin/Habits">
+            <v-list-item-icon>
+              <v-icon>mdi-run-fast</v-icon>
+            </v-list-item-icon>
+            <v-list-item-title>Habitos</v-list-item-title>
+          </v-list-item>
+          <v-list-item to="/PagPrin/Tasks">
+            <v-list-item-icon>
+              <v-icon>mdi-book-check</v-icon>
+            </v-list-item-icon>
+            <v-list-item-title>Tareas</v-list-item-title>
+          </v-list-item>
+        </v-list-item-group>
       </v-list>
     </v-navigation-drawer>
     <v-app-bar color="primary" dark app>
@@ -74,5 +60,4 @@ export default class Dashboard extends Vue {
   private logOut!: () => void;
 }
 </script>
-
 <style></style>

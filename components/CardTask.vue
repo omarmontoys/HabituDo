@@ -42,7 +42,6 @@
                   outlined
                 ></v-textarea>
                 <v-menu
-
                   ref="menu"
                   v-model="menu"
                   :close-on-content-click="false"
@@ -202,6 +201,7 @@ export default class CardTask extends Vue {
   public column = null;
   public row = null;
 
+  // Decorador @Prop para indicar a Vue que la propiedad existe en la clase
   public dataRegister = {
     name: "",
     lastname: "",

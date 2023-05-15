@@ -3,34 +3,23 @@
     <v-row>
       <v-col cols="12">
         <div class="d-flex justify-center">
-          <img src="../../static/login.png" class="habitudo"/>
+          <img src="../../static/login.png" class="habitudo" />
         </div>
         <v-row class="pt-7">
           <v-row class="fill-height">
-
             <!-- VISTA DE DIA DE HOY -->
 
             <v-col cols="3">
               <v-sheet height="564">
-                <v-calendar
-                  color="primary"
-                  type="day"
-                >
+                <v-calendar color="primary" type="day">
                   <template v-slot:day-header="{ present }">
-                    <template
-                      v-if="present"
-                      class="text-center"
-                    >
+                    <template v-if="present" class="text-center">
                       Today
                     </template>
                   </template>
 
                   <template v-slot:interval="{ hour }">
-                    <div
-                      class="text-center"
-                    >
-                      {{ hour }} o'clock
-                    </div>
+                    <div class="text-center">{{ hour }} o'clock</div>
                   </template>
                 </v-calendar>
               </v-sheet>
@@ -40,9 +29,7 @@
 
             <v-col cols="9">
               <v-sheet height="64">
-                <v-toolbar
-                  flat
-                >
+                <v-toolbar flat>
                   <v-btn
                     outlined
                     class="mr-4"
@@ -51,36 +38,15 @@
                   >
                     Today
                   </v-btn>
-                  <v-btn
-                    fab
-                    text
-                    small
-                    color="grey darken-2"
-                    @click="prev"
-                  >
-                    <v-icon small>
-                      mdi-chevron-left
-                    </v-icon>
+                  <v-btn fab text small color="grey darken-2">
+                    <v-icon small> mdi-chevron-left </v-icon>
                   </v-btn>
-                  <v-btn
-                    fab
-                    text
-                    small
-                    color="grey darken-2"
-                    @click="next"
-                  >
-                    <v-icon small>
-                      mdi-chevron-right
-                    </v-icon>
+                  <v-btn fab text small color="grey darken-2">
+                    <v-icon small> mdi-chevron-right </v-icon>
                   </v-btn>
-                  <v-toolbar-title v-if="$refs.calendar">
-                    {{ $refs.calendar.title }}
-                  </v-toolbar-title>
+                  <v-toolbar-title v-if="$refs.calendar"> </v-toolbar-title>
                   <v-spacer></v-spacer>
-                  <v-menu
-                    bottom
-                    right
-                  >
+                  <v-menu bottom right>
                     <template v-slot:activator="{ on, attrs }">
                       <v-btn
                         outlined
@@ -88,10 +54,7 @@
                         v-bind="attrs"
                         v-on="on"
                       >
-                        <span>{{ typeToLabel[type] }}</span>
-                        <v-icon right>
-                          mdi-menu-down
-                        </v-icon>
+                        <v-icon right> mdi-menu-down </v-icon>
                       </v-btn>
                     </template>
                     <v-list>
@@ -130,19 +93,14 @@
                   :activator="selectedElement"
                   offset-x
                 >
-                  <v-card
-                    color="grey lighten-4"
-                    min-width="350px"
-                    flat
-                  >
-                    <v-toolbar
-                      :color="selectedEvent.color"
-                      dark
-                    >
+                  <v-card color="grey lighten-4" min-width="350px" flat>
+                    <v-toolbar :color="selectedEvent.color" dark>
                       <v-btn icon>
                         <v-icon>mdi-pencil</v-icon>
                       </v-btn>
-                      <v-toolbar-title v-html="selectedEvent.name"></v-toolbar-title>
+                      <v-toolbar-title
+                        v-html="selectedEvent.name"
+                      ></v-toolbar-title>
                       <v-spacer></v-spacer>
                       <v-btn icon>
                         <v-icon>mdi-heart</v-icon>
@@ -258,9 +216,10 @@
 import { Component, Vue, Watch } from "vue-property-decorator";
 import CardTask from "~/components/CardTask.vue";
 import { namespace } from "vuex-class";
+
 const Auth = namespace("AuthModule");
+
 @Component({
-  components: { CardTask },
   layout(context) {
     return "dashboard";
   },
@@ -271,70 +230,91 @@ export default class Calendar extends Vue {
   public column = null;
   public row = null;
 
-  public focus = '';
-  public type = 'month';
+  public focus = "";
+  public type = "month";
   public typeToLabel = {
-    month: 'Month',
-    week: 'Week',
-    day: 'Day',
-    '4day': '4 Days',
+    month: "Month",
+    week: "Week",
+    day: "Day",
+    "4day": "4 Days",
   };
-  public selectedEvent = {};
-  public selectedElement = null;
+  public selectedEvent: any = {}; // Se añade el tipo de dato "any"
+  public selectedElement: HTMLElement | null = null; // Se añade el tipo de dato "HTMLElement | null"
   public selectedOpen = false;
-  public events = [];
-  public colors = ['blue', 'indigo', 'deep-purple', 'cyan', 'green', 'orange', 'grey darken-1'];
-  public names = ['Reunion', 'Festivo', 'PTO', 'Viaje', 'Evento', 'Cumpleaños', 'Conferencia', 'Fiesta'];
+  public events: any[] = []; // Se añade el tipo de dato "any[]"
+  public colors = [
+    "blue",
+    "indigo",
+    "deep-purple",
+    "cyan",
+    "green",
+    "orange",
+    "grey darken-1",
+  ];
+  public names = [
+    "Reunion",
+    "Festivo",
+    "PTO",
+    "Viaje",
+    "Evento",
+    "Cumpleaños",
+    "Conferencia",
+    "Fiesta",
+  ];
 
-  mounted() {
-    this.$refs.calendar.checkChange()
-  };
-  viewDay({ date }){
-    this.focus = date
-    this.type = 'day'
-  };
-  getEventColor(event){
-    return event.color
-  };
-  setToday(){
-    this.focus = ''
-  };
-  prev(){
-    this.$refs.calendar.prev()
-  };
-  next(){
-    this.$refs.calendar.next()
+  viewDay({ date }: { date: string }) {
+    // Se añade el tipo de dato para el parámetro
+    this.focus = date;
+    this.type = "day";
   }
-  showEvent({ nativeEvent, event}){
+
+  getEventColor(event: any) {
+    // Se añade el tipo de dato "any"
+    return event.color;
+  }
+
+  setToday() {
+    this.focus = "";
+  }
+
+  showEvent({ nativeEvent, event }: { nativeEvent: Event; event: any }) {
+    // Se añade el tipo de dato para los parámetros
     const open = () => {
-      this.selectedEvent = event
-      this.selectedElement = nativeEvent.target
-      requestAnimationFrame(() => requestAnimationFrame(() => this.selectedOpen = true ))
+      this.selectedEvent = event;
+      this.selectedElement = nativeEvent.target as HTMLElement; // Se especifica el tipo de dato "HTMLElement"
+      requestAnimationFrame(() =>
+        requestAnimationFrame(() => (this.selectedOpen = true))
+      );
+    };
+    if (this.selectedOpen) {
+      this.selectedOpen = false;
+      requestAnimationFrame(() => requestAnimationFrame(() => open()));
+    } else {
+      open();
     }
-    if(this.selectedOpen){
-      this.selectedOpen = false
-      requestAnimationFrame(() => requestAnimationFrame(() => open()))
-    }
-    else{
-      open()
-    }
-    nativeEvent.stopPropagation()
-  };
+    nativeEvent.stopPropagation();
+  }
 
-  updateRange({ start, end}){
-    const events = []
+  updateRange({
+    start,
+    end,
+  }: {
+    start: { date: string };
+    end: { date: string };
+  }) {
+    const events = [];
 
-    const min = new Date(`${start.date}T00:00:00`)
-    const max = new Date(`${end.date}T23:59:59`)
-    const days = (max.getTime() - min.getTime()) / 86400000
-    const eventCount = this.rnd(days, days + 20)
+    const min = new Date(`${start.date}T00:00:00`);
+    const max = new Date(`${end.date}T23:59:59`);
+    const days = (max.getTime() - min.getTime()) / 86400000;
+    const eventCount = this.rnd(days, days + 20);
 
-    for (let i = 0; i < eventCount; i++){
-      const allDay = this.rnd(0, 3) === 0
-      const firstTimestamp = this.rnd(min.getTime(), max.getTime())
-      const first = new Date(firstTimestamp - (firstTimestamp % 900000))
-      const secondTimestamp = this.rnd(2, allDay ? 288 : 8) * 900000
-      const second = new Date(first.getTime() + secondTimestamp)
+    for (let i = 0; i < eventCount; i++) {
+      const allDay = this.rnd(0, 3) === 0;
+      const firstTimestamp = this.rnd(min.getTime(), max.getTime());
+      const first = new Date(firstTimestamp - (firstTimestamp % 900000));
+      const secondTimestamp = this.rnd(2, allDay ? 288 : 8) * 900000;
+      const second = new Date(first.getTime() + secondTimestamp);
 
       events.push({
         name: this.names[this.rnd(0, this.names.length - 1)],
@@ -342,50 +322,14 @@ export default class Calendar extends Vue {
         end: second,
         color: this.colors[this.rnd(0, this.colors.length - 1)],
         timed: !allDay,
-      })
+      });
     }
     this.events = events;
-  };
-  rnd (a, b) {
-    return Math.floor((b - a + 1) * Math.random()) + a
-  };
-
+  }
+  rnd(a: number, b: number) {
+    return Math.floor((b - a + 1) * Math.random()) + a;
+  }
 }
-
-  /* 
-    methods: {
-      
-      updateRange ({ start, end }) {
-        const events = []
-
-        const min = new Date(`${start.date}T00:00:00`)
-        const max = new Date(`${end.date}T23:59:59`)
-        const days = (max.getTime() - min.getTime()) / 86400000
-        const eventCount = this.rnd(days, days + 20)
-
-        for (let i = 0; i < eventCount; i++) {
-          const allDay = this.rnd(0, 3) === 0
-          const firstTimestamp = this.rnd(min.getTime(), max.getTime())
-          const first = new Date(firstTimestamp - (firstTimestamp % 900000))
-          const secondTimestamp = this.rnd(2, allDay ? 288 : 8) * 900000
-          const second = new Date(first.getTime() + secondTimestamp)
-
-          events.push({
-            name: this.names[this.rnd(0, this.names.length - 1)],
-            start: first,
-            end: second,
-            color: this.colors[this.rnd(0, this.colors.length - 1)],
-            timed: !allDay,
-          })
-        }
-
-        this.events = events
-      },
-      rnd (a, b) {
-        return Math.floor((b - a + 1) * Math.random()) + a
-      },
-    }, 
-  }*/
 </script>
 
 <style>
@@ -396,6 +340,4 @@ export default class Calendar extends Vue {
   margin: 30%;
   display: block;
 }
-
-
 </style>
