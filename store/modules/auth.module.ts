@@ -73,12 +73,14 @@ class AuthModule extends VuexModule {
           })
           .catch((error) => {
             this.context.commit("loadingRegister", false);
+
             console.log(error);
           });
       })
       .catch((error) => {
         console.log(error);
         this.context.commit("loadingRegister", false);
+
       });
   }
   @Mutation

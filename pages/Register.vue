@@ -144,8 +144,12 @@ export default class Register extends Vue {
   };
   @Auth.Action
   private registerUser!: (data: CreateUserInput) => Promise<void>;
+
+
   @Auth.State("loadingRegisterStatus")
   private loadingRegisterStatus!: boolean;
+
+
   async handleRegister() {
     await this.registerUser(this.dataRegister);
   }
