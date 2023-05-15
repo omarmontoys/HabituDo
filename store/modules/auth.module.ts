@@ -81,7 +81,6 @@ class AuthModule extends VuexModule {
         console.log(error);
         this.context.commit("loadingRegister", false);
 
-        /* window.$nuxt.$router.push("/"); */
       });
   }
   @Mutation
