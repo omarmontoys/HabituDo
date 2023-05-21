@@ -39,10 +39,10 @@
                     Today
                   </v-btn>
                   <v-btn fab text small color="grey darken-2">
-                    <v-icon small> mdi-chevron-left </v-icon>
+                    <v-icon small @click="prev"> mdi-chevron-left </v-icon>
                   </v-btn>
                   <v-btn fab text small color="grey darken-2">
-                    <v-icon small> mdi-chevron-right </v-icon>
+                    <v-icon small @click="next"> mdi-chevron-right </v-icon>
                   </v-btn>
                   <v-toolbar-title v-if="$refs.calendar"> </v-toolbar-title>
                   <v-spacer></v-spacer>
@@ -328,6 +328,17 @@ export default class Calendar extends Vue {
   }
   rnd(a: number, b: number) {
     return Math.floor((b - a + 1) * Math.random()) + a;
+  }
+
+  $refs!: {
+    calendar: any;
+  };
+
+  prev() {
+    this.$refs.calendar.prev();
+  }
+  next() {
+    this.$refs.calendar.next();
   }
 }
 </script>
