@@ -1,4 +1,13 @@
 
+declare module '*/createTask.graphql' {
+  import { DocumentNode } from 'graphql';
+  const defaultDocument: DocumentNode;
+  export const CreateTask: DocumentNode;
+
+  export default defaultDocument;
+}
+    
+
 declare module '*/currentUser.graphql' {
   import { DocumentNode } from 'graphql';
   const defaultDocument: DocumentNode;

@@ -37,16 +37,21 @@
               Crear nueva tarea
             </v-card-title>
             <v-card-text>
-              <v-text-field label="Titulo" outlined></v-text-field>
+              <v-text-field
+                label="Titulo"
+                outlined
+                v-model="taskInput.title"
+              ></v-text-field>
               <v-textarea
                 label="Descripcion"
                 name="input-7-1"
                 filled
                 auto-grow
                 outlined
+                v-model="taskInput.description"
               ></v-textarea>
-              <v-menu
-                ref="menu1"
+              <!--      <v-menu
+                ref="menu"
                 :close-on-content-click="false"
                 transition="scale-transition"
                 offset-y
@@ -61,27 +66,57 @@
                     prepend-icon="mdi-calendar"
                     v-bind="attrs"
                     v-on="on"
+                    v-model="taskInput.finishDate"
                   ></v-text-field>
                 </template>
-                <v-date-picker no-title @input="menu1 = false"></v-date-picker>
+                <v-date-picker
+                  v-model="taskInput.finishDate"
+                  no-title
+                  scrollable
+                >
+                  <v-spacer></v-spacer>
+                  <v-btn text color="primary" @click="menu = false">
+                    Cancel
+                  </v-btn>
+                  <v-btn text color="primary" @click="$refs.menu.save(date)">
+                    OK
+                  </v-btn>
+                </v-date-picker>
+              </v-menu> -->
+              <v-menu
+                v-model="menu"
+                :close-on-content-click="false"
+                transition="scale-transition"
+                offset-y
+                max-width="290px"
+                min-width="auto"
+              >
+                <template v-slot:activator="{ on, attrs }">
+                  <v-text-field
+                    label="Fecha Limite"
+                    hint="YYYY/MM/DD format"
+                    persistent-hint
+                    prepend-icon="mdi-calendar"
+                    v-bind="attrs"
+                    v-on="on"
+                    v-model="taskInput.finishDate"
+                  ></v-text-field>
+                </template>
+                <v-date-picker
+                  v-model="taskInput.finishDate"
+                  no-title
+                  scrollable
+                  @input="menu = false"
+                ></v-date-picker>
               </v-menu>
             </v-card-text>
-            <v-container fluid>
-              <p>Prioridad</p>
-              <v-radio-group v-model="row" row>
-                <v-radio label="Baja" value="radio-1"></v-radio>
-                <v-radio label="Media" value="radio-2"></v-radio>
-                <v-radio label="Alta" value="radio-3"></v-radio>
-              </v-radio-group>
-            </v-container>
             <v-divider></v-divider>
-
             <v-card-actions>
               <v-spacer></v-spacer>
               <v-btn color="red" text @click="dialog4 = false">
                 Cancelar
               </v-btn>
-              <v-btn color="primary" text @click="dialog4 = false">
+              <v-btn color="primary" text @click="handleCreateTask()">
                 Crear
               </v-btn>
             </v-card-actions>
@@ -89,6 +124,20 @@
         </v-dialog>
       </v-fab-transition>
     </v-card-text>
+    <v-snackbar v-model="snackbarSucessCreateTask">
+      {{ snackbarSucessMessageCreateTask }}
+
+      <template v-slot:action="{ attrs }">
+        <v-btn
+          color="green"
+          text
+          v-bind="attrs"
+          @click="changeStatusSnackbarCreateTask()"
+        >
+          Close
+        </v-btn>
+      </template>
+    </v-snackbar>
   </v-container>
 </template>
 
@@ -96,7 +145,9 @@
 import { Component, Vue, Watch } from "vue-property-decorator";
 import CardTask from "~/components/CardTask.vue";
 import { namespace } from "vuex-class";
+import { CreateTaskInput } from "~/gql/graphql";
 const Auth = namespace("AuthModule");
+const TaskModule = namespace("TaskModule");
 @Component({
   components: { CardTask },
   layout(context) {
@@ -108,6 +159,30 @@ export default class Tasks extends Vue {
   public menu1 = false;
   public column = null;
   public row = null;
+  public taskInput: CreateTaskInput = {
+    finishDate: new Date(Date.now() - new Date().getTimezoneOffset() * 60000)
+      .toISOString()
+      .substr(0, 10),
+    status: false,
+    title: "",
+    description: "",
+  };
+  public menu = false;
+  date = new Date(Date.now() - new Date().getTimezoneOffset() * 60000)
+    .toISOString()
+    .substr(0, 10);
+  @TaskModule.Action
+  private CreateTask!: (data: CreateTaskInput) => Promise<void>;
+  async handleCreateTask() {
+    await this.CreateTask(this.taskInput);
+    this.dialog4 = false;
+  }
+  @TaskModule.State("snackbarSucessCreateTask")
+  public snackbarSucessCreateTask?: boolean;
+  @TaskModule.State("snackbarSucessMessageCreateTask")
+  public snackbarSucessMessageCreateTask?: string;
+  @TaskModule.Action
+  private changeStatusSnackbarCreateTask!: () => void;
 }
 </script>
 

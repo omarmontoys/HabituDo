@@ -4,6 +4,13 @@ export type InputMaybe<T> = Maybe<T>;
 export type Exact<T extends { [key: string]: unknown }> = { [K in keyof T]: T[K] };
 export type MakeOptional<T, K extends keyof T> = Omit<T, K> & { [SubKey in K]?: Maybe<T[SubKey]> };
 export type MakeMaybe<T, K extends keyof T> = Omit<T, K> & { [SubKey in K]: Maybe<T[SubKey]> };
+export type CreateTaskMutationVariables = Exact<{
+  create: CreateTaskInput;
+}>;
+
+
+export type CreateTaskMutation = { __typename?: 'Mutation', createTask: { __typename?: 'Task', id: string, title: string, description?: string | null, status: boolean, finishDate: any, authorId: string } };
+
 export type CurrentUserQueryVariables = Exact<{ [key: string]: never; }>;
 
 
@@ -24,6 +31,18 @@ export type RegisterUserMutationVariables = Exact<{
 export type RegisterUserMutation = { __typename?: 'Mutation', registerUser: { __typename?: 'User', id: string, names: string, lastNames: string, email: string, tasks: Array<{ __typename?: 'Task', id: string, title: string, description?: string | null, cratedAt: any, status: boolean, finishDate: any, authorId: string }> } };
 
 
+export const CreateTask = gql`
+    mutation CreateTask($create: CreateTaskInput!) {
+  createTask(create: $create) {
+    id
+    title
+    description
+    status
+    finishDate
+    authorId
+  }
+}
+    `;
 export const CurrentUser = gql`
     query CurrentUser {
   currentUser {

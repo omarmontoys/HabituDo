@@ -48,6 +48,9 @@ class AuthModule extends VuexModule {
         console.log(auth);
         //this.context.commit("loginSuccess", auth);
         this.context.commit("loadingLogin", false);
+        window.$nuxt.$cookies.set("token", auth.token, {
+          path: "/",
+        });
         window.$nuxt.$router.push("./pagPrin/Tasks");
       })
       .catch((error) => {
