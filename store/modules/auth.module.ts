@@ -66,7 +66,7 @@ class AuthModule extends VuexModule {
         window.$nuxt.$cookies.set("token", auth.token, {
           path: "/",
         });
-        window.$nuxt.$router.push("./pagPrin/Tasks");
+        window.$nuxt.$router.push("./pagPrin/Calendar");
       })
       .catch((error) => {
         console.log(error.message);
@@ -97,7 +97,6 @@ class AuthModule extends VuexModule {
       .catch((error) => {
         console.log(error);
         this.context.commit("loadingRegister", false);
-
       });
   }
   @Mutation
