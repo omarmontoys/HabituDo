@@ -12,7 +12,6 @@ function createLink() {
   });
   const authLink = setContext((_, { headers }) => {
     const cookies = Cookie();
-    console.log("hola ");
     console.log(cookies);
     const token = cookies.get("token");
     console.log(token);

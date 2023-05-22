@@ -5,6 +5,11 @@
         <div class="d-flex justify-center">
           <img src="../../static/login.png" />
         </div>
+        <v-row class="pt-7" v-if="me && me.tasks">
+          <v-col cols="4" v-for="(task, index) in me.tasks" :key="index">
+            <CardTask :task="task" />
+          </v-col>
+        </v-row>
         <v-row class="pt-7">
           <CardTask />
         </v-row>
@@ -44,45 +49,10 @@
               ></v-text-field>
               <v-textarea
                 label="Descripcion"
-                name="input-7-1"
-                filled
                 auto-grow
                 outlined
                 v-model="taskInput.description"
               ></v-textarea>
-              <!--      <v-menu
-                ref="menu"
-                :close-on-content-click="false"
-                transition="scale-transition"
-                offset-y
-                max-width="290px"
-                min-width="auto"
-              >
-                <template v-slot:activator="{ on, attrs }">
-                  <v-text-field
-                    label="Fecha Limite"
-                    hint="YYYY/MM/DD format"
-                    persistent-hint
-                    prepend-icon="mdi-calendar"
-                    v-bind="attrs"
-                    v-on="on"
-                    v-model="taskInput.finishDate"
-                  ></v-text-field>
-                </template>
-                <v-date-picker
-                  v-model="taskInput.finishDate"
-                  no-title
-                  scrollable
-                >
-                  <v-spacer></v-spacer>
-                  <v-btn text color="primary" @click="menu = false">
-                    Cancel
-                  </v-btn>
-                  <v-btn text color="primary" @click="$refs.menu.save(date)">
-                    OK
-                  </v-btn>
-                </v-date-picker>
-              </v-menu> -->
               <v-menu
                 v-model="menu"
                 :close-on-content-click="false"
@@ -145,7 +115,7 @@
 import { Component, Vue, Watch } from "vue-property-decorator";
 import CardTask from "~/components/CardTask.vue";
 import { namespace } from "vuex-class";
-import { CreateTaskInput } from "~/gql/graphql";
+import { CreateTaskInput, Task, User } from "~/gql/graphql";
 const Auth = namespace("AuthModule");
 const TaskModule = namespace("TaskModule");
 @Component({
@@ -174,7 +144,21 @@ export default class Tasks extends Vue {
   @TaskModule.Action
   private CreateTask!: (data: CreateTaskInput) => Promise<void>;
   async handleCreateTask() {
-    await this.CreateTask(this.taskInput);
+    const data = {
+      title: this.taskInput.title,
+      description: this.taskInput.description,
+      finishDate: this.taskInput.finishDate,
+      status: this.taskInput.status,
+    };
+    await this.CreateTask(data);
+    this.taskInput = {
+      finishDate: new Date(Date.now() - new Date().getTimezoneOffset() * 60000)
+        .toISOString()
+        .substr(0, 10),
+      status: false,
+      title: "",
+      description: "",
+    };
     this.dialog4 = false;
   }
   @TaskModule.State("snackbarSucessCreateTask")
@@ -183,6 +167,20 @@ export default class Tasks extends Vue {
   public snackbarSucessMessageCreateTask?: string;
   @TaskModule.Action
   private changeStatusSnackbarCreateTask!: () => void;
+  @Auth.State("me")
+  private me!: User;
+  @Auth.Action
+  private fetchMe!: () => Promise<void>;
+  @TaskModule.State("tasks")
+  public task!: Task[];
+  @TaskModule.Action
+  private fetchRecipes!: () => Promise<void>;
+  @TaskModule.Action
+  private fetchTasks!: () => Promise<void>;
+
+  async created() {
+    await this.fetchMe();
+  }
 }
 </script>
 

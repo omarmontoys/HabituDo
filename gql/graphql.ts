@@ -14,7 +14,14 @@ export type CreateTaskMutation = { __typename?: 'Mutation', createTask: { __type
 export type CurrentUserQueryVariables = Exact<{ [key: string]: never; }>;
 
 
-export type CurrentUserQuery = { __typename?: 'Query', currentUser: { __typename?: 'User', id: string, names: string, lastNames: string, email: string, tasks: Array<{ __typename?: 'Task', id: string, title: string, description?: string | null, cratedAt: any, status: boolean, finishDate: any, authorId: string }> } };
+export type CurrentUserQuery = { __typename?: 'Query', currentUser: { __typename?: 'User', id: string, names: string, lastNames: string, email: string, tasks: Array<{ __typename?: 'Task', id: string, title: string, description?: string | null, status: boolean, finishDate: any, authorId: string }> } };
+
+export type DeleteTaskMutationVariables = Exact<{
+  id: Scalars['ID'];
+}>;
+
+
+export type DeleteTaskMutation = { __typename?: 'Mutation', deleteTask: { __typename?: 'Task', id: string, title: string, description?: string | null, status: boolean, finishDate: any, authorId: string } };
 
 export type LoginMutationVariables = Exact<{
   input: LoginInput;
@@ -29,6 +36,18 @@ export type RegisterUserMutationVariables = Exact<{
 
 
 export type RegisterUserMutation = { __typename?: 'Mutation', registerUser: { __typename?: 'User', id: string, names: string, lastNames: string, email: string, tasks: Array<{ __typename?: 'Task', id: string, title: string, description?: string | null, cratedAt: any, status: boolean, finishDate: any, authorId: string }> } };
+
+export type TaskQueryVariables = Exact<{
+  id: Scalars['ID'];
+}>;
+
+
+export type TaskQuery = { __typename?: 'Query', task: { __typename?: 'Task', id: string, title: string, description?: string | null, status: boolean, finishDate: any, authorId: string } };
+
+export type TasksQueryVariables = Exact<{ [key: string]: never; }>;
+
+
+export type TasksQuery = { __typename?: 'Query', tasks: Array<{ __typename?: 'Task', id: string, title: string, description?: string | null, status: boolean, finishDate: any, authorId: string }> };
 
 
 export const CreateTask = gql`
@@ -54,11 +73,22 @@ export const CurrentUser = gql`
       id
       title
       description
-      cratedAt
       status
       finishDate
       authorId
     }
+  }
+}
+    `;
+export const DeleteTask = gql`
+    mutation DeleteTask($id: ID!) {
+  deleteTask(delete: $id) {
+    id
+    title
+    description
+    status
+    finishDate
+    authorId
   }
 }
     `;
@@ -86,6 +116,30 @@ export const RegisterUser = gql`
       finishDate
       authorId
     }
+  }
+}
+    `;
+export const Task = gql`
+    query Task($id: ID!) {
+  task(id: $id) {
+    id
+    title
+    description
+    status
+    finishDate
+    authorId
+  }
+}
+    `;
+export const Tasks = gql`
+    query Tasks {
+  tasks {
+    id
+    title
+    description
+    status
+    finishDate
+    authorId
   }
 }
     `;

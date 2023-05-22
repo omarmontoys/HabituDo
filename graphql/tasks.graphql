@@ -1,0 +1,10 @@
+query Tasks {
+  tasks {
+    id
+    title
+    description
+    status
+    finishDate
+    authorId
+  }
+}
