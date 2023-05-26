@@ -58,7 +58,6 @@
                         dense
                         block
                         @click="handleLogin()"
-                        :loading="loadingLoginStatus"
                       >
                         Iniciar Sesión
                       </v-btn>
