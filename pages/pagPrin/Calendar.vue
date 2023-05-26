@@ -7,27 +7,9 @@
         </div>
         <v-row class="pt-7">
           <v-row class="fill-height">
-            <!-- VISTA DE DIA DE HOY -->
-
-            <v-col cols="3">
-              <v-sheet height="564">
-                <v-calendar color="primary" type="day">
-                  <template v-slot:day-header="{ present }">
-                    <template v-if="present" class="text-center">
-                      Today
-                    </template>
-                  </template>
-
-                  <template v-slot:interval="{ hour }">
-                    <div class="text-center">{{ hour }} o'clock</div>
-                  </template>
-                </v-calendar>
-              </v-sheet>
-            </v-col>
-
             <!-- CALENDARIO -->
 
-            <v-col cols="9">
+            <v-col cols="12">
               <v-sheet height="64">
                 <v-toolbar flat>
                   <v-btn
@@ -53,7 +35,7 @@
                         color="grey darken-2"
                         v-bind="attrs"
                         v-on="on"
-                      >
+                      > <span>{{ typeToLabel[type] }}</span>
                         <v-icon right> mdi-menu-down </v-icon>
                       </v-btn>
                     </template>
@@ -134,10 +116,11 @@
 
 <script lang="ts">
 import { Component, Vue, Watch } from "vue-property-decorator";
-import CardTask from "~/components/CardTask.vue";
 import { namespace } from "vuex-class";
+import { Task, Tasks, User } from "~/gql/graphql";
 
 const Auth = namespace("AuthModule");
+const TaskModule = namespace("TaskModule");
 
 @Component({
   layout(context) {
@@ -171,7 +154,7 @@ export default class Calendar extends Vue {
     "orange",
     "grey darken-1",
   ];
-  public names = [
+  /* public names = [
     "Reunion",
     "Festivo",
     "PTO",
@@ -180,7 +163,31 @@ export default class Calendar extends Vue {
     "Cumpleaños",
     "Conferencia",
     "Fiesta",
-  ];
+  ]; */
+
+ /*  public cloneTask: Task = {
+    finishDate: "",
+    title: "",
+    authorId: "",
+    cratedAt: undefined,
+    id: "",
+    status: false,
+  }; */
+
+  @Auth.State("me")
+  private me!: User;
+  @Auth.Action
+  private fetchMe!: () => Promise<void>;
+  @TaskModule.State("tasks")
+  public task!: Task[];
+  @TaskModule.Action
+  private fetchRecipes!: () => Promise<void>;
+  @TaskModule.Action
+  private fetchTasks!: () => Promise<void>;
+
+  async created() {
+    await this.fetchMe();
+  }
 
   viewDay({ date }: { date: string }) {
     // Se añade el tipo de dato para el parámetro
@@ -196,6 +203,17 @@ export default class Calendar extends Vue {
   setToday() {
     this.focus = "";
   }
+
+  formatDate(dateString: any) {
+  const date = new Date(dateString);
+  date.setDate(date.getDate() + 1); // Agregar un día a la fecha
+
+  const year = date.getFullYear();
+  const month = String(date.getMonth() + 1).padStart(2, "0");
+  const day = String(date.getDate()).padStart(2, "0");
+
+  return `${year}-${month}-${day}`;
+}
 
   showEvent({ nativeEvent, event }: { nativeEvent: Event; event: any }) {
     // Se añade el tipo de dato para los parámetros
@@ -227,9 +245,52 @@ export default class Calendar extends Vue {
     const min = new Date(`${start.date}T00:00:00`);
     const max = new Date(`${end.date}T23:59:59`);
     const days = (max.getTime() - min.getTime()) / 86400000;
-    const eventCount = this.rnd(days, days + 20);
 
-    for (let i = 0; i < eventCount; i++) {
+    const taskCount: any[] = this.me.tasks; //se obtienen las tareas
+    console.log(taskCount[1])
+    //const eventCount = this.rnd(days, days + 20);
+
+    /* this.me.tasks.forEach(task => {
+      const allDay = this.rnd(0, 3) === 0;
+      const first = this.formatDate(this.task.finishDate);
+      const second = this.formatDate(this.task.finishDate);
+      
+      events.push({
+        name: this.task.title,
+        start: first,
+        end: second,
+        color: this.colors[this.rnd(0, this.colors.length - 1)],
+        timed: allDay,
+      });
+    }); */
+
+    for (let i = 0; i < taskCount.length; i++) {
+      const allDay = this.rnd(0, 3) === 0;
+
+      /* const firstTimestamp = this.rnd(min.getTime(), max.getTime());
+      const first = new Date(firstTimestamp - (firstTimestamp % 900000));
+      const secondTimestamp = this.rnd(2, allDay ? 288 : 8) * 900000;
+      const second = new Date(first.getTime() + secondTimestamp); */
+
+      const first = this.formatDate(taskCount[i].finishDate);
+      const second = this.formatDate(taskCount[i].finishDate);
+      console.log("first", first)
+      console.log("2", second)
+
+      events.push({
+        name: taskCount[i].title,
+        start: first,
+        end: second,
+        color: this.colors[this.rnd(0, this.colors.length - 1)],
+        timed: !allDay,
+      });
+    }
+    this.events = events;
+
+
+    
+
+    /* for (let i = 0; i < eventCount; i++) {
       const allDay = this.rnd(0, 3) === 0;
       const firstTimestamp = this.rnd(min.getTime(), max.getTime());
       const first = new Date(firstTimestamp - (firstTimestamp % 900000));
@@ -244,7 +305,7 @@ export default class Calendar extends Vue {
         timed: !allDay,
       });
     }
-    this.events = events;
+    this.events = events; */
   }
   rnd(a: number, b: number) {
     return Math.floor((b - a + 1) * Math.random()) + a;

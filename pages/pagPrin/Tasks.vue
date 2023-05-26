@@ -174,8 +174,6 @@ export default class Tasks extends Vue {
   @TaskModule.State("tasks")
   public task!: Task[];
   @TaskModule.Action
-  private fetchRecipes!: () => Promise<void>;
-  @TaskModule.Action
   private fetchTasks!: () => Promise<void>;
 
   async created() {
