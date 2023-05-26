@@ -8,7 +8,6 @@ query CurrentUser {
       id
       title
       description
-      cratedAt
       status
       finishDate
       authorId

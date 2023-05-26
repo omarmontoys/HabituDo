@@ -1,12 +1,15 @@
 import { ApolloError } from "@apollo/client";
 import Vue from "vue";
 import { Action, Module, Mutation, VuexModule } from "vuex-module-decorators";
-import { Auth, CreateUserInput, LoginInput } from "~/gql/graphql";
+import { Auth, CreateUserInput, LoginInput, Task, User } from "~/gql/graphql";
+import Tasks from "~/pages/pagPrin/Tasks.vue";
 
 import AuthService from "~/services/auth.service";
 
 @Module({ namespaced: true })
 class AuthModule extends VuexModule {
+  public me?: User = undefined;
+
   public loadingLoginStatus = false;
   public loadingRegisterStatus = false;
   public errorMessage?: string = undefined;
@@ -40,15 +43,30 @@ class AuthModule extends VuexModule {
     this.context.commit("removeCookies");
   }
   @Action
+  async fetchMe() {
+    this.context.commit("loadingUser", true);
+    return await AuthService.currentUser()
+      .then((user: User) => {
+        this.context.commit("userSuccess", user);
+        this.context.commit("loadingUser", false);
+      })
+      .catch((error) => {
+        console.log(error.message);
+        this.context.commit("loadingUser", false);
+      });
+  }
+  @Action
   async login(data: LoginInput) {
     this.context.commit("loadingLogin", true);
     this.context.commit("resetErrorMessage");
     return await AuthService.login(data)
       .then((auth: Auth) => {
-        console.log(auth);
         //this.context.commit("loginSuccess", auth);
         this.context.commit("loadingLogin", false);
-        window.$nuxt.$router.push("./pagPrin/Tasks");
+        window.$nuxt.$cookies.set("token", auth.token, {
+          path: "/",
+        });
+        window.$nuxt.$router.push("./pagPrin/Calendar");
       })
       .catch((error) => {
         console.log(error.message);
@@ -67,7 +85,6 @@ class AuthModule extends VuexModule {
           password: data.password,
         })
           .then((auth: Auth) => {
-            console.log(auth);
             this.context.commit("loginSuccess", auth);
             this.context.commit("loadingRegister", false);
           })
@@ -80,9 +97,45 @@ class AuthModule extends VuexModule {
       .catch((error) => {
         console.log(error);
         this.context.commit("loadingRegister", false);
-
       });
   }
+  @Mutation
+  public setDeleteTask(data: { id: string }) {
+    console.log("LLego setDelete");
+    if (this.me) {
+      const index = this.me.tasks.findIndex((tasks) => {
+        return tasks.id === data.id;
+      });
+      if (index !== -1) {
+        const copyUser = { ...this.me };
+        copyUser.tasks = [...copyUser.tasks];
+
+        Vue.delete(copyUser.tasks, index);
+        this.me = copyUser;
+      }
+    }
+  }
+  @Mutation
+  public setCreateTask(data: Task) {
+    console.log("LLego setCreate");
+    if (this.me) {
+      const copyUser = { ...this.me };
+      copyUser.tasks = [...copyUser.tasks];
+      copyUser.tasks.push(data);
+      this.me = copyUser;
+    }
+  }
+
+  @Mutation
+  public userSuccess(user: User): void {
+    //console.log(user);
+    this.me = user;
+  }
+  @Mutation
+  public loadingUser(status: boolean) {
+    this.loadingLoginStatus = status;
+  }
+
   @Mutation
   public loginSuccess(auth: Auth): void {
     // console.log(auth);
