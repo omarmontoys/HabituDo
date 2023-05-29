@@ -141,6 +141,7 @@ export default class Tasks extends Vue {
   date = new Date(Date.now() - new Date().getTimezoneOffset() * 60000)
     .toISOString()
     .substr(0, 10);
+    
   @TaskModule.Action
   private CreateTask!: (data: CreateTaskInput) => Promise<void>;
   async handleCreateTask() {
@@ -161,6 +162,7 @@ export default class Tasks extends Vue {
     };
     this.dialog4 = false;
   }
+
   @TaskModule.State("snackbarSucessCreateTask")
   public snackbarSucessCreateTask?: boolean;
   @TaskModule.State("snackbarSucessMessageCreateTask")
