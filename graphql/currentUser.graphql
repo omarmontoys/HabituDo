@@ -12,5 +12,17 @@ query CurrentUser {
       finishDate
       authorId
     }
+    habits {
+      id
+      title
+      description
+      createdAt
+      updatedAt
+      days
+      dates
+      priority
+      finishDate
+      authorId
+    }
   }
 }

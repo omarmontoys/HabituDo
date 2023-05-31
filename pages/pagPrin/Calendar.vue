@@ -81,8 +81,7 @@
                         <v-icon>mdi-pencil</v-icon>
                       </v-btn>
                       <v-toolbar-title
-                        v-html="selectedEvent.name"
-                      ></v-toolbar-title>
+                      >{{ selectedEvent.name }}</v-toolbar-title>
                       <v-spacer></v-spacer>
                       <v-btn icon>
                         <v-icon>mdi-heart</v-icon>
@@ -228,15 +227,12 @@ export default class Calendar extends Vue {
     const days = (max.getTime() - min.getTime()) / 86400000;
 
     const taskCount: any[] = this.me.tasks; //se obtienen las tareas
-    console.log(taskCount[1])
 
     for (let i = 0; i < taskCount.length; i++) {
       const allDay = this.rnd(0, 3) === 0;
 
       const first = this.formatDate(taskCount[i].finishDate);
       const second = this.formatDate(taskCount[i].finishDate);
-      console.log("first", first)
-      console.log("2", second)
 
       events.push({
         name: taskCount[i].title,
@@ -248,7 +244,7 @@ export default class Calendar extends Vue {
     }
     this.events = events;
   }
-  
+
   rnd(a: number, b: number) {
     return Math.floor((b - a + 1) * Math.random()) + a;
   }

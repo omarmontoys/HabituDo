@@ -1,7 +1,7 @@
 import { ApolloError } from "@apollo/client";
 import Vue from "vue";
 import { Action, Module, Mutation, VuexModule } from "vuex-module-decorators";
-import { Auth, CreateUserInput, LoginInput, Task, User } from "~/gql/graphql";
+import { Auth, CreateUserInput, Habit, LoginInput, Task, User } from "~/gql/graphql";
 import Tasks from "~/pages/pagPrin/Tasks.vue";
 
 import AuthService from "~/services/auth.service";
@@ -125,6 +125,18 @@ class AuthModule extends VuexModule {
       this.me = copyUser;
     }
   }
+
+  @Mutation
+  public setCreateHabit(data: Habit) {
+      console.log("set ctreateee");
+      if (this.me) {
+      const copyUser = { ...this.me };
+      copyUser.habits = [...copyUser.habits];
+      copyUser.habits.push(data);
+      this.me = copyUser;
+      }
+  }
+    
 
   @Mutation
   public userSuccess(user: User): void {
