@@ -192,7 +192,7 @@
               <v-card-actions>
                 <v-spacer></v-spacer>
                 <v-btn color="red" text @click="dialogDelete = false">Cancelar</v-btn>
-                <v-btn color="success" text @click="handleDeleteHabit(habit.id)"
+                <v-btn color="success" text @click="handleDeleteHabit({id: deleteHabitId})"
                   >Aceptar</v-btn
                 >
                 <v-spacer></v-spacer>
@@ -205,7 +205,7 @@
       <template v-slot:item.actions="{ item }">
         <v-icon small class="mr-2" @click="seeItem(item)"> mdi-eye </v-icon>
         <v-icon small class="mr-2" @click="editItem(item)"> mdi-pencil </v-icon>
-        <v-icon small @click="deleteItem(item)"> mdi-delete </v-icon>
+        <v-icon small @click="deleteItem(item.id)"> mdi-delete </v-icon>
       </template>
       <template v-slot:no-data>
         <v-btn color="primary" > No tienes habitos registrados
@@ -288,9 +288,9 @@ export default class Habits extends Vue {
     {text: "Viernes", value: 5},
     {text: "Sabado", value: 6},
   ];
-   @Prop({
+  /*  @Prop({
     required: false,
-  })
+  }) */
   public items: any[] = []; 
 
   public menu = false;
@@ -339,7 +339,7 @@ export default class Habits extends Vue {
   @HabitModule.Action
   private deleteHabit!: (data: {id: string}) => Promise<void>;
   async handleDeleteHabit(Habit: {id: string}) {
-    console.log(Habit);
+    console.log("handle", Habit);
     await this.deleteHabit(Habit);
     this.dialogDelete = false;
     this.initialize();
@@ -356,6 +356,10 @@ export default class Habits extends Vue {
   } ; 
 
   public deleteItem(item: Habit): void {
+    console.log("lo que trae del boton", item);
+    const deleteHabitId = item
+    console.log("const", deleteHabitId);
+     this.handleDeleteHabit(deleteHabitId);
     /* this.habits = this.habit.indexOf(item);
     this.editedItem = { ...item }; */
     this.dialogDelete = true;

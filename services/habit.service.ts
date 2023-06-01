@@ -33,7 +33,7 @@ class habitService {
     ).data.habits;
   }
   async deleteHabit(habitId: string): Promise<Habit> {
-    console.log("mutacion " + habitId);
+    console.log(habitId);
     return (
       await apolloClient.mutate({
         mutation: DeleteHabit,
