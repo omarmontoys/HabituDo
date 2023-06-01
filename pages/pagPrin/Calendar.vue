@@ -2,7 +2,7 @@
   <v-container>
     <v-row>
       <v-col cols="12">
-        <div class="d-flex justify-center">
+        <div class="d-flex justify-center imagen">
           <img src="../../static/login.png" class="habitudo" />
         </div>
         <v-row class="pt-7">
@@ -269,5 +269,9 @@ export default class Calendar extends Vue {
   border-radius: 80%;
   margin: 30%;
   display: block;
+}
+img{
+  max-height: 20%;
+  max-width: 20%;
 }
 </style>

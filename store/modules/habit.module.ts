@@ -3,26 +3,38 @@ import Vue from "vue";
 import { Action, Module, Mutation, VuexModule } from "vuex-module-decorators";
 import { CreateHabitInput, Habit } from "~/gql/graphql";
 import HabitService from "~/services/habit.service";
+import AuthModule from "./auth.module";
 
 @Module({ namespaced: true })
 class HabitModule extends VuexModule {
     public loadingHabitStatus = false;
     public snackbarSucessCreateHabit = false;
     public snackbarSucessMessageCreateHabit = "";
-    /* public loadingdelete = false;
-    public successdelete = false; */
-
+    public loadingdelete = false;
+    public successdelete = false;
     public habits?: Habit[] = undefined;
     public habit?: Habit = undefined;
     public id?: Habit | undefined = undefined;
 
+    @Action
+    public changeStatusSnackbarCreateHabit() {
+        this.context.commit("setSnackbarSucessCreateHabit");
+    }
     @Mutation
     public setSnackbarSucessCreateHabit(status: boolean) {
-        this.snackbarSucessCreateHabit = status;
+        this.snackbarSucessCreateHabit = !this.snackbarSucessCreateHabit;
     }
     @Mutation
     public setSnackbarSucessMessageCreateHabit(message: string) {
-        this.snackbarSucessMessageCreateHabit = message;
+        this.snackbarSucessMessageCreateHabit = "Habito creado correctamente";
+    }
+    @Mutation
+    public setLoadingDelete(status: boolean) {
+        this.loadingdelete = status;
+    }
+    @Mutation
+    public setSuccessDelete(status: boolean) {
+        this.successdelete = status;
     }
     @Mutation
     public setHabit(habit: Habit) {
@@ -71,6 +83,23 @@ class HabitModule extends VuexModule {
             this.context.commit("setsnackbarSucessCreateHabit");
         })
         .catch((error) => {
+            console.log(error);
+        });
+    }
+    @Action({ rawError: true })
+    async deleteHabit(habitId: string): Promise<void> {
+        this.context.commit("setLoadingDelete", true);
+        this.context.commit("setSuccessDelete", false);
+        return await HabitService.deleteHabit(habitId)
+        .then((data) => {
+            this.context.commit("AuthModule/setDeleteHabit", data, {
+                root: true,
+            });
+            this.context.commit("setLoadingDelete", false);
+            this.context.commit("setSuccessDelete", false);
+        })
+        .catch((error) => {
+            this.context.commit("setLoadingDelete", false);
             console.log(error);
         });
     }

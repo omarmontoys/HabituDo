@@ -23,6 +23,13 @@ export type CurrentUserQueryVariables = Exact<{ [key: string]: never; }>;
 
 export type CurrentUserQuery = { __typename?: 'Query', currentUser: { __typename?: 'User', id: string, names: string, lastNames: string, email: string, tasks: Array<{ __typename?: 'Task', id: string, title: string, description?: string | null, status: boolean, finishDate: any, authorId: string }>, habits: Array<{ __typename?: 'Habit', id: string, title: string, description?: string | null, createdAt: any, updatedAt: any, days: Array<number>, dates: Array<any>, priority: number, finishDate: any, authorId: string }> } };
 
+export type DeleteHabitMutationVariables = Exact<{
+  id: Scalars['ID'];
+}>;
+
+
+export type DeleteHabitMutation = { __typename?: 'Mutation', deleteHabit: { __typename?: 'Habit', id: string, title: string, description?: string | null, updatedAt: any, days: Array<number>, priority: number, finishDate: any, authorId: string } };
+
 export type DeleteTaskMutationVariables = Exact<{
   id: Scalars['ID'];
 }>;
@@ -122,6 +129,20 @@ export const CurrentUser = gql`
       finishDate
       authorId
     }
+  }
+}
+    `;
+export const DeleteHabit = gql`
+    mutation DeleteHabit($id: ID!) {
+  deleteHabit(id: $id) {
+    id
+    title
+    description
+    updatedAt
+    days
+    priority
+    finishDate
+    authorId
   }
 }
     `;

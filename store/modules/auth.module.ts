@@ -128,13 +128,28 @@ class AuthModule extends VuexModule {
 
   @Mutation
   public setCreateHabit(data: Habit) {
-      console.log("set ctreateee");
       if (this.me) {
       const copyUser = { ...this.me };
       copyUser.habits = [...copyUser.habits];
       copyUser.habits.push(data);
       this.me = copyUser;
       }
+  }
+  @Mutation
+  public setDeleteHabit(data: { id: string }) {
+    console.log("LLego setDelete");
+    if (this.me) {
+      const index = this.me.habits.findIndex((habits) => {
+        return habits.id === data.id;
+      });
+      if (index !== -1) {
+        const copyUser = { ...this.me };
+        copyUser.habits = [...copyUser.habits];
+
+        Vue.delete(copyUser.habits, index);
+        this.me = copyUser;
+      }
+    }
   }
     
 

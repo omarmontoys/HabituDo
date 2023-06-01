@@ -10,10 +10,10 @@
 
     <!-- TABLA HABITOS -->
 
-    <v-data-table :headers="headers" :items="me.habits" class="elevation-1">
+    <v-data-table :headers="headers" :items="items" class="elevation-1" disable-pagination hide-default-footer>
       <v-checkbox hide-details class="shrink mr-2 mt-0"></v-checkbox>
 
-      <!-- <template v-slot:item.Lunes="{ item }" >
+      <template v-slot:item.Lunes="{ item }" >
         <v-simple-checkbox
           v-model="item.Lunes"
         ></v-simple-checkbox>
@@ -53,7 +53,7 @@
         <v-simple-checkbox
           v-model="item.Domingo"
         ></v-simple-checkbox>
-      </template> -->
+      </template> 
 
       <template v-slot:top>
         <v-toolbar flat>
@@ -103,7 +103,7 @@
                   <v-row>
                     <v-col cols="12" sm="12" md="12">
                       <v-text-field outlined
-                        v-model="habitInput.name"
+                        v-model="habitInput.title"
                         label="Nombre del habito"
                       ></v-text-field>
                     </v-col>
@@ -184,38 +184,53 @@
           <!-- AGREGAR SNACKBAR -->
 
           <!-- ELIMINAR HABITO -->
-          <!-- <v-dialog v-model="dialogDelete" max-width="500px">
+          <v-dialog v-model="dialogDelete" max-width="500px">
             <v-card>
               <v-card-title class="text-h5"
                 >Seguro que deseas eliminar este habito?</v-card-title
               >
               <v-card-actions>
                 <v-spacer></v-spacer>
-                <v-btn color="red" text @click="closeDelete">Cancelar</v-btn>
-                <v-btn color="success" text @click="deleteItemConfirm"
+                <v-btn color="red" text @click="dialogDelete = false">Cancelar</v-btn>
+                <v-btn color="success" text @click="handleDeleteHabit(habit.id)"
                   >Aceptar</v-btn
                 >
                 <v-spacer></v-spacer>
               </v-card-actions>
             </v-card>
-          </v-dialog> -->
+          </v-dialog> 
         </v-toolbar>
       </template>
       <!-- BOTONES DE EDITAR Y ELIMINAR -->
       <template v-slot:item.actions="{ item }">
-        <v-icon small class="mr-2"> mdi-pencil </v-icon>
-        <v-icon small > mdi-delete </v-icon>
+        <v-icon small class="mr-2" @click="seeItem(item)"> mdi-eye </v-icon>
+        <v-icon small class="mr-2" @click="editItem(item)"> mdi-pencil </v-icon>
+        <v-icon small @click="deleteItem(item)"> mdi-delete </v-icon>
       </template>
       <template v-slot:no-data>
-        <v-btn color="primary" >         No tienes habitos registrados
- </v-btn>
+        <v-btn color="primary" > No tienes habitos registrados
+        </v-btn>
       </template>
     </v-data-table>
+    <v-snackbar v-model="snackbarSuccessCreateHabit">
+      {{ snackbarSucessMessageCreateHabit }}
+
+      <template v-slot:action="{ attrs }">
+        <v-btn
+          color="green"
+          text
+          v-bind="attrs"
+          @click="changeStatusSnackbarCreateHabit()"
+        >
+          Close
+        </v-btn>
+      </template>
+    </v-snackbar>
   </v-container>
 </template>
 
 <script lang="ts">
-import { Vue, Component } from "vue-property-decorator";
+import { Vue, Component, Prop } from "vue-property-decorator";
 import { namespace } from "vuex-class";
 import { CreateHabitInput, Habit, User } from "~/gql/graphql";
 
@@ -247,7 +262,7 @@ export default class Habits extends Vue {
       text: "HABITO",
       align: "start",
       sortable: true,
-      value: "name",
+      value: "title",
     },
     { text: "Lunes", value: "Lunes", sortable: false },
     { text: "Martes", value: "Martes", sortable: false },
@@ -273,24 +288,15 @@ export default class Habits extends Vue {
     {text: "Viernes", value: 5},
     {text: "Sabado", value: 6},
   ];
-  public habitCount: any[] = [];
-  
-/*   public habits: Habit[] = [];
- */
- /* public editedItem: Habit = {
-    name: "",
-  };
-  public defaultItem: Habit = {
-    name: "",
-  }; */
+   @Prop({
+    required: false,
+  })
+  public items: any[] = []; 
+
   public menu = false;
   date = new Date(Date.now() - new Date().getTimezoneOffset() * 60000)
     .toISOString()
     .substr(0, 10);
-
-  /* public get formTitle(): string {
-    return this.editedIndex === -1 ? "Nuevo habito" : "Editar habito";
-  } */
 
   @HabitModule.Action
   public CreateHabit!: (habit: CreateHabitInput) => Promise<void>;
@@ -313,10 +319,15 @@ export default class Habits extends Vue {
         .substr(0, 10),
     };
     this.dialog = false;
+    this.initialize();
   }
+
   @HabitModule.State("snackbarSuccessCreateHabit")
-  public snackbarSuccessCreateHabit!: boolean;
-  @HabitModule.State("snackbarSuccessCreateHabitMessage")
+  public snackbarSuccessCreateHabit?: boolean;
+  @HabitModule.State("snackbarSuccessMessageCreateHabit")
+  public snackbarSuccessMessageCreateHabit?: string;
+  @HabitModule.Action
+  private changeStatusSnackbarCreateHabit!: () => void;
   @Auth.State("me")
   private me!: User;
   @Auth.Action
@@ -325,85 +336,34 @@ export default class Habits extends Vue {
   public habit!: Habit[];
   @HabitModule.Action
   private fetchHabits!: () => Promise<void>;
+  @HabitModule.Action
+  private deleteHabit!: (data: {id: string}) => Promise<void>;
+  async handleDeleteHabit(Habit: {id: string}) {
+    console.log(Habit);
+    await this.deleteHabit(Habit);
+    this.dialogDelete = false;
+    this.initialize();
+  }
 
   async created() {
     await this.fetchMe();
-/*     console.log(this.me.habits);
- */  }
-
-  
-
-
-  /* public initialize(): void {
-    this.habits = [
-      {
-        name: "Hacer ejercicio",
-      },
-      {
-        name: "Tocar guitarra",
-      },
-      {
-        name: "Aprender ingles",
-      },
-      {
-        name: "Jugar genshin",
-      },
-      {
-        name: "Skincare",
-      },
-      {
-        name: "Leer",
-      },
-      {
-        name: "Limpiar",
-      },
-      {
-        name: "Correr",
-      },
-    ];
-  } */
-
-  /* public editItem(item: Habit): void {
-    this.editedIndex = this.habits.indexOf(item);
-    this.editedItem = { ...item };
-    this.dialog = true;
+    this.initialize();
   }
+
+  initialize(): void {
+    this.items = this.me.habits; 
+    console.log(this.items);
+  } ; 
 
   public deleteItem(item: Habit): void {
-    this.editedIndex = this.habits.indexOf(item);
-    this.editedItem = { ...item };
+    /* this.habits = this.habit.indexOf(item);
+    this.editedItem = { ...item }; */
     this.dialogDelete = true;
   }
-
-  public deleteItemConfirm(): void {
-    this.habits.splice(this.editedIndex, 1);
-    this.closeDelete();
-  }*/
 
   public close(): void {
     this.dialog = false;
   }
-/*
-  public closeDelete(): void {
-    this.dialogDelete = false;
-    this.$nextTick(() => {
-      this.editedItem = { ...this.defaultItem };
-      this.editedIndex = -1;
-    });
-  }
-
-  public save(): void {
-    if (this.editedIndex > -1) {
-      Object.assign(this.habits[this.editedIndex], this.editedItem);
-    } else {
-      this.habits.push(this.editedItem);
-    }
-    this.close();
-  }
- */
-
-
-
 }
 </script>
 

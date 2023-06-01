@@ -26,6 +26,15 @@ declare module '*/currentUser.graphql' {
 }
     
 
+declare module '*/deleteHabit.graphql' {
+  import { DocumentNode } from 'graphql';
+  const defaultDocument: DocumentNode;
+  export const DeleteHabit: DocumentNode;
+
+  export default defaultDocument;
+}
+    
+
 declare module '*/deleteTask.graphql' {
   import { DocumentNode } from 'graphql';
   const defaultDocument: DocumentNode;
