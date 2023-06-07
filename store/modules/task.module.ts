@@ -1,7 +1,13 @@
 import { isApolloError } from "@apollo/client/errors";
 import Vue from "vue";
 import { Action, Module, Mutation, VuexModule } from "vuex-module-decorators";
-import { CreateTaskInput, Task } from "~/gql/graphql";
+import {
+  CreateTaskInput,
+  Task,
+  UpdateShareTaskInput,
+  UpdateTaskInput,
+  User,
+} from "~/gql/graphql";
 import TasksService from "~/services/task.service";
 @Module({ namespaced: true })
 class TaskModule extends VuexModule {
@@ -14,6 +20,11 @@ class TaskModule extends VuexModule {
   public tasks?: Task[] = undefined;
   public task?: Task = undefined;
   public id?: Task | undefined = undefined;
+  public user: User[] | null = null;
+  public loadingShareStatus = false;
+  public loadingUpdateTaskStatus = false;
+  public snackbarCreateShareSuccess = false;
+  public snackbarCreateShareMessage = "";
   @Mutation
   public setLoadingDelete(status: boolean) {
     this.loadingdelete = status;
@@ -59,6 +70,60 @@ class TaskModule extends VuexModule {
       .catch((error) => {
         console.log(error);
       });
+  }
+  @Action
+  async shareTasks(data: UpdateShareTaskInput) {
+    this.context.commit("loadingShare", true);
+    console.log(data);
+    try {
+      const sharetask = await TasksService.shareTasks(data);
+      console.log(sharetask);
+      this.context.commit("shareSuccess", sharetask);
+      this.context.commit("loadingShare", false);
+      return sharetask;
+    } catch (error) {
+      console.error(error);
+    }
+  }
+  @Mutation
+  public loadingShare(): boolean {
+    return this.loadingShareStatus;
+  }
+  get isLoadingShare(): boolean {
+    return this.loadingShareStatus;
+  }
+  @Mutation
+  public shareSuccess(sharetask: User): void {
+    if (this.user) {
+      this.user = [sharetask, ...this.user];
+    }
+  }
+  @Action
+  async updateTasks(data: UpdateTaskInput) {
+    this.context.commit("loadingUpdateTask", true);
+    console.log(data);
+    try {
+      const updateTask = await TasksService.updateTasks(data);
+      console.log(updateTask);
+      this.context.commit("updateTaskSuccess", updateTask);
+      this.context.commit("loadingUpdateTask", false);
+      return updateTask;
+    } catch (error) {
+      console.error(error);
+    }
+  }
+  @Mutation
+  public loadingUpdateTask(): boolean {
+    return this.loadingUpdateTaskStatus;
+  }
+  get isLoadingUpdateTask(): boolean {
+    return this.loadingUpdateTaskStatus;
+  }
+  @Mutation
+  public updateTaskSuccess(updateTask: User): void {
+    if (this.user) {
+      this.user = [updateTask, ...this.user];
+    }
   }
   @Action({ rawError: true })
   async deleteTask(taskId: string): Promise<void> {

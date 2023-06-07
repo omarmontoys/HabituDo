@@ -13,46 +13,32 @@
     <v-data-table :headers="headers" :items="habits" class="elevation-1">
       <v-checkbox hide-details class="shrink mr-2 mt-0"></v-checkbox>
 
-      <template v-slot:item.Lunes="{ item }" >
-        <v-simple-checkbox
-          v-model="item.Lunes"
-        ></v-simple-checkbox>
+      <template v-slot:item.Lunes="{ item }">
+        <v-simple-checkbox v-model="item.Lunes"></v-simple-checkbox>
       </template>
 
-      <template v-slot:item.Martes="{ item }" >
-        <v-simple-checkbox
-          v-model="item.Martes"
-        ></v-simple-checkbox>
+      <template v-slot:item.Martes="{ item }">
+        <v-simple-checkbox v-model="item.Martes"></v-simple-checkbox>
       </template>
 
-      <template v-slot:item.Miercoles="{ item }" >
-        <v-simple-checkbox
-          v-model="item.Miercoles"
-        ></v-simple-checkbox>
+      <template v-slot:item.Miercoles="{ item }">
+        <v-simple-checkbox v-model="item.Miercoles"></v-simple-checkbox>
       </template>
 
-      <template v-slot:item.Jueves="{ item }" >
-        <v-simple-checkbox
-          v-model="item.Jueves"
-        ></v-simple-checkbox>
+      <template v-slot:item.Jueves="{ item }">
+        <v-simple-checkbox v-model="item.Jueves"></v-simple-checkbox>
       </template>
 
-      <template v-slot:item.Viernes="{ item }" >
-        <v-simple-checkbox
-          v-model="item.Viernes"
-        ></v-simple-checkbox>
+      <template v-slot:item.Viernes="{ item }">
+        <v-simple-checkbox v-model="item.Viernes"></v-simple-checkbox>
       </template>
 
-      <template v-slot:item.Sabado="{ item }" >
-        <v-simple-checkbox
-          v-model="item.Sabado"
-        ></v-simple-checkbox>
+      <template v-slot:item.Sabado="{ item }">
+        <v-simple-checkbox v-model="item.Sabado"></v-simple-checkbox>
       </template>
 
-      <template v-slot:item.Domingo="{ item }" >
-        <v-simple-checkbox
-          v-model="item.Domingo"
-        ></v-simple-checkbox>
+      <template v-slot:item.Domingo="{ item }">
+        <v-simple-checkbox v-model="item.Domingo"></v-simple-checkbox>
       </template>
 
       <template v-slot:top>
@@ -102,7 +88,8 @@
                 <v-container>
                   <v-row>
                     <v-col cols="12" sm="12" md="12">
-                      <v-text-field outlined
+                      <v-text-field
+                        outlined
                         v-model="editedItem.name"
                         label="Nombre del habito"
                       ></v-text-field>
@@ -111,8 +98,8 @@
 
                   <v-row>
                     <v-col cols="12" sm="12" md="12">
-                      <v-text-field outlined
-                        v-model="editedItem.description"
+                      <v-text-field
+                        outlined
                         label="Descripcion del habito"
                       ></v-text-field>
                     </v-col>
@@ -139,7 +126,8 @@
                         min-width="auto"
                       >
                         <template v-slot:activator="{ on, attrs }">
-                          <v-text-field outlined
+                          <v-text-field
+                            outlined
                             label="Fecha Limite"
                             hint="YYYY/MM/DD format"
                             persistent-hint
@@ -157,8 +145,6 @@
                       </v-menu>
                     </v-col>
                   </v-row>
-
-
                 </v-container>
               </v-card-text>
 
@@ -215,7 +201,7 @@ export default class Habits extends Vue {
   public dialog = false;
   public dialog4 = false;
   public dialogDelete = false;
-  
+
   public headers = [
     {
       text: "HABITO",
@@ -233,11 +219,11 @@ export default class Habits extends Vue {
     { text: "Actions", value: "actions", sortable: false },
   ];
   public prioritySelect = [
-    {text: "Alta", value: 1},
-    {text: "Media", value: 2},
-    {text: "Baja", value: 3}
+    { text: "Alta", value: 1 },
+    { text: "Media", value: 2 },
+    { text: "Baja", value: 3 },
   ];
-  
+
   public habits: Habit[] = [];
 
   public editedIndex = -1;

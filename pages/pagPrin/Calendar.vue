@@ -1,5 +1,5 @@
 <template>
-  <v-container>
+  <v-container v-if="me">
     <v-row>
       <v-col cols="12">
         <div class="d-flex justify-center">
@@ -246,6 +246,8 @@ export default class Calendar extends Vue {
     const min = new Date(`${start.date}T00:00:00`);
     const max = new Date(`${end.date}T23:59:59`);
     const days = (max.getTime() - min.getTime()) / 86400000;
+    console.log("hola");
+    console.log(this.me);
 
     const taskCount: any[] = this.me.tasks; //se obtienen las tareas
     console.log(taskCount[1]);
