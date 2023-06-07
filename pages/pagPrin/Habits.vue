@@ -13,6 +13,34 @@
     <v-data-table :headers="headers" :items="habits" class="elevation-1">
       <v-checkbox hide-details class="shrink mr-2 mt-0"></v-checkbox>
 
+      <template v-slot:item.Lunes="{ item }">
+        <v-simple-checkbox v-model="item.Lunes"></v-simple-checkbox>
+      </template>
+
+      <template v-slot:item.Martes="{ item }">
+        <v-simple-checkbox v-model="item.Martes"></v-simple-checkbox>
+      </template>
+
+      <template v-slot:item.Miercoles="{ item }">
+        <v-simple-checkbox v-model="item.Miercoles"></v-simple-checkbox>
+      </template>
+
+      <template v-slot:item.Jueves="{ item }">
+        <v-simple-checkbox v-model="item.Jueves"></v-simple-checkbox>
+      </template>
+
+      <template v-slot:item.Viernes="{ item }">
+        <v-simple-checkbox v-model="item.Viernes"></v-simple-checkbox>
+      </template>
+
+      <template v-slot:item.Sabado="{ item }">
+        <v-simple-checkbox v-model="item.Sabado"></v-simple-checkbox>
+      </template>
+
+      <template v-slot:item.Domingo="{ item }">
+        <v-simple-checkbox v-model="item.Domingo"></v-simple-checkbox>
+      </template>
+
       <template v-slot:top>
         <v-toolbar flat>
           <v-toolbar-title>Mi seguidor de Habitos</v-toolbar-title>
@@ -52,7 +80,7 @@
               </v-btn>
             </template>
             <v-card>
-              <v-card-title>
+              <v-card-title class="text-h5 lighten-2">
                 <span class="text-h5">{{ formTitle }}</span>
               </v-card-title>
 
@@ -61,9 +89,60 @@
                   <v-row>
                     <v-col cols="12" sm="12" md="12">
                       <v-text-field
+                        outlined
                         v-model="editedItem.name"
                         label="Nombre del habito"
                       ></v-text-field>
+                    </v-col>
+                  </v-row>
+
+                  <v-row>
+                    <v-col cols="12" sm="12" md="12">
+                      <v-text-field
+                        outlined
+                        label="Descripcion del habito"
+                      ></v-text-field>
+                    </v-col>
+                  </v-row>
+
+                  <v-row>
+                    <v-col cols="12" sm="12" md="12">
+                      <v-select
+                        :items="prioritySelect"
+                        label="Prioridad"
+                        outlined
+                      ></v-select>
+                    </v-col>
+                  </v-row>
+
+                  <v-row>
+                    <v-col cols="12" sm="12" md="12">
+                      <v-menu
+                        v-model="menu"
+                        :close-on-content-click="false"
+                        transition="scale-transition"
+                        offset-y
+                        max-width="290px"
+                        min-width="auto"
+                      >
+                        <template v-slot:activator="{ on, attrs }">
+                          <v-text-field
+                            outlined
+                            label="Fecha Limite"
+                            hint="YYYY/MM/DD format"
+                            persistent-hint
+                            v-bind="attrs"
+                            v-on="on"
+                            v-model="date"
+                          ></v-text-field>
+                        </template>
+                        <v-date-picker
+                          v-model="date"
+                          no-title
+                          scrollable
+                          @input="menu = false"
+                        ></v-date-picker>
+                      </v-menu>
                     </v-col>
                   </v-row>
                 </v-container>
@@ -108,6 +187,7 @@
 </template>
 <script lang="ts">
 import { Vue, Component } from "vue-property-decorator";
+
 interface Habit {
   name: string;
 }
@@ -121,6 +201,7 @@ export default class Habits extends Vue {
   public dialog = false;
   public dialog4 = false;
   public dialogDelete = false;
+
   public headers = [
     {
       text: "HABITO",
@@ -137,7 +218,14 @@ export default class Habits extends Vue {
     { text: "Domingo", value: "Domingo", sortable: false },
     { text: "Actions", value: "actions", sortable: false },
   ];
+  public prioritySelect = [
+    { text: "Alta", value: 1 },
+    { text: "Media", value: 2 },
+    { text: "Baja", value: 3 },
+  ];
+
   public habits: Habit[] = [];
+
   public editedIndex = -1;
   public editedItem: Habit = {
     name: "",
@@ -145,6 +233,10 @@ export default class Habits extends Vue {
   public defaultItem: Habit = {
     name: "",
   };
+  public menu = false;
+  date = new Date(Date.now() - new Date().getTimezoneOffset() * 60000)
+    .toISOString()
+    .substr(0, 10);
 
   public get formTitle(): string {
     return this.editedIndex === -1 ? "Nuevo habito" : "Editar habito";

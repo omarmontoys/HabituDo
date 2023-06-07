@@ -19,7 +19,8 @@
       "@nuxt/types",
       "@nuxt/typescript-build",
       "@types/node",
-      "cookie-universal-nuxt"
+      "cookie-universal-nuxt",
+      "@nuxtjs/vuetify"
     ]
   },
   "exclude": ["node_modules", ".nuxt", "dist"]

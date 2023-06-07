@@ -6,7 +6,13 @@
           <img src="../../static/login.png" />
         </div>
         <v-row class="pt-7" v-if="me && me.tasks">
-          <v-col cols="4" v-for="(task, index) in me.tasks" :key="index">
+          <v-col
+            cols="12"
+            sm="6"
+            md="4"
+            v-for="(task, index) in me.tasks"
+            :key="index"
+          >
             <CardTask :task="task" />
           </v-col>
         </v-row>
@@ -118,6 +124,7 @@ import { namespace } from "vuex-class";
 import { CreateTaskInput, Task, User } from "~/gql/graphql";
 const Auth = namespace("AuthModule");
 const TaskModule = namespace("TaskModule");
+const AuthModule = namespace("AuthModule");
 @Component({
   components: { CardTask },
   layout(context) {
@@ -141,6 +148,7 @@ export default class Tasks extends Vue {
   date = new Date(Date.now() - new Date().getTimezoneOffset() * 60000)
     .toISOString()
     .substr(0, 10);
+
   @TaskModule.Action
   private CreateTask!: (data: CreateTaskInput) => Promise<void>;
   async handleCreateTask() {
@@ -161,6 +169,7 @@ export default class Tasks extends Vue {
     };
     this.dialog4 = false;
   }
+
   @TaskModule.State("snackbarSucessCreateTask")
   public snackbarSucessCreateTask?: boolean;
   @TaskModule.State("snackbarSucessMessageCreateTask")
@@ -174,12 +183,12 @@ export default class Tasks extends Vue {
   @TaskModule.State("tasks")
   public task!: Task[];
   @TaskModule.Action
-  private fetchRecipes!: () => Promise<void>;
-  @TaskModule.Action
   private fetchTasks!: () => Promise<void>;
-
+  @AuthModule.Action
+  fetchUsers!: () => Promise<void>;
   async created() {
     await this.fetchMe();
+    await this.fetchUsers();
   }
 }
 </script>

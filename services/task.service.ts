@@ -5,6 +5,10 @@ import {
   Tasks,
   Task,
   DeleteTask,
+  UpdateShareTaskInput,
+  UpdateShareTask,
+  UpdateTaskInput,
+  UpdateTask,
 } from "~/gql/graphql";
 
 class taskService {
@@ -48,6 +52,28 @@ class taskService {
         },
       })
     ).data?.deleteTask;
+  }
+  async shareTasks(data: UpdateShareTaskInput) {
+    return (
+      await apolloClient.mutate({
+        mutation: UpdateShareTask,
+        fetchPolicy: "network-only",
+        variables: {
+          update: data,
+        },
+      })
+    ).data.shareTasks;
+  }
+  async updateTasks(data: UpdateTaskInput) {
+    return (
+      await apolloClient.mutate({
+        mutation: UpdateTask,
+        fetchPolicy: "network-only",
+        variables: {
+          update: data,
+        },
+      })
+    ).data.updateTasks;
   }
 }
 export default new taskService();

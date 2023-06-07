@@ -1,7 +1,15 @@
 import { ApolloError } from "@apollo/client";
 import Vue from "vue";
 import { Action, Module, Mutation, VuexModule } from "vuex-module-decorators";
-import { Auth, CreateUserInput, LoginInput, Task, User } from "~/gql/graphql";
+import {
+  Auth,
+  CreateUserInput,
+  LoginInput,
+  Task,
+  User,
+  Users,
+  UsersQuery,
+} from "~/gql/graphql";
 import Tasks from "~/pages/pagPrin/Tasks.vue";
 
 import AuthService from "~/services/auth.service";
@@ -9,7 +17,8 @@ import AuthService from "~/services/auth.service";
 @Module({ namespaced: true })
 class AuthModule extends VuexModule {
   public me?: User = undefined;
-
+  public users?: UsersQuery[] = undefined;
+  public loadingUsersStatus = false;
   public loadingLoginStatus = false;
   public loadingRegisterStatus = false;
   public errorMessage?: string = undefined;
@@ -47,6 +56,8 @@ class AuthModule extends VuexModule {
     this.context.commit("loadingUser", true);
     return await AuthService.currentUser()
       .then((user: User) => {
+        console.log(user);
+
         this.context.commit("userSuccess", user);
         this.context.commit("loadingUser", false);
       })
@@ -98,6 +109,33 @@ class AuthModule extends VuexModule {
         console.log(error);
         this.context.commit("loadingRegister", false);
       });
+  }
+  @Action
+  async fetchUsers() {
+    this.context.commit("loadingUsers", true);
+    return await AuthService.getUsers()
+      .then((users: UsersQuery[]) => {
+        console.log("hola");
+
+        console.log(users);
+        this.context.commit("setUsers", users);
+        this.context.commit("loadingUsers", false);
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+  }
+  @Mutation
+  public usersSuccess(): void {
+    this.usersSuccess != this.usersSuccess;
+  }
+  @Mutation
+  public loadingUsers(status: boolean) {
+    this.loadingUsersStatus = status;
+  }
+  @Mutation
+  setUsers(users: UsersQuery[]): void {
+    this.users = users;
   }
   @Mutation
   public setDeleteTask(data: { id: string }) {
