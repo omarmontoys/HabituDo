@@ -73,7 +73,7 @@ class taskService {
           update: data,
         },
       })
-    ).data.updateTasks;
+    ).data.updateTask;
   }
 }
 export default new taskService();

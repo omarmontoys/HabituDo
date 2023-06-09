@@ -125,6 +125,24 @@ class AuthModule extends VuexModule {
         console.log(error);
       });
   }
+
+  @Mutation
+  public updateTaskSuccess(updateTask: Task): void {
+    if (this.me) {
+      const index = this.me.tasks.findIndex((task) => {
+        return task.id === updateTask.id;
+      });
+      if (index !== -1) {
+        const copyUser = { ...this.me };
+        copyUser.tasks = [...copyUser.tasks];
+        copyUser.tasks[index] = updateTask;
+
+        this.me = copyUser;
+        console.log(this.me);
+      }
+    }
+  }
+
   @Mutation
   public usersSuccess(): void {
     this.usersSuccess != this.usersSuccess;
