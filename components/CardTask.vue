@@ -3,8 +3,22 @@
     <v-list-item>
       <v-list-item-content>
         <div class="d-flex justify-center">
-          <v-checkbox class="ml-3" v-model="checkbox"></v-checkbox>
-
+          <v-checkbox
+            class="ml-3"
+            @change="prueba"
+            :input-value="task.status"
+          ></v-checkbox>
+          <!--    <v-checkbox
+            class="ml-3"
+            @change="prueba"
+            v-if="!task.status"
+          ></v-checkbox> -->
+          <!--       <v-checkbox
+            class="ml-3"
+            :input-value="task.status"
+            disabled
+            v-else-if="task.status"
+          ></v-checkbox> -->
           <v-list-item-title v-if="task.title" class="text-h7">
             {{ task.title }}</v-list-item-title
           >
@@ -380,6 +394,14 @@ export default class CardTask extends Vue {
   }
   @AuthModule.State("users")
   private users!: User[];
+
+  public async prueba(event: Boolean) {
+    await this.updateTasks({
+      status: event ? true : false,
+
+      id: this.task.id,
+    });
+  }
 
   /* 
   async mounted() {

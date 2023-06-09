@@ -105,7 +105,9 @@ class TaskModule extends VuexModule {
     try {
       const updateTask = await TasksService.updateTasks(data);
       console.log(updateTask);
-      this.context.commit("updateTaskSuccess", updateTask);
+      this.context.commit("AuthModule/updateTaskSuccess", updateTask, {
+        root: true,
+      });
       this.context.commit("loadingUpdateTask", false);
       return updateTask;
     } catch (error) {
@@ -119,12 +121,7 @@ class TaskModule extends VuexModule {
   get isLoadingUpdateTask(): boolean {
     return this.loadingUpdateTaskStatus;
   }
-  @Mutation
-  public updateTaskSuccess(updateTask: User): void {
-    if (this.user) {
-      this.user = [updateTask, ...this.user];
-    }
-  }
+
   @Action({ rawError: true })
   async deleteTask(taskId: string): Promise<void> {
     this.context.commit("setLoadingDelete", true);

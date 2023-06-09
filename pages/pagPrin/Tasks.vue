@@ -5,19 +5,29 @@
         <div class="d-flex justify-center">
           <img src="../../static/login.png" />
         </div>
-        <v-row class="pt-7" v-if="me && me.tasks">
+        <h1 v-if="taskIncomplete.length > 0">Tareas Incompletadas</h1>
+        <v-row class="pt-7">
           <v-col
             cols="12"
             sm="6"
             md="4"
-            v-for="(task, index) in me.tasks"
-            :key="index"
+            v-for="(task, index) in taskIncomplete"
+            :key="task.id"
           >
             <CardTask :task="task" />
           </v-col>
         </v-row>
+        <h1 v-if="taskCompleted.length > 0">Tareas Completadas</h1>
         <v-row class="pt-7">
-          <CardTask />
+          <v-col
+            cols="12"
+            sm="6"
+            md="4"
+            v-for="(task, index) in taskCompleted"
+            :key="task.id"
+          >
+            <CardTask :task="task" />
+          </v-col>
         </v-row>
       </v-col>
     </v-row>
@@ -189,6 +199,26 @@ export default class Tasks extends Vue {
   async created() {
     await this.fetchMe();
     await this.fetchUsers();
+  }
+
+  get taskCompleted() {
+    if (this.me && this.me.tasks) {
+      return this.me.tasks.filter((t) => {
+        return t.status === true;
+      });
+    } else {
+      return [];
+    }
+  }
+
+  get taskIncomplete() {
+    if (this.me && this.me.tasks) {
+      return this.me.tasks.filter((t) => {
+        return t.status === false;
+      });
+    } else {
+      return [];
+    }
   }
 }
 </script>
