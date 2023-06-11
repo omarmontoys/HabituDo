@@ -292,34 +292,34 @@
 
 
           <!-- VER HABITO -->
-          <!-- <v-dialog v-model="dialogSee" max-width="500px">
+          <v-dialog v-model="dialogSee" max-width="500px">
             <v-card>
               <v-card-title class="text-h5"
-                >Detalles de habito: {{ habitSee }}</v-card-title
+                >Detalles de habito: {{ cloneHabit.title }}</v-card-title
               >
               <v-card-text>
                 <h4>Titulo: </h4>
-                <p>{{  }}</p>
-              </v-card-text>
+                <p>{{ cloneHabit.title }}</p>
+
               <v-divider></v-divider>
-              <v-card-text>
+
                 <h4>Descripcion: </h4>
-                <p>{{  }}</p>
-              </v-card-text>
+                <p>{{ cloneHabit.description }}</p>
+ 
               <v-divider></v-divider>
-              <v-card-text>
+
                 <h4>Prioridad: </h4>
-                <p>{{  }}</p>
-              </v-card-text>
+                <p>{{ cloneHabit.priority == '1' ? 'Baja' : cloneHabit.priority == '2' ? 'Media' : 'Alta' }}</p>
+
               <v-divider></v-divider>
-              <v-card-text>
+
                 <h4>Dias de realizacion: </h4>
-                <p>{{  }}</p>
-              </v-card-text>
+                <p>{{ getDayText(cloneHabit.days).join(', ') }}</p>
+
               <v-divider></v-divider>
-              <v-card-text>
+
                 <h4>Fecha limite: </h4>
-                <p>{{  }}</p>
+                <p>{{ formatDate(cloneHabit.finishDate) }}</p>
               </v-card-text>
 
               <v-card-actions>
@@ -328,7 +328,7 @@
                 <v-spacer></v-spacer>
               </v-card-actions>
             </v-card>
-          </v-dialog>  -->
+          </v-dialog> 
 
 
 
@@ -336,44 +336,7 @@
       </template>
       <!-- BOTONES DE EDITAR Y ELIMINAR -->
       <template v-slot:item.actions="{ item }">
-<!--         <v-icon small class="mr-2" @click="dialogSee = true"> mdi-eye </v-icon>
- -->
-        <v-dialog v-model="dialogSee" width="500">
-            <template v-slot:activator="{ on, attrs }">
-              <v-btn small rounded icon
-                class="ma-2"
-                v-bind="attrs"
-                v-on="on"
-                color="purple"
-                v-model="dialogSee"
-              >
-                <v-icon white> mdi-eye </v-icon>
-              </v-btn>
-            </template>
-
-            <v-card>
-              <v-card-title class="text-h5">
-                {{ item.title }}
-                <v-spacer></v-spacer>
-                <v-btn icon @click="dialogSee = false">
-                  <v-icon>mdi-alpha-x-circle-outline</v-icon>
-                </v-btn>
-              </v-card-title>
-              <br />
-
-              <v-card-text>
-                <h4>Descripcion</h4>
-                {{ item.description }}
-              </v-card-text>
-              <v-divider></v-divider>
-              <v-card-text>
-                <h4>Fecha limite</h4>
-                {{ formatDate(item.date) }}
-              </v-card-text>
-              <v-divider></v-divider>
-            </v-card>
-          </v-dialog>
-
+        <v-icon small class="mr-2" @click="seeItem(item)"> mdi-eye </v-icon>
         <v-icon small class="mr-2" @click="editItem(item)"> mdi-pencil </v-icon>
         <v-icon small @click="deleteItem(item.id)"> mdi-delete </v-icon>
       </template>
@@ -599,22 +562,40 @@ export default class Habits extends Vue {
     }
   }
 
-  public seeItem(item: Habit) {
+  public getDayText(dayValue: any) {
+    const diasSemana = [
+      {text: "Domingo", value: 0},
+      {text: "Lunes", value: 1},
+      {text: "Martes", value: 2},
+      {text: "Miércoles", value: 3},
+      {text: "Jueves", value: 4},
+      {text: "Viernes", value: 5},
+      {text: "Sábado", value: 6},
+    ];
+
+    if (Array.isArray(dayValue)) {
+      return dayValue.map(value => {
+        const day = diasSemana.find(dia => dia.value === value);
+        return day ? day.text : '';
+      });
+    } else {
+      const day = diasSemana.find(dia => dia.value === dayValue);
+      return day ? day.text : '';
+    }
+  }
+
+  public seeItem(item: Habit): void {
     console.log("lo que trae del boton", item);
-    const seeHabitId = item;
-    console.log("const", seeHabitId);
+    const fecha = new Date(item.finishDate);
+    const fechaTransformada = fecha.toISOString().slice(0, 10);
     this.dialogSee = true;
-    return {
-      habitSee: [
-        {
-          title: seeHabitId.title,
-          description: seeHabitId.description,
-          priority: seeHabitId.priority,
-          days: seeHabitId.days,
-          finishDate: seeHabitId.finishDate,
-        },
-      ]
-    };
+    
+    this.cloneHabit = {
+      ...item,
+      finishDate: fechaTransformada,
+    }
+
+    
   }
 
   public close(): void {
