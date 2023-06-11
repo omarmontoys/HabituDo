@@ -10,8 +10,12 @@
         <br />
         <br />
         <v-list-item-subtitle class="ml-3">
-          {{ formatDate(task.finishDate) }}</v-list-item-subtitle
+          Fecha Limite: {{ formatDate(task.finishDate) }}</v-list-item-subtitle
         >
+
+        <v-list-item-subtitle class="ml-3" v-if="userShared">
+          Autor: {{ userShared.names }} {{ userShared.lastNames }}
+        </v-list-item-subtitle>
       </v-list-item-content>
     </v-list-item>
 
@@ -53,6 +57,10 @@
               {{ formatDate(task.finishDate) }}
             </v-card-text>
             <v-divider></v-divider>
+            <v-card-text>
+              <h4>Autor</h4>
+              {{ userShared.names }} {{ userShared.lastNames }}
+            </v-card-text>
           </v-card>
         </v-dialog>
       </div>
@@ -77,6 +85,9 @@ const AuthModule = namespace("AuthModule");
 const TaskModule = namespace("TaskModule");
 @Component
 export default class CardShareTask extends Vue {
+  userSharedComputed(authorId: string) {
+    throw new Error("Method not implemented.");
+  }
   vText(vText: any) {
     throw new Error("Method not implemented.");
   }
@@ -100,7 +111,16 @@ export default class CardShareTask extends Vue {
     .toISOString()
     .substr(0, 10);
   public menu = false;
-
+  public userShared: User = {
+    email: "",
+    habits: [],
+    id: "",
+    lastNames: "",
+    names: "",
+    sharesUser: [],
+    tasks: [],
+    length: 0,
+  };
   formatDate(dateString: any) {
     const date = new Date(dateString);
     date.setDate(date.getDate() + 1); // Agregar un día a la fecha
@@ -115,12 +135,16 @@ export default class CardShareTask extends Vue {
   private fetchMe!: () => Promise<void>;
   @AuthModule.State("users")
   private users!: User[];
+  @AuthModule.Action
+  private consultUser!: (authorId: string) => Promise<User>;
+  /*   @AuthModule.State("userShared")
+  private userShared!: User[]; */
 
-  /* 
-    async mounted() {
-   
-  
-      console.log(this.users);
-    } */
+  async mounted() {
+    this.consultUser(this.task.authorId).then((data: User) => {
+      console.log("aaaa");
+      this.userShared = data;
+    });
+  }
 }
 </script>
