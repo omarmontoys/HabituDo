@@ -18,6 +18,7 @@ import AuthService from "~/services/auth.service";
 class AuthModule extends VuexModule {
   public me?: User = undefined;
   public users?: UsersQuery[] = undefined;
+  public userShared?: User[] = [];
   public loadingUsersStatus = false;
   public loadingLoginStatus = false;
   public loadingRegisterStatus = false;
@@ -126,6 +127,34 @@ class AuthModule extends VuexModule {
       });
   }
 
+  /*   @Action({ rawError: true })
+  async consultUser(authorId: string): Promise<User> {
+    this.context.commit("setLoadingConsult", true);
+    return await AuthService.consulttUser(authorId)
+      .then((data:User) => {
+        console.log("Llego");
+        console.log(data);
+        this.context.commit("setLoadingConsult", false);
+        this.context.commit("setSuccessConsult", data);
+        return data;
+      })
+      .catch((error) => {
+        this.context.commit("setLoadingConsult", false);
+        console.log(error);
+       
+      });
+  } */
+
+  @Action({ rawError: true })
+  async consultUser(authorId: string) {
+    try {
+      const user = AuthService.consulttUser(authorId);
+      return user;
+    } catch (error) {
+      this.context.commit("setLoadingConsult", false);
+    }
+  }
+
   @Mutation
   public updateTaskSuccess(updateTask: Task): void {
     if (this.me) {
@@ -140,6 +169,15 @@ class AuthModule extends VuexModule {
         this.me = copyUser;
         console.log(this.me);
       }
+    }
+  }
+
+  @Mutation
+  public setSuccessConsult(data: User) {
+    if (this.userShared) {
+      console.log();
+
+      this.userShared.push(data);
     }
   }
 

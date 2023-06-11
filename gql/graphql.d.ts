@@ -80,6 +80,15 @@ declare module '*/updateTask.graphql' {
 }
     
 
+declare module '*/user.graphql' {
+  import { DocumentNode } from 'graphql';
+  const defaultDocument: DocumentNode;
+  export const User: DocumentNode;
+
+  export default defaultDocument;
+}
+    
+
 declare module '*/users.graphql' {
   import { DocumentNode } from 'graphql';
   const defaultDocument: DocumentNode;
