@@ -1,7 +1,7 @@
 import { isApolloError } from "@apollo/client/errors";
 import Vue from "vue";
 import { Action, Module, Mutation, VuexModule } from "vuex-module-decorators";
-import { CreateHabitInput, Habit } from "~/gql/graphql";
+import { CreateHabitInput, Habit, UpdateHabitInput, User } from "~/gql/graphql";
 import HabitService from "~/services/habit.service";
 import AuthModule from "./auth.module";
 
@@ -15,6 +15,7 @@ class HabitModule extends VuexModule {
     public habits?: Habit[] = undefined;
     public habit?: Habit = undefined;
     public id?: Habit | undefined = undefined;
+    public loadingUpdateHabitStatus = false;
 
     @Action
     public changeStatusSnackbarCreateHabit() {
@@ -109,6 +110,29 @@ class HabitModule extends VuexModule {
         if (this.habits) {
             this.habits = [habits, ...this.habits];
         }
+    }
+    @Action
+    async updateHabit(data: UpdateHabitInput) {
+        this.context.commit("loadingUpdateHabit", true);
+        console.log(data);
+        try{
+            const updateHabit = await HabitService.updateHabit(data);
+            console.log(updateHabit);
+            this.context.commit("AuthModule/updateHabitSuccess", updateHabit,{
+                root: true,
+            });
+            this.context.commit("loadingUpdateHabit", false);
+            return updateHabit;
+        } catch(error) {
+            console.log(error);
+        }
+    }
+    @Mutation
+    public loadingUpdateHabit(): boolean{
+        return this.loadingUpdateHabitStatus;
+    }
+    get isLoadingUpdateHabit(): boolean {
+        return this.loadingUpdateHabitStatus;
     }
 }
 export default HabitModule;

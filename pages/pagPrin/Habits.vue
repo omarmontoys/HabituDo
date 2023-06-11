@@ -86,7 +86,7 @@
             </v-menu>
           </div>
 
-          <!-- AGREGAR Y EDITAR HABITO -->
+          <!-- AGREGAR HABITO -->
           <v-dialog v-model="dialog" max-width="500px">
             <template v-slot:activator="{ on, attrs }">
               <v-btn color="primary" dark class="mb-2" v-bind="attrs" v-on="on">
@@ -158,11 +158,11 @@
                             persistent-hint
                             v-bind="attrs"
                             v-on="on"
-                            v-model="habitInput.date"
+                            v-model="habitInput.finishDate"
                           ></v-text-field>
                         </template>
                         <v-date-picker
-                          v-model="habitInput.date"
+                          v-model="habitInput.finishDate"
                           no-title
                           scrollable
                           @input="menu = false"
@@ -175,7 +175,7 @@
 
               <v-card-actions>
                 <v-spacer></v-spacer>
-                <v-btn color="red" text @click="close"> Cancelar </v-btn>
+                <v-btn color="red" text @click="dialog = false"> Cancelar </v-btn>
                 <v-btn color="success" text @click="handleCreateHabit()"> Guardar </v-btn>
               </v-card-actions>
             </v-card>
@@ -199,11 +199,181 @@
               </v-card-actions>
             </v-card>
           </v-dialog> 
+
+          <!-- EDITAR HABITO -->
+          <v-dialog v-model="dialogEdit" max-width="500px">
+            <v-card>
+              <v-card-title class="text-h5 lighten-2">
+                <span class="text-h5"> Editar Habito</span>
+              </v-card-title>
+
+              <v-card-text>
+                <v-container>
+                  <v-row>
+                    <v-col cols="12" sm="12" md="12">
+                      <v-text-field outlined
+                        v-model="cloneHabit.title"
+                        label="Nombre del habito"
+                      ></v-text-field>
+                    </v-col>
+                  </v-row>
+
+                  <v-row>
+                    <v-col cols="12" sm="12" md="12">
+                      <v-text-field outlined
+                        v-model="cloneHabit.description"
+                        label="Descripcion del habito"
+                      ></v-text-field>
+                    </v-col>
+                  </v-row>
+
+                  <v-row>
+                    <v-col cols="12" sm="12" md="12">
+                      <v-select v-model="cloneHabit.priority" aria-required="true"
+                        :items="prioritySelect"
+                        label="Prioridad"
+                        outlined
+                      ></v-select>
+                    </v-col>
+                  </v-row>
+
+                  <v-row>
+                    <v-col cols="12" sm="12" md="12">
+                        <v-select
+                          v-model="cloneHabit.days"
+                          :items="diasSemana"
+                          chips
+                          label="Dias de realizacion"
+                          multiple
+                          outlined
+                        ></v-select>
+                    </v-col>
+                  </v-row>
+
+                  <v-row>
+                    <v-col cols="12" sm="12" md="12">
+                      <v-menu
+                        v-model="menu"
+                        :close-on-content-click="false"
+                        transition="scale-transition"
+                        offset-y
+                        max-width="290px"
+                        min-width="auto"
+                      >
+                        <template v-slot:activator="{ on, attrs }">
+                          <v-text-field outlined
+                            label="Fecha Limite"
+                            hint="YYYY/MM/DD format"
+                            persistent-hint
+                            v-bind="attrs"
+                            v-on="on"
+                            v-model="cloneHabit.finishDate"
+                          ></v-text-field>
+                        </template>
+                        <v-date-picker
+                          v-model="cloneHabit.finishDate"
+                          no-title
+                          scrollable
+                          @input="menu = false"
+                        ></v-date-picker>
+                      </v-menu>
+                    </v-col>
+                  </v-row>
+                </v-container>
+              </v-card-text>
+
+              <v-card-actions>
+                <v-spacer></v-spacer>
+                <v-btn color="red" text @click="dialogEdit = false"> Cancelar </v-btn>
+                <v-btn color="success" text @click="handleUpdateHabit()"> Guardar </v-btn>
+              </v-card-actions>
+            </v-card>
+          </v-dialog> 
+
+
+          <!-- VER HABITO -->
+          <!-- <v-dialog v-model="dialogSee" max-width="500px">
+            <v-card>
+              <v-card-title class="text-h5"
+                >Detalles de habito: {{ habitSee }}</v-card-title
+              >
+              <v-card-text>
+                <h4>Titulo: </h4>
+                <p>{{  }}</p>
+              </v-card-text>
+              <v-divider></v-divider>
+              <v-card-text>
+                <h4>Descripcion: </h4>
+                <p>{{  }}</p>
+              </v-card-text>
+              <v-divider></v-divider>
+              <v-card-text>
+                <h4>Prioridad: </h4>
+                <p>{{  }}</p>
+              </v-card-text>
+              <v-divider></v-divider>
+              <v-card-text>
+                <h4>Dias de realizacion: </h4>
+                <p>{{  }}</p>
+              </v-card-text>
+              <v-divider></v-divider>
+              <v-card-text>
+                <h4>Fecha limite: </h4>
+                <p>{{  }}</p>
+              </v-card-text>
+
+              <v-card-actions>
+                <v-spacer></v-spacer>
+                <v-btn color="red" text @click="dialogSee = false">Cerrar</v-btn>
+                <v-spacer></v-spacer>
+              </v-card-actions>
+            </v-card>
+          </v-dialog>  -->
+
+
+
         </v-toolbar>
       </template>
       <!-- BOTONES DE EDITAR Y ELIMINAR -->
       <template v-slot:item.actions="{ item }">
-        <v-icon small class="mr-2" @click="seeItem(item)"> mdi-eye </v-icon>
+<!--         <v-icon small class="mr-2" @click="dialogSee = true"> mdi-eye </v-icon>
+ -->
+        <v-dialog v-model="dialogSee" width="500">
+            <template v-slot:activator="{ on, attrs }">
+              <v-btn small rounded icon
+                class="ma-2"
+                v-bind="attrs"
+                v-on="on"
+                color="purple"
+                v-model="dialogSee"
+              >
+                <v-icon white> mdi-eye </v-icon>
+              </v-btn>
+            </template>
+
+            <v-card>
+              <v-card-title class="text-h5">
+                {{ item.title }}
+                <v-spacer></v-spacer>
+                <v-btn icon @click="dialogSee = false">
+                  <v-icon>mdi-alpha-x-circle-outline</v-icon>
+                </v-btn>
+              </v-card-title>
+              <br />
+
+              <v-card-text>
+                <h4>Descripcion</h4>
+                {{ item.description }}
+              </v-card-text>
+              <v-divider></v-divider>
+              <v-card-text>
+                <h4>Fecha limite</h4>
+                {{ formatDate(item.date) }}
+              </v-card-text>
+              <v-divider></v-divider>
+            </v-card>
+          </v-dialog>
+
         <v-icon small class="mr-2" @click="editItem(item)"> mdi-pencil </v-icon>
         <v-icon small @click="deleteItem(item.id)"> mdi-delete </v-icon>
       </template>
@@ -232,7 +402,7 @@
 <script lang="ts">
 import { Vue, Component, Prop } from "vue-property-decorator";
 import { namespace } from "vuex-class";
-import { CreateHabitInput, Habit, User } from "~/gql/graphql";
+import { CreateHabitInput, Habit, User, UpdateHabitInput } from "~/gql/graphql";
 
 const Auth = namespace("AuthModule");
 const HabitModule = namespace("HabitModule");
@@ -247,6 +417,8 @@ export default class Habits extends Vue {
   public dialog = false;
   public dialog4 = false;
   public dialogDelete = false;
+  public dialogEdit = false;
+  public dialogSee = false;
   public habitInput: CreateHabitInput = {
     title: "",
     description: "",
@@ -288,9 +460,9 @@ export default class Habits extends Vue {
     {text: "Viernes", value: 5},
     {text: "Sabado", value: 6},
   ];
-  /*  @Prop({
+  @Prop({
     required: false,
-  }) */
+  })
   public items: any[] = []; 
 
   public menu = false;
@@ -322,10 +494,10 @@ export default class Habits extends Vue {
     this.initialize();
   }
 
-  @HabitModule.State("snackbarSuccessCreateHabit")
+/*   @HabitModule.State("snackbarSuccessCreateHabit")
   public snackbarSuccessCreateHabit?: boolean;
   @HabitModule.State("snackbarSuccessMessageCreateHabit")
-  public snackbarSuccessMessageCreateHabit?: string;
+  public snackbarSuccessMessageCreateHabit?: string; */
   @HabitModule.Action
   private changeStatusSnackbarCreateHabit!: () => void;
   @Auth.State("me")
@@ -349,20 +521,100 @@ export default class Habits extends Vue {
     await this.fetchMe();
     this.initialize();
   }
+  @HabitModule.Action
+  private updateHabit!: (data: UpdateHabitInput) => Promise<void>;
+  async handleUpdateHabit(){
+    await this.updateHabit({
+      title: this.cloneHabit.title,
+      description: this.cloneHabit.description,
+      priority: this.cloneHabit.priority,
+      days: this.cloneHabit.days,
+      finishDate: this.cloneHabit.finishDate,
+      id: this.cloneHabit.id
+    })
+    this.dialogEdit = false;
+    this.initialize();
+  }
+
+  formatDate(dateString: any) {
+    const date = new Date(dateString);
+    date.setDate(date.getDate() + 1); // Agregar un día a la fecha
+
+    const year = date.getFullYear();
+    const month = String(date.getMonth() + 1).padStart(2, "0");
+    const day = String(date.getDate()).padStart(2, "0");
+
+    return `${year}-${month}-${day}`;
+  }
 
   initialize(): void {
     this.items = this.me.habits; 
     console.log(this.items);
   } ; 
 
+  public cloneHabit: Habit = {
+    id: "",
+    title: "",
+    description: "",
+    priority: 0,
+    days: [],
+    finishDate: "",
+    authorId: "",
+    createdAt: undefined,
+    dates: [],
+    done: [],
+    updatedAt: undefined
+  };
+  
+  public updateInput: UpdateHabitInput = {
+    id: "",
+    title: "",
+    description: "",
+    priority: 0,
+    days: [],
+    finishDate: new Date(Date.now()-new Date().getTimezoneOffset()*60000)
+      .toISOString()
+      .substr(0, 10),
+  };
+  
+
   public deleteItem(item: Habit): void {
     console.log("lo que trae del boton", item);
     const deleteHabitId = item
     console.log("const", deleteHabitId);
-     this.handleDeleteHabit(deleteHabitId);
-    /* this.habits = this.habit.indexOf(item);
-    this.editedItem = { ...item }; */
+    this.handleDeleteHabit(deleteHabitId);
     this.dialogDelete = true;
+  }
+
+  public editItem(item: Habit): void {
+    console.log("lo que trae del boton", item);
+    this.dialogEdit = true;
+    const fecha = new Date(item.finishDate);
+    const fechaTransformada = fecha.toISOString().slice(0, 10);
+    console.log("fecha", fechaTransformada);
+    this.cloneHabit = {
+      ...item,
+      finishDate: fechaTransformada,
+      
+    }
+  }
+
+  public seeItem(item: Habit) {
+    console.log("lo que trae del boton", item);
+    const seeHabitId = item;
+    console.log("const", seeHabitId);
+    this.dialogSee = true;
+    return {
+      habitSee: [
+        {
+          title: seeHabitId.title,
+          description: seeHabitId.description,
+          priority: seeHabitId.priority,
+          days: seeHabitId.days,
+          finishDate: seeHabitId.finishDate,
+        },
+      ]
+    };
   }
 
   public close(): void {

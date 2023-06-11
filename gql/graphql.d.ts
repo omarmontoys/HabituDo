@@ -97,3 +97,12 @@ declare module '*/tasks.graphql' {
   export default defaultDocument;
 }
     
+
+declare module '*/updateHabit.graphql' {
+  import { DocumentNode } from 'graphql';
+  const defaultDocument: DocumentNode;
+  export const UpdateHabit: DocumentNode;
+
+  export default defaultDocument;
+}
+    

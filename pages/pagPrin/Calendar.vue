@@ -77,21 +77,11 @@
                 >
                   <v-card color="grey lighten-4" min-width="350px" flat>
                     <v-toolbar :color="selectedEvent.color" dark>
-                      <v-btn icon>
-                        <v-icon>mdi-pencil</v-icon>
-                      </v-btn>
                       <v-toolbar-title
                       >{{ selectedEvent.name }}</v-toolbar-title>
-                      <v-spacer></v-spacer>
-                      <v-btn icon>
-                        <v-icon>mdi-heart</v-icon>
-                      </v-btn>
-                      <v-btn icon>
-                        <v-icon>mdi-dots-vertical</v-icon>
-                      </v-btn>
+                      <v-spacer></v-spacer>                      
                     </v-toolbar>
-                    <v-card-text>
-                      <span v-html="selectedEvent.details"></span>
+                    <v-card-text> {{selectedEvent.description}}
                     </v-card-text>
                     <v-card-actions>
                       <v-btn
@@ -151,7 +141,7 @@ export default class Calendar extends Vue {
     "cyan",
     "green",
     "orange",
-    "grey darken-1",
+    "pink",
   ];
 
   @Auth.State("me")
@@ -240,6 +230,7 @@ export default class Calendar extends Vue {
         end: second,
         color: this.colors[this.rnd(0, this.colors.length - 1)],
         timed: !allDay,
+        description: taskCount[i].description,
       });
     }
     this.events = events;

@@ -1,5 +1,5 @@
 mutation CreateHabit($create: CreateHabitInput!) {
-  createHabito(create: $create) {
+  createHabit(create: $create) {
     id
     title
     description
