@@ -1,5 +1,5 @@
 import { apolloClient } from "@/provider/apolloprovider";
-import { CreateHabitInput, CreateHabit, Habit, Habits, DeleteHabit, UpdateHabitInput, UpdateHabit } from "~/gql/graphql";
+import { CreateHabitInput, CreateHabit, Habit, Habits, DeleteHabit, UpdateHabitInput, UpdateHabit, UpdateDoneHabit } from "~/gql/graphql";
 
 class habitService {
   async createHabit(data: CreateHabitInput) {
@@ -53,6 +53,17 @@ class habitService {
         },
       })
     ).data.updateHabit;
+  }
+  async updateDoneHabit(data: UpdateHabitInput) {
+    return (
+      await apolloClient.mutate({
+        mutation: UpdateDoneHabit,
+        fetchPolicy: "network-only",
+        variables: {
+          update: data,
+        },
+      })
+    ).data.updateDoneHabit;
   }
 }
 export default new habitService();

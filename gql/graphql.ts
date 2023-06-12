@@ -75,6 +75,13 @@ export type TasksQueryVariables = Exact<{ [key: string]: never; }>;
 
 export type TasksQuery = { __typename?: 'Query', tasks: Array<{ __typename?: 'Task', id: string, title: string, description?: string | null, status: boolean, finishDate: any, authorId: string }> };
 
+export type UpdateDoneHabitMutationVariables = Exact<{
+  update: UpdateHabitInput;
+}>;
+
+
+export type UpdateDoneHabitMutation = { __typename?: 'Mutation', updateDoneHabit: { __typename?: 'Habit', id: string, done: Array<boolean>, doneIndex?: number | null } };
+
 export type UpdateHabitMutationVariables = Exact<{
   update: UpdateHabitInput;
 }>;
@@ -245,6 +252,15 @@ export const Tasks = gql`
     status
     finishDate
     authorId
+  }
+}
+    `;
+export const UpdateDoneHabit = gql`
+    mutation updateDoneHabit($update: UpdateHabitInput!) {
+  updateDoneHabit(update: $update) {
+    id
+    done
+    doneIndex
   }
 }
     `;

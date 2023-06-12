@@ -16,6 +16,7 @@ class HabitModule extends VuexModule {
     public habit?: Habit = undefined;
     public id?: Habit | undefined = undefined;
     public loadingUpdateHabitStatus = false;
+    public loadingUpdateDoneHabitStatus = false;
 
     @Action
     public changeStatusSnackbarCreateHabit() {
@@ -127,12 +128,38 @@ class HabitModule extends VuexModule {
             console.log(error);
         }
     }
+
+    @Action
+    async updateDoneHabit(data: UpdateHabitInput){
+        this.context.commit("loadingUpdateDoneHabit", true);
+        console.log("infoHabit", data);
+        try{
+            const updateDoneHabit = await HabitService.updateDoneHabit(data);
+            console.log(updateDoneHabit);
+            this.context.commit("AuthModule/updateDoneHabitSuccess", updateDoneHabit,{
+                root: true,
+            });
+            this.context.commit("loadingUpdateDoneHabit", false);
+            return updateDoneHabit;
+        } catch(error) {
+            console.log(error);
+        }
+    }
+
     @Mutation
     public loadingUpdateHabit(): boolean{
         return this.loadingUpdateHabitStatus;
     }
     get isLoadingUpdateHabit(): boolean {
         return this.loadingUpdateHabitStatus;
+    }
+
+    @Mutation
+    public loadingUpdateDoneHabit(): boolean{
+        return this.loadingUpdateDoneHabitStatus;
+    }
+    get isLoadingUpdateDoneHabit(): boolean {
+        return this.loadingUpdateDoneHabitStatus;
     }
 }
 export default HabitModule;

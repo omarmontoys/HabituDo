@@ -75,7 +75,30 @@
                   :activator="selectedElement"
                   offset-x
                 >
-                  <v-card color="grey lighten-4" min-width="350px" flat>
+
+                  <v-card color="grey lighten-4" min-width="350px" flat v-if="selectedEvent.type === 'habit'">
+                    <v-toolbar :color="selectedEvent.color" dark>
+                      <v-toolbar-title
+                      >{{ selectedEvent.name }}</v-toolbar-title>
+                      <v-spacer></v-spacer>      
+                      <v-btn :color="selectedEvent.color" elevation="0" @click="handleUpdateDoneHabit(selectedEvent)">
+                        <v-icon>mdi-check-bold</v-icon>
+                      </v-btn>                
+                    </v-toolbar>
+                    <v-card-text> {{selectedEvent.description}}
+                    </v-card-text>
+                    <v-card-actions>
+                      <v-btn
+                        text
+                        color="secondary"
+                        @click="selectedOpen = false"
+                      >
+                        Cancel
+                      </v-btn>
+                    </v-card-actions>
+                  </v-card>
+
+                  <v-card color="grey lighten-4" min-width="350px" flat v-else>
                     <v-toolbar :color="selectedEvent.color" dark>
                       <v-toolbar-title
                       >{{ selectedEvent.name }}</v-toolbar-title>
@@ -92,7 +115,8 @@
                         Cancel
                       </v-btn>
                     </v-card-actions>
-                  </v-card>
+                  </v-card> 
+
                 </v-menu>
               </v-sheet>
             </v-col>
@@ -106,7 +130,7 @@
 <script lang="ts">
 import { Component, Vue, Watch } from "vue-property-decorator";
 import { namespace } from "vuex-class";
-import { Task, Tasks, User, Habit, Habits } from "~/gql/graphql";
+import { Task, Tasks, User, Habit, Habits, UpdateHabitInput } from "~/gql/graphql";
 
 const Auth = namespace("AuthModule");
 const TaskModule = namespace("TaskModule");
@@ -159,6 +183,17 @@ export default class Calendar extends Vue {
   public habit!: Habit[];
   @HabitModule.Action
   private fetchHabits!: () => Promise<void>;
+  @HabitModule.Action
+  private updateDoneHabit!: (data: UpdateHabitInput) => Promise<void>;
+  async handleUpdateDoneHabit(){
+    console.log(this.selectedEvent);
+    await this.updateDoneHabit({
+      id: this.selectedEvent.id,
+      doneIndex: this.selectedEvent.indexDone,
+    });
+  }
+
+  
 
   async created() {
     await this.fetchMe();
@@ -191,6 +226,17 @@ export default class Calendar extends Vue {
     return `${year}-${month}-${day}`;
   }
 
+  formatDateHabits(dateString: any) {
+    const date = new Date(dateString);
+    date.setDate(date.getDate()); // Agregar un día a la fecha
+
+    const year = date.getFullYear();
+    const month = String(date.getMonth() + 1).padStart(2, "0");
+    const day = String(date.getDate()).padStart(2, "0");
+
+    return `${year}-${month}-${day}`;
+  }
+
   showEvent({ nativeEvent, event }: { nativeEvent: Event; event: any }) {
     // Se añade el tipo de dato para los parámetros
     const open = () => {
@@ -199,6 +245,7 @@ export default class Calendar extends Vue {
       requestAnimationFrame(() =>
         requestAnimationFrame(() => (this.selectedOpen = true))
       );
+      console.log(this.selectedEvent);
     };
     if (this.selectedOpen) {
       this.selectedOpen = false;
@@ -237,6 +284,7 @@ export default class Calendar extends Vue {
         color: this.colors[this.rnd(0, this.colors.length - 1)],
         timed: !allDay,
         description: taskCount[i].description,
+        type: "task",
       });
     }
     this.events = events;
@@ -248,8 +296,8 @@ export default class Calendar extends Vue {
       for(let j = 0; j < habitCount[i].dates.length; j++){
         const allDay = this.rnd(0, 3) === 0;
 
-        const first = this.formatDate(habitCount[i].dates[j]);
-        const second = this.formatDate(habitCount[i].dates[j]);
+        const first = this.formatDateHabits(habitCount[i].dates[j]);
+        const second = this.formatDateHabits(habitCount[i].dates[j]);
 
         events.push({
           name: habitCount[i].title,
@@ -258,6 +306,9 @@ export default class Calendar extends Vue {
           color: this.colors[i],
           timed: !allDay,
           description: habitCount[i].description,
+          type: "habit",
+          indexDone: j,
+          id: habitCount[i].id
         });
 
       }
