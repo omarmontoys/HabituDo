@@ -106,10 +106,11 @@
 <script lang="ts">
 import { Component, Vue, Watch } from "vue-property-decorator";
 import { namespace } from "vuex-class";
-import { Task, Tasks, User } from "~/gql/graphql";
+import { Task, Tasks, User, Habit, Habits } from "~/gql/graphql";
 
 const Auth = namespace("AuthModule");
 const TaskModule = namespace("TaskModule");
+const HabitModule = namespace("HabitModule");
 
 @Component({
   layout(context) {
@@ -154,9 +155,14 @@ export default class Calendar extends Vue {
   private fetchRecipes!: () => Promise<void>;
   @TaskModule.Action
   private fetchTasks!: () => Promise<void>;
+  @HabitModule.State("habits")
+  public habit!: Habit[];
+  @HabitModule.Action
+  private fetchHabits!: () => Promise<void>;
 
   async created() {
     await this.fetchMe();
+    console.log(this.me);
   }
 
   viewDay({ date }: { date: string }) {
@@ -175,15 +181,15 @@ export default class Calendar extends Vue {
   }
 
   formatDate(dateString: any) {
-  const date = new Date(dateString);
-  date.setDate(date.getDate() + 1); // Agregar un día a la fecha
+    const date = new Date(dateString);
+    date.setDate(date.getDate() + 1); // Agregar un día a la fecha
 
-  const year = date.getFullYear();
-  const month = String(date.getMonth() + 1).padStart(2, "0");
-  const day = String(date.getDate()).padStart(2, "0");
+    const year = date.getFullYear();
+    const month = String(date.getMonth() + 1).padStart(2, "0");
+    const day = String(date.getDate()).padStart(2, "0");
 
-  return `${year}-${month}-${day}`;
-}
+    return `${year}-${month}-${day}`;
+  }
 
   showEvent({ nativeEvent, event }: { nativeEvent: Event; event: any }) {
     // Se añade el tipo de dato para los parámetros
@@ -234,7 +240,33 @@ export default class Calendar extends Vue {
       });
     }
     this.events = events;
-  }
+
+
+    const habitCount: any[] = this.me.habits; //se obtienen las tareas
+
+    for (let i = 0; i < habitCount.length; i++) {
+      for(let j = 0; j < habitCount[i].dates.length; j++){
+        const allDay = this.rnd(0, 3) === 0;
+
+        const first = this.formatDate(habitCount[i].dates[j]);
+        const second = this.formatDate(habitCount[i].dates[j]);
+
+        events.push({
+          name: habitCount[i].title,
+          start: first,
+          end: second,
+          color: this.colors[i],
+          timed: !allDay,
+          description: habitCount[i].description,
+        });
+
+      }
+      this.events = events;
+    }
+/*     this.events = events;
+ */  }
+
+  /* ============================= */
 
   rnd(a: number, b: number) {
     return Math.floor((b - a + 1) * Math.random()) + a;
