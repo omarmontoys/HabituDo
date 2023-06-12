@@ -164,10 +164,18 @@ export default class Calendar extends Vue {
     "indigo",
     "deep-purple",
     "cyan",
-    "green",
-    "orange",
     "pink",
+    "violet",
+    "purple",
+    "brown"
   ];
+  public colorHabitPriority = [
+    "red",
+    "orange",
+    "yellow",
+    "green",
+  ];
+  public colorHabit = "";
 
   @Auth.State("me")
   private me!: User;
@@ -191,6 +199,7 @@ export default class Calendar extends Vue {
       id: this.selectedEvent.id,
       doneIndex: this.selectedEvent.indexDone,
     });
+    await this.fetchMe();
   }
 
   
@@ -299,11 +308,25 @@ export default class Calendar extends Vue {
         const first = this.formatDateHabits(habitCount[i].dates[j]);
         const second = this.formatDateHabits(habitCount[i].dates[j]);
 
+        if(habitCount[i].priority == 1 && habitCount[i].done[j] == false){
+          this.colorHabit = this.colorHabitPriority[2];
+        } else if(habitCount[i].priority == 2 && habitCount[i].done[j] == false){
+          this.colorHabit = this.colorHabitPriority[1];
+        } else if(habitCount[i].priority == 3 && habitCount[i].done[j] == false){
+          this.colorHabit = this.colorHabitPriority[0];
+        } else if (habitCount[i].done[j] == true){
+          this.colorHabit = this.colorHabitPriority[3];
+        }
+
+        /* if(habitCount[i].done[j] === true){
+          this.colorHabit = "green";
+        }  */
+
         events.push({
           name: habitCount[i].title,
           start: first,
           end: second,
-          color: this.colors[i],
+          color: this.colorHabit,
           timed: !allDay,
           description: habitCount[i].description,
           type: "habit",
