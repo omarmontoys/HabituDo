@@ -115,3 +115,12 @@ declare module '*/updateHabit.graphql' {
   export default defaultDocument;
 }
     
+
+declare module '*/updateUndoneHabit.graphql' {
+  import { DocumentNode } from 'graphql';
+  const defaultDocument: DocumentNode;
+  export const UpdateUndoneHabit: DocumentNode;
+
+  export default defaultDocument;
+}
+    

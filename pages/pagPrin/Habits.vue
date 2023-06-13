@@ -292,11 +292,13 @@
 
 
           <!-- VER HABITO -->
-          <v-dialog v-model="dialogSee" max-width="500px">
+          <v-dialog v-model="dialogSee" max-width="800px">
             <v-card>
+            
               <v-card-title class="text-h5"
                 >Detalles de habito: {{ cloneHabit.title }}</v-card-title
               >
+              <v-col cols="6">
               <v-card-text>
                 <h4>Titulo: </h4>
                 <p>{{ cloneHabit.title }}</p>
@@ -321,6 +323,10 @@
                 <h4>Fecha limite: </h4>
                 <p>{{ formatDate(cloneHabit.finishDate) }}</p>
               </v-card-text>
+              </v-col>
+              <v-col cols="6">
+<!--                 <pie-chart :data="data" :options="options" :width="400" :height="400"></pie-chart>
+ -->              </v-col>
 
               <v-card-actions>
                 <v-spacer></v-spacer>
@@ -366,6 +372,15 @@
 import { Vue, Component, Prop } from "vue-property-decorator";
 import { namespace } from "vuex-class";
 import { CreateHabitInput, Habit, User, UpdateHabitInput } from "~/gql/graphql";
+import { Pie } from "vue-chartjs";
+import {
+  Chart as ChartJS,
+  Title,
+  Tooltip,
+  Legend,
+  ArcElement,
+  CategoryScale
+} from 'chart.js'
 
 const Auth = namespace("AuthModule");
 const HabitModule = namespace("HabitModule");
@@ -594,9 +609,24 @@ export default class Habits extends Vue {
       ...item,
       finishDate: fechaTransformada,
     }
-
+/*     this.getChartData(item);
+ */
     
   }
+
+  /* public getChartData(habit: Habit) {
+    const completedCount = Object.values(progress).filter((value) => value === true).length;
+    const notCompletedCount = Object.values(progress).filter((value) => value === false).length;
+    return {
+      labels: ['Completado', 'No completado'],
+      datasets: [
+        {
+          backgroundColor: ['#42b983', '#e0e0e0'],
+          data: [completedCount, notCompletedCount],
+        },
+      ],
+    };
+  }; */
 
   public close(): void {
     this.dialog = false;

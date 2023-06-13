@@ -183,6 +183,22 @@ class AuthModule extends VuexModule {
       }
     }
   }
+
+  @Mutation
+  public updateUndoneHabitSuccess(updateHabit: Habit): void{
+    if (this.me) {
+      const index = this.me.habits.findIndex((habit) => {
+        return habit.id === updateHabit.id;
+      });
+      if (index !== -1){
+        const copyUser = { ...this.me };
+        copyUser.habits = [ ...copyUser.habits ];
+        copyUser.habits[index] = updateHabit;
+        this.me = copyUser;
+        console.log(this.me);
+      }
+    }
+  }
     
 
   @Mutation

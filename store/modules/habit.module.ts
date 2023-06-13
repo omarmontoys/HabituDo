@@ -17,6 +17,7 @@ class HabitModule extends VuexModule {
     public id?: Habit | undefined = undefined;
     public loadingUpdateHabitStatus = false;
     public loadingUpdateDoneHabitStatus = false;
+    public loadingUpdateUndoneHabitStatus = false;
 
     @Action
     public changeStatusSnackbarCreateHabit() {
@@ -141,6 +142,24 @@ class HabitModule extends VuexModule {
             });
             this.context.commit("loadingUpdateDoneHabit", false);
             return updateDoneHabit;
+
+        } catch(error) {
+            console.log(error);
+        }
+    }
+
+    @Action
+    async updateUndoneHabit(data: UpdateHabitInput){
+        this.context.commit("loadingUpdateUndoneHabit", true);
+        console.log("infoHabitundone", data);
+        try{
+            const updateUndoneHabit = await HabitService.updateUndoneHabit(data);
+            console.log("data 2", data);
+            this.context.commit("AuthModule/updateUndoneHabitSuccess", updateUndoneHabit,{
+                root: true,
+            });
+            this.context.commit("loadingUpdateUndoneHabit", false);
+            return updateUndoneHabit;
         } catch(error) {
             console.log(error);
         }
@@ -160,6 +179,14 @@ class HabitModule extends VuexModule {
     }
     get isLoadingUpdateDoneHabit(): boolean {
         return this.loadingUpdateDoneHabitStatus;
+    }
+
+    @Mutation
+    public loadingUpdateUndoneHabit(): boolean{
+        return this.loadingUpdateUndoneHabitStatus;
+    }
+    get isLoadingUpdateUndoneHabit(): boolean {
+        return this.loadingUpdateUndoneHabitStatus;
     }
 }
 export default HabitModule;

@@ -81,8 +81,14 @@
                       <v-toolbar-title
                       >{{ selectedEvent.name }}</v-toolbar-title>
                       <v-spacer></v-spacer>      
-                      <v-btn :color="selectedEvent.color" elevation="0" @click="handleUpdateDoneHabit(selectedEvent)">
+                      <v-btn v-if="selectedEvent.done === false"
+                      :color="selectedEvent.color" elevation="0" @click="handleUpdateUndoneHabit(selectedEvent)">
                         <v-icon>mdi-check-bold</v-icon>
+                      </v-btn>  
+
+                      <v-btn v-else-if="selectedEvent.done === true"
+                      :color="selectedEvent.color" elevation="0" @click="handleUpdateUndoneHabit(selectedEvent)">
+                        <v-icon>mdi-close</v-icon>
                       </v-btn>                
                     </v-toolbar>
                     <v-card-text> {{selectedEvent.description}}
@@ -196,6 +202,16 @@ export default class Calendar extends Vue {
   async handleUpdateDoneHabit(){
     console.log(this.selectedEvent);
     await this.updateDoneHabit({
+      id: this.selectedEvent.id,
+      doneIndex: this.selectedEvent.indexDone,
+    });
+    await this.fetchMe();
+  }
+  @HabitModule.Action
+  private updateUndoneHabit!: (data: UpdateHabitInput) => Promise<void>;
+  async handleUpdateUndoneHabit(){
+    console.log("lo que trae del selected event x", this.selectedEvent);
+    await this.updateUndoneHabit({
       id: this.selectedEvent.id,
       doneIndex: this.selectedEvent.indexDone,
     });
@@ -318,10 +334,6 @@ export default class Calendar extends Vue {
           this.colorHabit = this.colorHabitPriority[3];
         }
 
-        /* if(habitCount[i].done[j] === true){
-          this.colorHabit = "green";
-        }  */
-
         events.push({
           name: habitCount[i].title,
           start: first,
@@ -331,14 +343,14 @@ export default class Calendar extends Vue {
           description: habitCount[i].description,
           type: "habit",
           indexDone: j,
-          id: habitCount[i].id
+          id: habitCount[i].id,
+          done: habitCount[i].done[j],
         });
 
       }
       this.events = events;
     }
-/*     this.events = events;
- */  }
+  }
 
   /* ============================= */
 

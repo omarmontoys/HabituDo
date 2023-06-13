@@ -1,0 +1,7 @@
+mutation UpdateUndoneHabit($update: UpdateHabitInput!) {
+  updateDoneHabit(update: $update) {
+    id
+    done
+    doneIndex
+  }
+}
