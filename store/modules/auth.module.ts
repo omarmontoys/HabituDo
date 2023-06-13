@@ -4,7 +4,6 @@ import { Action, Module, Mutation, VuexModule } from "vuex-module-decorators";
 import {
   Auth,
   CreateUserInput,
-  Habit, 
   LoginInput,
   Task,
   User,
@@ -220,33 +219,6 @@ class AuthModule extends VuexModule {
       this.me = copyUser;
     }
   }
-
-  @Mutation
-  public setCreateHabit(data: Habit) {
-      if (this.me) {
-      const copyUser = { ...this.me };
-      copyUser.habits = [...copyUser.habits];
-      copyUser.habits.push(data);
-      this.me = copyUser;
-      }
-  }
-  @Mutation
-  public setDeleteHabit(data: { id: string }) {
-    console.log("LLego setDelete");
-    if (this.me) {
-      const index = this.me.habits.findIndex((habits) => {
-        return habits.id === data.id;
-      });
-      if (index !== -1) {
-        const copyUser = { ...this.me };
-        copyUser.habits = [...copyUser.habits];
-
-        Vue.delete(copyUser.habits, index);
-        this.me = copyUser;
-      }
-    }
-  }
-    
 
   @Mutation
   public userSuccess(user: User): void {

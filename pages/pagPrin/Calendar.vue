@@ -2,7 +2,7 @@
   <v-container v-if="me">
     <v-row>
       <v-col cols="12">
-        <div class="d-flex justify-center imagen">
+        <div class="d-flex justify-center">
           <img src="../../static/login.png" class="habitudo" />
         </div>
         <v-row class="pt-7">
@@ -82,7 +82,8 @@
                         <v-icon>mdi-pencil</v-icon>
                       </v-btn>
                       <v-toolbar-title
-                      >{{ selectedEvent.name }}</v-toolbar-title>
+                        v-html="selectedEvent.name"
+                      ></v-toolbar-title>
                       <v-spacer></v-spacer>
                       <v-btn icon>
                         <v-icon>mdi-heart</v-icon>
@@ -154,6 +155,25 @@ export default class Calendar extends Vue {
     "orange",
     "grey darken-1",
   ];
+  /* public names = [
+    "Reunion",
+    "Festivo",
+    "PTO",
+    "Viaje",
+    "Evento",
+    "Cumpleaños",
+    "Conferencia",
+    "Fiesta",
+  ]; */
+
+  /*  public cloneTask: Task = {
+    finishDate: "",
+    title: "",
+    authorId: "",
+    cratedAt: undefined,
+    id: "",
+    status: false,
+  }; */
 
   @Auth.State("me")
   private me!: User;
@@ -230,12 +250,35 @@ export default class Calendar extends Vue {
     console.log(this.me);
 
     const taskCount: any[] = this.me.tasks; //se obtienen las tareas
+    console.log(taskCount[1]);
+    //const eventCount = this.rnd(days, days + 20);
+
+    /* this.me.tasks.forEach(task => {
+      const allDay = this.rnd(0, 3) === 0;
+      const first = this.formatDate(this.task.finishDate);
+      const second = this.formatDate(this.task.finishDate);
+      
+      events.push({
+        name: this.task.title,
+        start: first,
+        end: second,
+        color: this.colors[this.rnd(0, this.colors.length - 1)],
+        timed: allDay,
+      });
+    }); */
 
     for (let i = 0; i < taskCount.length; i++) {
       const allDay = this.rnd(0, 3) === 0;
 
+      /* const firstTimestamp = this.rnd(min.getTime(), max.getTime());
+      const first = new Date(firstTimestamp - (firstTimestamp % 900000));
+      const secondTimestamp = this.rnd(2, allDay ? 288 : 8) * 900000;
+      const second = new Date(first.getTime() + secondTimestamp); */
+
       const first = this.formatDate(taskCount[i].finishDate);
       const second = this.formatDate(taskCount[i].finishDate);
+      console.log("first", first);
+      console.log("2", second);
 
       events.push({
         name: taskCount[i].title,
@@ -247,7 +290,6 @@ export default class Calendar extends Vue {
     }
     this.events = events;
   }
-
   rnd(a: number, b: number) {
     return Math.floor((b - a + 1) * Math.random()) + a;
   }
@@ -272,9 +314,5 @@ export default class Calendar extends Vue {
   border-radius: 80%;
   margin: 30%;
   display: block;
-}
-img{
-  max-height: 20%;
-  max-width: 20%;
 }
 </style>

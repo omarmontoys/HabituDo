@@ -1,13 +1,4 @@
 
-declare module '*/createHabit.graphql' {
-  import { DocumentNode } from 'graphql';
-  const defaultDocument: DocumentNode;
-  export const CreateHabit: DocumentNode;
-
-  export default defaultDocument;
-}
-    
-
 declare module '*/createTask.graphql' {
   import { DocumentNode } from 'graphql';
   const defaultDocument: DocumentNode;
@@ -26,37 +17,10 @@ declare module '*/currentUser.graphql' {
 }
     
 
-declare module '*/deleteHabit.graphql' {
-  import { DocumentNode } from 'graphql';
-  const defaultDocument: DocumentNode;
-  export const DeleteHabit: DocumentNode;
-
-  export default defaultDocument;
-}
-    
-
 declare module '*/deleteTask.graphql' {
   import { DocumentNode } from 'graphql';
   const defaultDocument: DocumentNode;
   export const DeleteTask: DocumentNode;
-
-  export default defaultDocument;
-}
-    
-
-declare module '*/habit.graphql' {
-  import { DocumentNode } from 'graphql';
-  const defaultDocument: DocumentNode;
-  export const Habit: DocumentNode;
-
-  export default defaultDocument;
-}
-    
-
-declare module '*/habits.graphql' {
-  import { DocumentNode } from 'graphql';
-  const defaultDocument: DocumentNode;
-  export const Habits: DocumentNode;
 
   export default defaultDocument;
 }

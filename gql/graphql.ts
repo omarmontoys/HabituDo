@@ -1,16 +1,6 @@
 import gql from "graphql-tag";
 export type Maybe<T> = T | null;
 export type InputMaybe<T> = Maybe<T>;
-export type Exact<T extends { [key: string]: unknown }> = { [K in keyof T]: T[K] };
-export type MakeOptional<T, K extends keyof T> = Omit<T, K> & { [SubKey in K]?: Maybe<T[SubKey]> };
-export type MakeMaybe<T, K extends keyof T> = Omit<T, K> & { [SubKey in K]: Maybe<T[SubKey]> };
-export type CreateHabitMutationVariables = Exact<{
-  create: CreateHabitInput;
-}>;
-
-
-export type CreateHabitMutation = { __typename?: 'Mutation', createHabit: { __typename?: 'Habit', id: string, title: string, description?: string | null, updatedAt: any, days: Array<number>, priority: number, finishDate: any, authorId: string } };
-
 export type Exact<T extends { [key: string]: unknown }> = {
   [K in keyof T]: T[K];
 };
@@ -37,19 +27,6 @@ export type CreateTaskMutation = {
   };
 };
 
-export type CreateTaskMutation = { __typename?: 'Mutation', createTask: { __typename?: 'Task', id: string, title: string, description?: string | null, status: boolean, finishDate: any, authorId: string } };
-
-export type CurrentUserQueryVariables = Exact<{ [key: string]: never; }>;
-
-
-export type CurrentUserQuery = { __typename?: 'Query', currentUser: { __typename?: 'User', id: string, names: string, lastNames: string, email: string, tasks: Array<{ __typename?: 'Task', id: string, title: string, description?: string | null, status: boolean, finishDate: any, authorId: string }>, habits: Array<{ __typename?: 'Habit', id: string, title: string, description?: string | null, createdAt: any, updatedAt: any, days: Array<number>, dates: Array<any>, priority: number, finishDate: any, authorId: string }> } };
-
-export type DeleteHabitMutationVariables = Exact<{
-  id: Scalars['ID'];
-}>;
-
-
-export type DeleteHabitMutation = { __typename?: 'Mutation', deleteHabit: { __typename?: 'Habit', id: string, title: string, description?: string | null, updatedAt: any, days: Array<number>, priority: number, finishDate: any, authorId: string } };
 export type CurrentUserQueryVariables = Exact<{ [key: string]: never }>;
 
 export type CurrentUserQuery = {
@@ -103,18 +80,6 @@ export type DeleteTaskMutation = {
     authorId: string;
   };
 };
-
-export type HabitQueryVariables = Exact<{
-  id: Scalars['ID'];
-}>;
-
-
-export type HabitQuery = { __typename?: 'Query', habit: { __typename?: 'Habit', id: string, title: string, description?: string | null, createdAt: any, updatedAt: any, days: Array<number>, dates: Array<any>, priority: number, finishDate: any, authorId: string } };
-
-export type HabitsQueryVariables = Exact<{ [key: string]: never; }>;
-
-
-export type HabitsQuery = { __typename?: 'Query', habits: Array<{ __typename?: 'Habit', id: string, title: string, description?: string | null, createdAt: any, updatedAt: any, days: Array<number>, dates: Array<any>, priority: number, finishDate: any, authorId: string }> };
 
 export type LoginMutationVariables = Exact<{
   input: LoginInput;
@@ -248,20 +213,6 @@ export type UsersQuery = {
   }>;
 };
 
-export const CreateHabit = gql`
-    mutation CreateHabit($create: CreateHabitInput!) {
-  createHabit(create: $create) {
-    id
-    title
-    description
-    updatedAt
-    days
-    priority
-    finishDate
-    authorId
-  }
-}
-    `;
 export const CreateTask = gql`
   mutation CreateTask($create: CreateTaskInput!) {
     createTask(create: $create) {
@@ -272,32 +223,6 @@ export const CreateTask = gql`
       finishDate
       authorId
     }
-    habits {
-      id
-      title
-      description
-      createdAt
-      updatedAt
-      days
-      dates
-      priority
-      finishDate
-      authorId
-    }
-  }
-}
-    `;
-export const DeleteHabit = gql`
-    mutation DeleteHabit($id: ID!) {
-  deleteHabit(id: $id) {
-    id
-    title
-    description
-    updatedAt
-    days
-    priority
-    finishDate
-    authorId
   }
 `;
 export const CurrentUser = gql`
@@ -342,41 +267,7 @@ export const DeleteTask = gql`
       authorId
     }
   }
-}
-    `;
-export const Habit = gql`
-    query Habit($id: ID!) {
-  habit(id: $id) {
-    id
-    title
-    description
-    createdAt
-    updatedAt
-    days
-    dates
-    priority
-    finishDate
-    authorId
-  }
-}
-    `;
-export const Habits = gql`
-    query Habits {
-  habits {
-    id
-    title
-    description
-    createdAt
-    updatedAt
-    days
-    dates
-    priority
-    finishDate
-    authorId
-  }
-}
-    `;
-
+`;
 export const Login = gql`
   mutation Login($input: LoginInput!) {
     login(input: $input) {
@@ -508,20 +399,6 @@ export type CreateHabitInput = {
   title: Scalars["String"];
 };
 
-/** Entradas para crear un Habito */
-export type CreateHabitInput = {
-  /** Dias de la Semana en que se debe realizar el Habito */
-  days: Array<Scalars['Int']>;
-  /** Descripcion del Habito */
-  description?: InputMaybe<Scalars['String']>;
-  /** Fecha de Termino del Habito */
-  finishDate: Scalars['DateTime'];
-  /** Prioridad del Habito */
-  priority: Scalars['Int'];
-  /** Titulo del Habito */
-  title: Scalars['String'];
-};
-
 /** Entradas para el registro de una tarea. */
 export type CreateTaskInput = {
   /** Descripción de la tarea. */
@@ -575,35 +452,6 @@ export type Habit = {
   updatedAt: Scalars["DateTime"];
 };
 
-/** Campos de un Habito */
-export type Habit = {
-  __typename?: 'Habit';
-  /** Id del Autor del Habito */
-  authorId: Scalars['ID'];
-  /** Fecha de Creacion del Habito */
-  createdAt: Scalars['DateTime'];
-  /** Fechas en que se debe realizar el Habito */
-  dates: Array<Scalars['DateTime']>;
-  /** Dias de la Semana en que se debe realizar el Habito */
-  days: Array<Scalars['Int']>;
-  /** Descripcion del Habito */
-  description?: Maybe<Scalars['String']>;
-  /** Hábito hecho o no */
-  done: Array<Scalars['Boolean']>;
-  /** Index del día a marcar como hecho. */
-  doneIndex?: Maybe<Scalars['Int']>;
-  /** Fecha de Termino del Habito */
-  finishDate: Scalars['DateTime'];
-  /** Id del Habito */
-  id: Scalars['ID'];
-  /** Prioridad del Habito */
-  priority: Scalars['Int'];
-  /** Titulo del Habito */
-  title: Scalars['String'];
-  /** Fecha de Actualizacion del Habito */
-  updatedAt: Scalars['DateTime'];
-};
-
 /** Entradas para la autenticación de un usuario. */
 export type LoginInput = {
   /** Correo electrónico del usuario. */
@@ -635,8 +483,6 @@ export type Mutation = {
   updateShareTask: ShareTask;
   /** Mutación para actualizar una tarea. */
   updateTask: Task;
-  /** Mutación para desmarcar done[] de un hábito. */
-  updateUndoneHabit: Habit;
   /** Mutación para actualizar un usuario */
   updateUser: User;
 };
@@ -645,11 +491,6 @@ export type MutationCreateHabitArgs = {
   create: CreateHabitInput;
 };
 
-export type MutationCreateHabitArgs = {
-  create: CreateHabitInput;
-};
-
-
 export type MutationCreateTaskArgs = {
   create: CreateTaskInput;
 };
@@ -657,11 +498,6 @@ export type MutationCreateTaskArgs = {
 export type MutationDeleteHabitArgs = {
   id: Scalars["ID"];
 };
-
-export type MutationDeleteHabitArgs = {
-  id: Scalars['ID'];
-};
-
 
 export type MutationDeleteTaskArgs = {
   delete: Scalars["ID"];
@@ -695,31 +531,6 @@ export type MutationUpdateTaskArgs = {
   update: UpdateTaskInput;
 };
 
-export type MutationUpdateDoneHabitArgs = {
-  update: UpdateHabitInput;
-};
-
-
-export type MutationUpdateHabitArgs = {
-  update: UpdateHabitInput;
-};
-
-
-export type MutationUpdateShareTaskArgs = {
-  update: UpdateShareTaskInput;
-};
-
-
-export type MutationUpdateTaskArgs = {
-  update: UpdateTaskInput;
-};
-
-
-export type MutationUpdateUndoneHabitArgs = {
-  update: UpdateHabitInput;
-};
-
-
 export type MutationUpdateUserArgs = {
   update: UpdateUserInput;
 };
@@ -744,16 +555,6 @@ export type Query = {
   usersArentOnList: Array<User>;
   /** Query para obtener usuarios de una lista de ids. */
   usersFromList: Array<User>;
-};
-
-
-export type QueryHabitArgs = {
-  id: Scalars['ID'];
-};
-
-
-export type QueryShareArgs = {
-  id: Scalars['ID'];
 };
 
 export type QueryHabitArgs = {
@@ -791,29 +592,6 @@ export type ShareTask = {
   taskId: Scalars["ID"];
   /** Id del usuario. */
   usersId: Array<Scalars["Int"]>;
-};
-
-
-export type QueryUsersArentOnListArgs = {
-  ids: Array<Scalars['ID']>;
-};
-
-
-export type QueryUsersFromListArgs = {
-  ids: Array<Scalars['ID']>;
-};
-
-/** Campos de compartir tarea. */
-export type ShareTask = {
-  __typename?: 'ShareTask';
-  /** Id de compartir usuario y tarea. */
-  id: Scalars['ID'];
-  /** FieldResolver para obtener la tarea de una compartida. */
-  sharesTask: Task;
-  /** Id de la tarea. */
-  taskId: Scalars['ID'];
-  /** Id del usuario. */
-  usersId: Array<Scalars['Int']>;
 };
 
 /** Campos de una tarea. */
@@ -875,46 +653,6 @@ export type UpdateTaskInput = {
   title?: InputMaybe<Scalars["String"]>;
 };
 
-/** Entradas para actualizar un hábito. */
-export type UpdateHabitInput = {
-  /** Días de la semana que se debe realizar el hábito. */
-  days?: InputMaybe<Array<Scalars['Int']>>;
-  /** Descripción del hábito */
-  description?: InputMaybe<Scalars['String']>;
-  /** Index del día a marcar como hecho. */
-  doneIndex?: InputMaybe<Scalars['Int']>;
-  /** Fecha de termino del hábito. */
-  finishDate?: InputMaybe<Scalars['DateTime']>;
-  /** Id del hábito. */
-  id: Scalars['ID'];
-  /** Prioridad del hábito. */
-  priority?: InputMaybe<Scalars['Int']>;
-  /** Título del hábito */
-  title?: InputMaybe<Scalars['String']>;
-};
-
-/** Entradas para actualizar los usuarios a los que se comparte la tarea. */
-export type UpdateShareTaskInput = {
-  /** Id la tarea. */
-  idTask: Scalars['ID'];
-  /** Id del usuario. */
-  usersId?: InputMaybe<Array<Scalars['Int']>>;
-};
-
-/** Entradas para actualizar una tarea. */
-export type UpdateTaskInput = {
-  /** Descripción de la tarea. */
-  description?: InputMaybe<Scalars['String']>;
-  /** Fecha limite de la tarea. */
-  finishDate?: InputMaybe<Scalars['DateTime']>;
-  /** Id de la tarea. */
-  id: Scalars['ID'];
-  /** Estado de la tarea. */
-  status?: InputMaybe<Scalars['Boolean']>;
-  /** Titulo de la tarea. */
-  title?: InputMaybe<Scalars['String']>;
-};
-
 /** Entradas para el registro de un usuario. */
 export type UpdateUserInput = {
   /** Correo electrónico del usuario. */
@@ -932,7 +670,7 @@ export type User = {
   length: number;
   __typename?: "User";
   /** Email del usuario. */
-  email: Scalars['String'];
+  email: Scalars["String"];
   /** FieldResolver para obtener los habitos de un usuario. */
   habits: Array<Habit>;
   /** Id del usuario. */
