@@ -5,6 +5,8 @@ import {
   Login,
   LoginInput,
   RegisterUser,
+  User,
+  Users,
 } from "~/gql/graphql";
 
 class AuthService {
@@ -35,6 +37,25 @@ class AuthService {
         fetchPolicy: "network-only",
       })
     ).data.currentUser;
+  }
+  async getUsers() {
+    return (
+      await apolloClient.query({
+        query: Users,
+        fetchPolicy: "network-only",
+      })
+    ).data.users;
+  }
+  async consulttUser(data: string) {
+    return (
+      await apolloClient.query({
+        query: User,
+        fetchPolicy: "network-only",
+        variables: {
+          id: data,
+        },
+      })
+    ).data.user;
   }
 }
 export default new AuthService();

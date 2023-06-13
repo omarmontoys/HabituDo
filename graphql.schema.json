@@ -942,6 +942,7 @@
                   "ofType": {
                     "kind": "INPUT_OBJECT",
                     "name": "UpdateTaskInput",
+                    "name": "UpdateShareTaskInput",
                     "ofType": null
                   }
                 },
@@ -955,7 +956,7 @@
               "name": null,
               "ofType": {
                 "kind": "OBJECT",
-                "name": "Task",
+                "name": "ShareTask",
                 "ofType": null
               }
             },
@@ -965,6 +966,8 @@
           {
             "name": "updateUndoneHabit",
             "description": "Mutación para desmarcar done[] de un hábito.",
+            "name": "updateTask",
+            "description": "Mutación para actualizar una tarea.",
             "args": [
               {
                 "name": "update",
@@ -975,6 +978,7 @@
                   "ofType": {
                     "kind": "INPUT_OBJECT",
                     "name": "UpdateHabitInput",
+                    "name": "UpdateTaskInput",
                     "ofType": null
                   }
                 },

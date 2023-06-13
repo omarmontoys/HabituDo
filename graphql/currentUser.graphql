@@ -23,6 +23,18 @@ query CurrentUser {
       priority
       finishDate
       authorId
+    sharesUser {
+      id
+      usersId
+      taskId
+      sharesTask {
+        id
+        title
+        description
+        status
+        finishDate
+        authorId
+      }
     }
   }
 }

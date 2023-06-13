@@ -1,5 +1,5 @@
 <template>
-  <v-container>
+  <v-container v-if="me">
     <v-row>
       <v-col cols="12">
         <div class="d-flex justify-center imagen">
@@ -35,7 +35,8 @@
                         color="grey darken-2"
                         v-bind="attrs"
                         v-on="on"
-                      > <span>{{ typeToLabel[type] }}</span>
+                      >
+                        <span>{{ typeToLabel[type] }}</span>
                         <v-icon right> mdi-menu-down </v-icon>
                       </v-btn>
                     </template>
@@ -185,15 +186,15 @@ export default class Calendar extends Vue {
   }
 
   formatDate(dateString: any) {
-  const date = new Date(dateString);
-  date.setDate(date.getDate() + 1); // Agregar un día a la fecha
+    const date = new Date(dateString);
+    date.setDate(date.getDate() + 1); // Agregar un día a la fecha
 
-  const year = date.getFullYear();
-  const month = String(date.getMonth() + 1).padStart(2, "0");
-  const day = String(date.getDate()).padStart(2, "0");
+    const year = date.getFullYear();
+    const month = String(date.getMonth() + 1).padStart(2, "0");
+    const day = String(date.getDate()).padStart(2, "0");
 
-  return `${year}-${month}-${day}`;
-}
+    return `${year}-${month}-${day}`;
+  }
 
   showEvent({ nativeEvent, event }: { nativeEvent: Event; event: any }) {
     // Se añade el tipo de dato para los parámetros
@@ -225,6 +226,8 @@ export default class Calendar extends Vue {
     const min = new Date(`${start.date}T00:00:00`);
     const max = new Date(`${end.date}T23:59:59`);
     const days = (max.getTime() - min.getTime()) / 86400000;
+    console.log("hola");
+    console.log(this.me);
 
     const taskCount: any[] = this.me.tasks; //se obtienen las tareas
 

@@ -13,47 +13,39 @@
     <v-data-table :headers="headers" :items="items" class="elevation-1" disable-pagination hide-default-footer>
       <v-checkbox hide-details class="shrink mr-2 mt-0"></v-checkbox>
 
-      <template v-slot:item.Lunes="{ item }" >
-        <v-simple-checkbox
-          v-model="item.Lunes"
-        ></v-simple-checkbox>
+     /* <template v-slot:item.Lunes="{ item }">
+        <v-simple-checkbox v-model="item.Lunes"></v-simple-checkbox>
       </template>
 
-      <template v-slot:item.Martes="{ item }" >
-        <v-simple-checkbox
-          v-model="item.Martes"
-        ></v-simple-checkbox>
+      <template v-slot:item.Martes="{ item }">
+        <v-simple-checkbox v-model="item.Martes"></v-simple-checkbox>
       </template>
 
-      <template v-slot:item.Miercoles="{ item }" >
-        <v-simple-checkbox
-          v-model="item.Miercoles"
-        ></v-simple-checkbox>
+      <template v-slot:item.Miercoles="{ item }">
+        <v-simple-checkbox v-model="item.Miercoles"></v-simple-checkbox>
       </template>
 
-      <template v-slot:item.Jueves="{ item }" >
-        <v-simple-checkbox
-          v-model="item.Jueves"
-        ></v-simple-checkbox>
+      <template v-slot:item.Jueves="{ item }">
+        <v-simple-checkbox v-model="item.Jueves"></v-simple-checkbox>
       </template>
 
-      <template v-slot:item.Viernes="{ item }" >
-        <v-simple-checkbox
-          v-model="item.Viernes"
-        ></v-simple-checkbox>
+      <template v-slot:item.Viernes="{ item }">
+        <v-simple-checkbox v-model="item.Viernes"></v-simple-checkbox>
       </template>
 
-      <template v-slot:item.Sabado="{ item }" >
-        <v-simple-checkbox
-          v-model="item.Sabado"
-        ></v-simple-checkbox>
+      <template v-slot:item.Sabado="{ item }">
+        <v-simple-checkbox v-model="item.Sabado"></v-simple-checkbox>
       </template>
 
       <template v-slot:item.Domingo="{ item }" >
         <v-simple-checkbox
           v-model="item.Domingo"
         ></v-simple-checkbox>
-      </template> 
+      </template> */
+
+      <template v-slot:item.Domingo="{ item }">
+        <v-simple-checkbox v-model="item.Domingo"></v-simple-checkbox>
+      </template>
 
       <template v-slot:top>
         <v-toolbar flat>
@@ -152,7 +144,8 @@
                         min-width="auto"
                       >
                         <template v-slot:activator="{ on, attrs }">
-                          <v-text-field outlined
+                          <v-text-field
+                            outlined
                             label="Fecha Limite"
                             hint="YYYY/MM/DD format"
                             persistent-hint

@@ -97,3 +97,39 @@ declare module '*/tasks.graphql' {
   export default defaultDocument;
 }
     
+
+declare module '*/updateShareTask.graphql' {
+  import { DocumentNode } from 'graphql';
+  const defaultDocument: DocumentNode;
+  export const UpdateShareTask: DocumentNode;
+
+  export default defaultDocument;
+}
+    
+
+declare module '*/updateTask.graphql' {
+  import { DocumentNode } from 'graphql';
+  const defaultDocument: DocumentNode;
+  export const UpdateTask: DocumentNode;
+
+  export default defaultDocument;
+}
+    
+
+declare module '*/user.graphql' {
+  import { DocumentNode } from 'graphql';
+  const defaultDocument: DocumentNode;
+  export const User: DocumentNode;
+
+  export default defaultDocument;
+}
+    
+
+declare module '*/users.graphql' {
+  import { DocumentNode } from 'graphql';
+  const defaultDocument: DocumentNode;
+  export const Users: DocumentNode;
+
+  export default defaultDocument;
+}
+    
