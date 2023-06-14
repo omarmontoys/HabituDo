@@ -1,5 +1,5 @@
 <template>
-  <v-container>
+  <v-container v-if="me">
     <v-row>
       <v-col cols="12">
         <div class="d-flex justify-center imagen">
@@ -35,7 +35,8 @@
                         color="grey darken-2"
                         v-bind="attrs"
                         v-on="on"
-                      > <span>{{ typeToLabel[type] }}</span>
+                      >
+                        <span>{{ typeToLabel[type] }}</span>
                         <v-icon right> mdi-menu-down </v-icon>
                       </v-btn>
                     </template>
@@ -181,7 +182,10 @@ export default class Calendar extends Vue {
     "yellow",
     "green",
   ];
+
   public colorHabit = "";
+
+
 
   @Auth.State("me")
   private me!: User;
@@ -262,6 +266,7 @@ export default class Calendar extends Vue {
     return `${year}-${month}-${day}`;
   }
 
+
   showEvent({ nativeEvent, event }: { nativeEvent: Event; event: any }) {
     // Se añade el tipo de dato para los parámetros
     const open = () => {
@@ -293,14 +298,22 @@ export default class Calendar extends Vue {
     const min = new Date(`${start.date}T00:00:00`);
     const max = new Date(`${end.date}T23:59:59`);
     const days = (max.getTime() - min.getTime()) / 86400000;
+    console.log("hola");
+    console.log(this.me);
 
     const taskCount: any[] = this.me.tasks; //se obtienen las tareas
+
+    console.log(taskCount[1]);
 
     for (let i = 0; i < taskCount.length; i++) {
       const allDay = this.rnd(0, 3) === 0;
 
       const first = this.formatDate(taskCount[i].finishDate);
       const second = this.formatDate(taskCount[i].finishDate);
+
+      console.log("first", first);
+      console.log("2", second);
+
 
       events.push({
         name: taskCount[i].title,
@@ -313,7 +326,6 @@ export default class Calendar extends Vue {
       });
     }
     this.events = events;
-
 
     const habitCount: any[] = this.me.habits; //se obtienen las tareas
 
@@ -350,6 +362,7 @@ export default class Calendar extends Vue {
       }
       this.events = events;
     }
+
   }
 
   /* ============================= */

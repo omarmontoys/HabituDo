@@ -10,6 +10,7 @@
 
     <!-- TABLA HABITOS -->
 
+
     <v-data-table
       :headers="headers"
       :items="items"
@@ -17,36 +18,7 @@
       disable-pagination
       hide-default-footer
     >
-      <!-- <v-checkbox hide-details class="shrink mr-2 mt-0"></v-checkbox>
-
-      <template v-slot:item.Lunes="{ item }">
-        <v-simple-checkbox v-model="item.Lunes"></v-simple-checkbox>
-      </template>
-
-      <template v-slot:item.Martes="{ item }">
-        <v-simple-checkbox v-model="item.Martes"></v-simple-checkbox>
-      </template>
-
-      <template v-slot:item.Miercoles="{ item }">
-        <v-simple-checkbox v-model="item.Miercoles"></v-simple-checkbox>
-      </template>
-
-      <template v-slot:item.Jueves="{ item }">
-        <v-simple-checkbox v-model="item.Jueves"></v-simple-checkbox>
-      </template>
-
-      <template v-slot:item.Viernes="{ item }">
-        <v-simple-checkbox v-model="item.Viernes"></v-simple-checkbox>
-      </template>
-
-      <template v-slot:item.Sabado="{ item }">
-        <v-simple-checkbox v-model="item.Sabado"></v-simple-checkbox>
-      </template>
-
-      <template v-slot:item.Domingo="{ item }">
-        <v-simple-checkbox v-model="item.Domingo"></v-simple-checkbox>
-      </template> -->
-
+      
       <template v-slot:top>
         <v-toolbar flat>
           <v-toolbar-title>Mi seguidor de Habitos</v-toolbar-title>
@@ -97,6 +69,7 @@
                       <v-text-field
                         outlined
                         v-model="habitInput.title"
+
                         label="Nombre del habito"
                       ></v-text-field>
                     </v-col>
@@ -107,6 +80,7 @@
                       <v-text-field
                         outlined
                         v-model="habitInput.description"
+
                         label="Descripcion del habito"
                       ></v-text-field>
                     </v-col>
@@ -404,6 +378,7 @@ export default class Habits extends Vue {
       .substr(0, 10),
   };
 
+
   public headers = [
     {
       text: "HABITO",
@@ -414,10 +389,12 @@ export default class Habits extends Vue {
     { text: "Actions", value: "actions", sortable: false },
   ];
   public prioritySelect = [
+
     { text: "Alta", value: 3 },
     { text: "Media", value: 2 },
     { text: "Baja", value: 1 },
   ];
+
 
   public diasSemana = [
     { text: "Domingo", value: 0 },

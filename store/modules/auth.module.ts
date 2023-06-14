@@ -1,7 +1,17 @@
 import { ApolloError } from "@apollo/client";
 import Vue from "vue";
 import { Action, Module, Mutation, VuexModule } from "vuex-module-decorators";
-import { Auth, CreateUserInput, Habit, LoginInput, Task, User } from "~/gql/graphql";
+
+import {
+  Auth,
+  Habit,
+  CreateUserInput,
+  LoginInput,
+  Task,
+  User,
+  Users,
+  UsersQuery,
+} from "~/gql/graphql";
 import Tasks from "~/pages/pagPrin/Tasks.vue";
 
 import AuthService from "~/services/auth.service";
@@ -9,7 +19,9 @@ import AuthService from "~/services/auth.service";
 @Module({ namespaced: true })
 class AuthModule extends VuexModule {
   public me?: User = undefined;
-
+  public users?: UsersQuery[] = undefined;
+  public userShared?: User[] = [];
+  public loadingUsersStatus = false;
   public loadingLoginStatus = false;
   public loadingRegisterStatus = false;
   public errorMessage?: string = undefined;
@@ -47,6 +59,8 @@ class AuthModule extends VuexModule {
     this.context.commit("loadingUser", true);
     return await AuthService.currentUser()
       .then((user: User) => {
+        console.log(user);
+
         this.context.commit("userSuccess", user);
         this.context.commit("loadingUser", false);
       })
@@ -98,6 +112,88 @@ class AuthModule extends VuexModule {
         console.log(error);
         this.context.commit("loadingRegister", false);
       });
+  }
+  @Action
+  async fetchUsers() {
+    this.context.commit("loadingUsers", true);
+    return await AuthService.getUsers()
+      .then((users: UsersQuery[]) => {
+        console.log("hola");
+
+        console.log(users);
+        this.context.commit("setUsers", users);
+        this.context.commit("loadingUsers", false);
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+  }
+
+  /*   @Action({ rawError: true })
+  async consultUser(authorId: string): Promise<User> {
+    this.context.commit("setLoadingConsult", true);
+    return await AuthService.consulttUser(authorId)
+      .then((data:User) => {
+        console.log("Llego");
+        console.log(data);
+        this.context.commit("setLoadingConsult", false);
+        this.context.commit("setSuccessConsult", data);
+        return data;
+      })
+      .catch((error) => {
+        this.context.commit("setLoadingConsult", false);
+        console.log(error);
+       
+      });
+  } */
+
+  @Action({ rawError: true })
+  async consultUser(authorId: string) {
+    try {
+      const user = AuthService.consulttUser(authorId);
+      return user;
+    } catch (error) {
+      this.context.commit("setLoadingConsult", false);
+    }
+  }
+
+  @Mutation
+  public updateTaskSuccess(updateTask: Task): void {
+    if (this.me) {
+      const index = this.me.tasks.findIndex((task) => {
+        return task.id === updateTask.id;
+      });
+      if (index !== -1) {
+        const copyUser = { ...this.me };
+        copyUser.tasks = [...copyUser.tasks];
+        copyUser.tasks[index] = updateTask;
+
+        this.me = copyUser;
+        console.log(this.me);
+      }
+    }
+  }
+
+  @Mutation
+  public setSuccessConsult(data: User) {
+    if (this.userShared) {
+      console.log();
+
+      this.userShared.push(data);
+    }
+  }
+
+  @Mutation
+  public usersSuccess(): void {
+    this.usersSuccess != this.usersSuccess;
+  }
+  @Mutation
+  public loadingUsers(status: boolean) {
+    this.loadingUsersStatus = status;
+  }
+  @Mutation
+  setUsers(users: UsersQuery[]): void {
+    this.users = users;
   }
   @Mutation
   public setDeleteTask(data: { id: string }) {

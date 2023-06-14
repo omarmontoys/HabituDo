@@ -25,6 +25,12 @@
             </v-list-item-icon>
             <v-list-item-title>Tareas</v-list-item-title>
           </v-list-item>
+          <v-list-item to="/PagPrin/ShareTasks">
+            <v-list-item-icon>
+              <v-icon>mdi-book-check</v-icon>
+            </v-list-item-icon>
+            <v-list-item-title>Compartidas Conmigo</v-list-item-title>
+          </v-list-item>
         </v-list-item-group>
       </v-list>
     </v-navigation-drawer>
