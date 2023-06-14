@@ -102,42 +102,47 @@ declare module '*/updateDoneHabit.graphql' {
   import { DocumentNode } from 'graphql';
   const defaultDocument: DocumentNode;
   export const updateDoneHabit: DocumentNode;
-  export default defaultDocument;
-}
-declare module '*/updateShareTask.graphql' {
-  import { DocumentNode } from 'graphql';
-  const defaultDocument: DocumentNode;
-  export const UpdateShareTask: DocumentNode;
-
 
   export default defaultDocument;
 }
     
-
 
 declare module '*/updateHabit.graphql' {
   import { DocumentNode } from 'graphql';
   const defaultDocument: DocumentNode;
   export const UpdateHabit: DocumentNode;
-  export default defaultDocument;
-}
-declare module '*/updateTask.graphql' {
-  import { DocumentNode } from 'graphql';
-  const defaultDocument: DocumentNode;
-  export const UpdateTask: DocumentNode;
-
 
   export default defaultDocument;
 }
     
 
+declare module '*/updateShareTask.graphql' {
+  import { DocumentNode } from 'graphql';
+  const defaultDocument: DocumentNode;
+  export const UpdateShareTask: DocumentNode;
+
+  export default defaultDocument;
+}
+    
+
+declare module '*/updateTask.graphql' {
+  import { DocumentNode } from 'graphql';
+  const defaultDocument: DocumentNode;
+  export const UpdateTask: DocumentNode;
+
+  export default defaultDocument;
+}
+    
 
 declare module '*/updateUndoneHabit.graphql' {
   import { DocumentNode } from 'graphql';
   const defaultDocument: DocumentNode;
   export const UpdateUndoneHabit: DocumentNode;
+
   export default defaultDocument;
 }
+    
+
 declare module '*/user.graphql' {
   import { DocumentNode } from 'graphql';
   const defaultDocument: DocumentNode;
@@ -151,7 +156,6 @@ declare module '*/users.graphql' {
   import { DocumentNode } from 'graphql';
   const defaultDocument: DocumentNode;
   export const Users: DocumentNode;
-
 
   export default defaultDocument;
 }

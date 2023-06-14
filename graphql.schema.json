@@ -935,18 +935,13 @@
             "args": [
               {
                 "name": "update",
-
                 "description": null,
                 "type": {
                   "kind": "NON_NULL",
                   "name": null,
                   "ofType": {
                     "kind": "INPUT_OBJECT",
-
                     "name": "UpdateTaskInput",
-
-                    "name": "UpdateShareTaskInput",
-
                     "ofType": null
                   }
                 },
@@ -960,7 +955,7 @@
               "name": null,
               "ofType": {
                 "kind": "OBJECT",
-                "name": "ShareTask",
+                "name": "Task",
                 "ofType": null
               }
             },
@@ -968,13 +963,8 @@
             "deprecationReason": null
           },
           {
-
             "name": "updateUndoneHabit",
             "description": "Mutación para desmarcar done[] de un hábito.",
-
-            "name": "updateTask",
-            "description": "Mutación para actualizar una tarea.",
-
             "args": [
               {
                 "name": "update",
@@ -984,11 +974,7 @@
                   "name": null,
                   "ofType": {
                     "kind": "INPUT_OBJECT",
-
                     "name": "UpdateHabitInput",
-
-                    "name": "UpdateTaskInput",
-
                     "ofType": null
                   }
                 },
