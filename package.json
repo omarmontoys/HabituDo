@@ -16,6 +16,7 @@
     "@graphql-tools/utils": "^9.2.1",
     "cookie-universal-nuxt": "^2.2.2",
     "core-js": "^3.25.3",
+    "date-fns": "^2.30.0",
     "graphql": "^16.6.0",
     "graphql-errors": "^2.1.0",
     "nuxt": "^2.16.1",

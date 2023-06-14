@@ -1,0 +1,14 @@
+mutation UpdateShareTask($update: UpdateShareTaskInput!) {
+  updateShareTask(update: $update) {
+    usersId
+    taskId
+    sharesTask {
+      id
+      title
+      description
+      status
+      finishDate
+      authorId
+    }
+  }
+}
