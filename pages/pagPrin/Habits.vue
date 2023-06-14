@@ -10,50 +10,42 @@
 
     <!-- TABLA HABITOS -->
 
-    <v-data-table :headers="headers" :items="items" class="elevation-1" disable-pagination hide-default-footer>
-      <v-checkbox hide-details class="shrink mr-2 mt-0"></v-checkbox>
+    <v-data-table
+      :headers="headers"
+      :items="items"
+      class="elevation-1"
+      disable-pagination
+      hide-default-footer
+    >
+      <!-- <v-checkbox hide-details class="shrink mr-2 mt-0"></v-checkbox>
 
-      <template v-slot:item.Lunes="{ item }" >
-        <v-simple-checkbox
-          v-model="item.Lunes"
-        ></v-simple-checkbox>
+      <template v-slot:item.Lunes="{ item }">
+        <v-simple-checkbox v-model="item.Lunes"></v-simple-checkbox>
       </template>
 
-      <template v-slot:item.Martes="{ item }" >
-        <v-simple-checkbox
-          v-model="item.Martes"
-        ></v-simple-checkbox>
+      <template v-slot:item.Martes="{ item }">
+        <v-simple-checkbox v-model="item.Martes"></v-simple-checkbox>
       </template>
 
-      <template v-slot:item.Miercoles="{ item }" >
-        <v-simple-checkbox
-          v-model="item.Miercoles"
-        ></v-simple-checkbox>
+      <template v-slot:item.Miercoles="{ item }">
+        <v-simple-checkbox v-model="item.Miercoles"></v-simple-checkbox>
       </template>
 
-      <template v-slot:item.Jueves="{ item }" >
-        <v-simple-checkbox
-          v-model="item.Jueves"
-        ></v-simple-checkbox>
+      <template v-slot:item.Jueves="{ item }">
+        <v-simple-checkbox v-model="item.Jueves"></v-simple-checkbox>
       </template>
 
-      <template v-slot:item.Viernes="{ item }" >
-        <v-simple-checkbox
-          v-model="item.Viernes"
-        ></v-simple-checkbox>
+      <template v-slot:item.Viernes="{ item }">
+        <v-simple-checkbox v-model="item.Viernes"></v-simple-checkbox>
       </template>
 
-      <template v-slot:item.Sabado="{ item }" >
-        <v-simple-checkbox
-          v-model="item.Sabado"
-        ></v-simple-checkbox>
+      <template v-slot:item.Sabado="{ item }">
+        <v-simple-checkbox v-model="item.Sabado"></v-simple-checkbox>
       </template>
 
-      <template v-slot:item.Domingo="{ item }" >
-        <v-simple-checkbox
-          v-model="item.Domingo"
-        ></v-simple-checkbox>
-      </template> 
+      <template v-slot:item.Domingo="{ item }">
+        <v-simple-checkbox v-model="item.Domingo"></v-simple-checkbox>
+      </template> -->
 
       <template v-slot:top>
         <v-toolbar flat>
@@ -102,7 +94,8 @@
                 <v-container>
                   <v-row>
                     <v-col cols="12" sm="12" md="12">
-                      <v-text-field outlined
+                      <v-text-field
+                        outlined
                         v-model="habitInput.title"
                         label="Nombre del habito"
                       ></v-text-field>
@@ -111,7 +104,8 @@
 
                   <v-row>
                     <v-col cols="12" sm="12" md="12">
-                      <v-text-field outlined
+                      <v-text-field
+                        outlined
                         v-model="habitInput.description"
                         label="Descripcion del habito"
                       ></v-text-field>
@@ -120,7 +114,9 @@
 
                   <v-row>
                     <v-col cols="12" sm="12" md="12">
-                      <v-select v-model="habitInput.priority" aria-required="true"
+                      <v-select
+                        v-model="habitInput.priority"
+                        aria-required="true"
                         :items="prioritySelect"
                         label="Prioridad"
                         outlined
@@ -130,14 +126,14 @@
 
                   <v-row>
                     <v-col cols="12" sm="12" md="12">
-                        <v-select
-                          v-model="habitInput.days"
-                          :items="diasSemana"
-                          chips
-                          label="Dias de realizacion"
-                          multiple
-                          outlined
-                        ></v-select>
+                      <v-select
+                        v-model="habitInput.days"
+                        :items="diasSemana"
+                        chips
+                        label="Dias de realizacion"
+                        multiple
+                        outlined
+                      ></v-select>
                     </v-col>
                   </v-row>
 
@@ -152,7 +148,8 @@
                         min-width="auto"
                       >
                         <template v-slot:activator="{ on, attrs }">
-                          <v-text-field outlined
+                          <v-text-field
+                            outlined
                             label="Fecha Limite"
                             hint="YYYY/MM/DD format"
                             persistent-hint
@@ -175,8 +172,12 @@
 
               <v-card-actions>
                 <v-spacer></v-spacer>
-                <v-btn color="red" text @click="dialog = false"> Cancelar </v-btn>
-                <v-btn color="success" text @click="handleCreateHabit()"> Guardar </v-btn>
+                <v-btn color="red" text @click="dialog = false">
+                  Cancelar
+                </v-btn>
+                <v-btn color="success" text @click="handleCreateHabit()">
+                  Guardar
+                </v-btn>
               </v-card-actions>
             </v-card>
           </v-dialog>
@@ -191,14 +192,19 @@
               >
               <v-card-actions>
                 <v-spacer></v-spacer>
-                <v-btn color="red" text @click="dialogDelete = false">Cancelar</v-btn>
-                <v-btn color="success" text @click="handleDeleteHabit({id: deleteHabitId})"
+                <v-btn color="red" text @click="dialogDelete = false"
+                  >Cancelar</v-btn
+                >
+                <v-btn
+                  color="success"
+                  text
+                  @click="handleDeleteHabit({ id: deleteHabitId })"
                   >Aceptar</v-btn
                 >
                 <v-spacer></v-spacer>
               </v-card-actions>
             </v-card>
-          </v-dialog> 
+          </v-dialog>
 
           <!-- EDITAR HABITO -->
           <v-dialog v-model="dialogEdit" max-width="500px">
@@ -211,7 +217,8 @@
                 <v-container>
                   <v-row>
                     <v-col cols="12" sm="12" md="12">
-                      <v-text-field outlined
+                      <v-text-field
+                        outlined
                         v-model="cloneHabit.title"
                         label="Nombre del habito"
                       ></v-text-field>
@@ -220,7 +227,8 @@
 
                   <v-row>
                     <v-col cols="12" sm="12" md="12">
-                      <v-text-field outlined
+                      <v-text-field
+                        outlined
                         v-model="cloneHabit.description"
                         label="Descripcion del habito"
                       ></v-text-field>
@@ -229,7 +237,9 @@
 
                   <v-row>
                     <v-col cols="12" sm="12" md="12">
-                      <v-select v-model="cloneHabit.priority" aria-required="true"
+                      <v-select
+                        v-model="cloneHabit.priority"
+                        aria-required="true"
                         :items="prioritySelect"
                         label="Prioridad"
                         outlined
@@ -239,14 +249,14 @@
 
                   <v-row>
                     <v-col cols="12" sm="12" md="12">
-                        <v-select
-                          v-model="cloneHabit.days"
-                          :items="diasSemana"
-                          chips
-                          label="Dias de realizacion"
-                          multiple
-                          outlined
-                        ></v-select>
+                      <v-select
+                        v-model="cloneHabit.days"
+                        :items="diasSemana"
+                        chips
+                        label="Dias de realizacion"
+                        multiple
+                        outlined
+                      ></v-select>
                     </v-col>
                   </v-row>
 
@@ -261,7 +271,8 @@
                         min-width="auto"
                       >
                         <template v-slot:activator="{ on, attrs }">
-                          <v-text-field outlined
+                          <v-text-field
+                            outlined
                             label="Fecha Limite"
                             hint="YYYY/MM/DD format"
                             persistent-hint
@@ -284,60 +295,70 @@
 
               <v-card-actions>
                 <v-spacer></v-spacer>
-                <v-btn color="red" text @click="dialogEdit = false"> Cancelar </v-btn>
-                <v-btn color="success" text @click="handleUpdateHabit()"> Guardar </v-btn>
+                <v-btn color="red" text @click="dialogEdit = false">
+                  Cancelar
+                </v-btn>
+                <v-btn color="success" text @click="handleUpdateHabit()">
+                  Guardar
+                </v-btn>
               </v-card-actions>
             </v-card>
-          </v-dialog> 
-
+          </v-dialog>
 
           <!-- VER HABITO -->
           <v-dialog v-model="dialogSee" max-width="800px">
             <v-card>
-            
               <v-card-title class="text-h5"
                 >Detalles de habito: {{ cloneHabit.title }}</v-card-title
               >
               <v-col cols="6">
-              <v-card-text>
-                <h4>Titulo: </h4>
-                <p>{{ cloneHabit.title }}</p>
+                <v-card-text>
+                  <h4>Titulo:</h4>
+                  <p>{{ cloneHabit.title }}</p>
 
-              <v-divider></v-divider>
+                  <v-divider></v-divider>
 
-                <h4>Descripcion: </h4>
-                <p>{{ cloneHabit.description }}</p>
- 
-              <v-divider></v-divider>
+                  <h4>Descripcion:</h4>
+                  <p>{{ cloneHabit.description }}</p>
 
-                <h4>Prioridad: </h4>
-                <p>{{ cloneHabit.priority == '1' ? 'Baja' : cloneHabit.priority == '2' ? 'Media' : 'Alta' }}</p>
+                  <v-divider></v-divider>
 
-              <v-divider></v-divider>
+                  <h4>Prioridad:</h4>
+                  <p>
+                    {{
+                      cloneHabit.priority == "1"
+                        ? "Baja"
+                        : cloneHabit.priority == "2"
+                        ? "Media"
+                        : "Alta"
+                    }}
+                  </p>
 
-                <h4>Dias de realizacion: </h4>
-                <p>{{ getDayText(cloneHabit.days).join(', ') }}</p>
+                  <v-divider></v-divider>
 
-              <v-divider></v-divider>
+                  <h4>Dias de realizacion:</h4>
+                  <p>{{ getDayText(cloneHabit.days).join(", ") }}</p>
 
-                <h4>Fecha limite: </h4>
-                <p>{{ formatDate(cloneHabit.finishDate) }}</p>
-              </v-card-text>
+                  <v-divider></v-divider>
+
+                  <h4>Fecha limite:</h4>
+                  <p>{{ formatDate(cloneHabit.finishDate) }}</p>
+                </v-card-text>
               </v-col>
               <v-col cols="6">
-<!--                 <pie-chart :data="data" :options="options" :width="400" :height="400"></pie-chart>
- -->              </v-col>
+                <!--                 <pie-chart :data="data" :options="options" :width="400" :height="400"></pie-chart>
+ -->
+              </v-col>
 
               <v-card-actions>
                 <v-spacer></v-spacer>
-                <v-btn color="red" text @click="dialogSee = false">Cerrar</v-btn>
+                <v-btn color="red" text @click="dialogSee = false"
+                  >Cerrar</v-btn
+                >
                 <v-spacer></v-spacer>
               </v-card-actions>
             </v-card>
-          </v-dialog> 
-
-
-
+          </v-dialog>
         </v-toolbar>
       </template>
       <!-- BOTONES DE EDITAR Y ELIMINAR -->
@@ -347,24 +368,9 @@
         <v-icon small @click="deleteItem(item.id)"> mdi-delete </v-icon>
       </template>
       <template v-slot:no-data>
-        <v-btn color="primary" > No tienes habitos registrados
-        </v-btn>
+        <v-btn color="primary"> No tienes habitos registrados </v-btn>
       </template>
     </v-data-table>
-    <v-snackbar v-model="snackbarSuccessCreateHabit">
-      {{ snackbarSucessMessageCreateHabit }}
-
-      <template v-slot:action="{ attrs }">
-        <v-btn
-          color="green"
-          text
-          v-bind="attrs"
-          @click="changeStatusSnackbarCreateHabit()"
-        >
-          Close
-        </v-btn>
-      </template>
-    </v-snackbar>
   </v-container>
 </template>
 
@@ -372,15 +378,6 @@
 import { Vue, Component, Prop } from "vue-property-decorator";
 import { namespace } from "vuex-class";
 import { CreateHabitInput, Habit, User, UpdateHabitInput } from "~/gql/graphql";
-import { Pie } from "vue-chartjs";
-import {
-  Chart as ChartJS,
-  Title,
-  Tooltip,
-  Legend,
-  ArcElement,
-  CategoryScale
-} from 'chart.js'
 
 const Auth = namespace("AuthModule");
 const HabitModule = namespace("HabitModule");
@@ -414,34 +411,27 @@ export default class Habits extends Vue {
       sortable: true,
       value: "title",
     },
-    { text: "Lunes", value: "Lunes", sortable: false },
-    { text: "Martes", value: "Martes", sortable: false },
-    { text: "Miercoles", value: "Miercoles", sortable: false },
-    { text: "Jueves", value: "Jueves", sortable: false },
-    { text: "Viernes", value: "Viernes", sortable: false },
-    { text: "Sabado", value: "Sabado", sortable: false },
-    { text: "Domingo", value: "Domingo", sortable: false },
     { text: "Actions", value: "actions", sortable: false },
   ];
   public prioritySelect = [
-    {text: "Alta", value: 3},
-    {text: "Media", value: 2},
-    {text: "Baja", value: 1}
+    { text: "Alta", value: 3 },
+    { text: "Media", value: 2 },
+    { text: "Baja", value: 1 },
   ];
 
   public diasSemana = [
-    {text: "Domingo", value: 0},
-    {text: "Lunes", value: 1},
-    {text: "Martes", value: 2},
-    {text: "Miercoles", value: 3},
-    {text: "Jueves", value: 4},
-    {text: "Viernes", value: 5},
-    {text: "Sabado", value: 6},
+    { text: "Domingo", value: 0 },
+    { text: "Lunes", value: 1 },
+    { text: "Martes", value: 2 },
+    { text: "Miercoles", value: 3 },
+    { text: "Jueves", value: 4 },
+    { text: "Viernes", value: 5 },
+    { text: "Sabado", value: 6 },
   ];
   @Prop({
     required: false,
   })
-  public items: any[] = []; 
+  public items: any[] = [];
 
   public menu = false;
   date = new Date(Date.now() - new Date().getTimezoneOffset() * 60000)
@@ -472,7 +462,7 @@ export default class Habits extends Vue {
     this.initialize();
   }
 
-/*   @HabitModule.State("snackbarSuccessCreateHabit")
+  /*   @HabitModule.State("snackbarSuccessCreateHabit")
   public snackbarSuccessCreateHabit?: boolean;
   @HabitModule.State("snackbarSuccessMessageCreateHabit")
   public snackbarSuccessMessageCreateHabit?: string; */
@@ -487,8 +477,8 @@ export default class Habits extends Vue {
   @HabitModule.Action
   private fetchHabits!: () => Promise<void>;
   @HabitModule.Action
-  private deleteHabit!: (data: {id: string}) => Promise<void>;
-  async handleDeleteHabit(Habit: {id: string}) {
+  private deleteHabit!: (data: { id: string }) => Promise<void>;
+  async handleDeleteHabit(Habit: { id: string }) {
     console.log("handle", Habit);
     await this.deleteHabit(Habit);
     this.dialogDelete = false;
@@ -501,15 +491,15 @@ export default class Habits extends Vue {
   }
   @HabitModule.Action
   private updateHabit!: (data: UpdateHabitInput) => Promise<void>;
-  async handleUpdateHabit(){
+  async handleUpdateHabit() {
     await this.updateHabit({
       title: this.cloneHabit.title,
       description: this.cloneHabit.description,
       priority: this.cloneHabit.priority,
       days: this.cloneHabit.days,
       finishDate: this.cloneHabit.finishDate,
-      id: this.cloneHabit.id
-    })
+      id: this.cloneHabit.id,
+    });
     this.dialogEdit = false;
     this.initialize();
   }
@@ -526,9 +516,9 @@ export default class Habits extends Vue {
   }
 
   initialize(): void {
-    this.items = this.me.habits; 
+    this.items = this.me.habits;
     console.log(this.items);
-  } ; 
+  }
 
   public cloneHabit: Habit = {
     id: "",
@@ -541,24 +531,23 @@ export default class Habits extends Vue {
     createdAt: undefined,
     dates: [],
     done: [],
-    updatedAt: undefined
+    updatedAt: undefined,
   };
-  
+
   public updateInput: UpdateHabitInput = {
     id: "",
     title: "",
     description: "",
     priority: 0,
     days: [],
-    finishDate: new Date(Date.now()-new Date().getTimezoneOffset()*60000)
+    finishDate: new Date(Date.now() - new Date().getTimezoneOffset() * 60000)
       .toISOString()
       .substr(0, 10),
   };
-  
 
   public deleteItem(item: Habit): void {
     console.log("lo que trae del boton", item);
-    const deleteHabitId = item
+    const deleteHabitId = item;
     console.log("const", deleteHabitId);
     this.handleDeleteHabit(deleteHabitId);
     this.dialogDelete = true;
@@ -573,29 +562,28 @@ export default class Habits extends Vue {
     this.cloneHabit = {
       ...item,
       finishDate: fechaTransformada,
-      
-    }
+    };
   }
 
   public getDayText(dayValue: any) {
     const diasSemana = [
-      {text: "Domingo", value: 0},
-      {text: "Lunes", value: 1},
-      {text: "Martes", value: 2},
-      {text: "Miércoles", value: 3},
-      {text: "Jueves", value: 4},
-      {text: "Viernes", value: 5},
-      {text: "Sábado", value: 6},
+      { text: "Domingo", value: 0 },
+      { text: "Lunes", value: 1 },
+      { text: "Martes", value: 2 },
+      { text: "Miércoles", value: 3 },
+      { text: "Jueves", value: 4 },
+      { text: "Viernes", value: 5 },
+      { text: "Sábado", value: 6 },
     ];
 
     if (Array.isArray(dayValue)) {
-      return dayValue.map(value => {
-        const day = diasSemana.find(dia => dia.value === value);
-        return day ? day.text : '';
+      return dayValue.map((value) => {
+        const day = diasSemana.find((dia) => dia.value === value);
+        return day ? day.text : "";
       });
     } else {
-      const day = diasSemana.find(dia => dia.value === dayValue);
-      return day ? day.text : '';
+      const day = diasSemana.find((dia) => dia.value === dayValue);
+      return day ? day.text : "";
     }
   }
 
@@ -604,14 +592,13 @@ export default class Habits extends Vue {
     const fecha = new Date(item.finishDate);
     const fechaTransformada = fecha.toISOString().slice(0, 10);
     this.dialogSee = true;
-    
+
     this.cloneHabit = {
       ...item,
       finishDate: fechaTransformada,
-    }
-/*     this.getChartData(item);
- */
-    
+    };
+    /*     this.getChartData(item);
+     */
   }
 
   /* public getChartData(habit: Habit) {
