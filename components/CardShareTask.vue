@@ -119,7 +119,6 @@ export default class CardShareTask extends Vue {
     names: "",
     sharesUser: [],
     tasks: [],
-    length: 0,
   };
   formatDate(dateString: any) {
     const date = new Date(dateString);
