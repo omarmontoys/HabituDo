@@ -80,14 +80,14 @@ export type UpdateDoneHabitMutationVariables = Exact<{
 }>;
 
 
-export type UpdateDoneHabitMutation = { __typename?: 'Mutation', updateDoneHabit: { __typename?: 'Habit', id: string, done: Array<boolean>, doneIndex?: number | null } };
+export type UpdateDoneHabitMutation = { __typename?: 'Mutation', updateDoneHabit: { __typename?: 'Habit', id: string, title: string, description?: string | null, done: Array<boolean>, updatedAt: any, days: Array<number>, dates: Array<any>, priority: number, finishDate: any, authorId: string } };
 
 export type UpdateHabitMutationVariables = Exact<{
   update: UpdateHabitInput;
 }>;
 
 
-export type UpdateHabitMutation = { __typename?: 'Mutation', updateHabit: { __typename?: 'Habit', id: string, title: string, description?: string | null, days: Array<number>, priority: number, finishDate: any } };
+export type UpdateHabitMutation = { __typename?: 'Mutation', updateHabit: { __typename?: 'Habit', id: string, title: string, description?: string | null, done: Array<boolean>, updatedAt: any, days: Array<number>, dates: Array<any>, priority: number, finishDate: any, authorId: string } };
 
 export type UpdateShareTaskMutationVariables = Exact<{
   update: UpdateShareTaskInput;
@@ -108,7 +108,7 @@ export type UpdateUndoneHabitMutationVariables = Exact<{
 }>;
 
 
-export type UpdateUndoneHabitMutation = { __typename?: 'Mutation', updateDoneHabit: { __typename?: 'Habit', id: string, done: Array<boolean>, doneIndex?: number | null } };
+export type UpdateUndoneHabitMutation = { __typename?: 'Mutation', updateUndoneHabit: { __typename?: 'Habit', id: string, title: string, description?: string | null, done: Array<boolean>, updatedAt: any, days: Array<number>, dates: Array<any>, priority: number, finishDate: any, authorId: string } };
 
 export type UserQueryVariables = Exact<{
   id: Scalars['ID'];
@@ -307,8 +307,15 @@ export const UpdateDoneHabit = gql`
     mutation updateDoneHabit($update: UpdateHabitInput!) {
   updateDoneHabit(update: $update) {
     id
+    title
+    description
     done
-    doneIndex
+    updatedAt
+    days
+    dates
+    priority
+    finishDate
+    authorId
   }
 }
     `;
@@ -318,9 +325,13 @@ export const UpdateHabit = gql`
     id
     title
     description
+    done
+    updatedAt
     days
+    dates
     priority
     finishDate
+    authorId
   }
 }
     `;
@@ -353,10 +364,17 @@ export const UpdateTask = gql`
     `;
 export const UpdateUndoneHabit = gql`
     mutation UpdateUndoneHabit($update: UpdateHabitInput!) {
-  updateDoneHabit(update: $update) {
+  updateUndoneHabit(update: $update) {
     id
+    title
+    description
     done
-    doneIndex
+    updatedAt
+    days
+    dates
+    priority
+    finishDate
+    authorId
   }
 }
     `;

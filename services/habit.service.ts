@@ -1,5 +1,15 @@
 import { apolloClient } from "@/provider/apolloprovider";
-import { CreateHabitInput, CreateHabit, Habit, Habits, DeleteHabit, UpdateHabitInput, UpdateHabit, UpdateDoneHabit, UpdateUndoneHabit } from "~/gql/graphql";
+import {
+  CreateHabitInput,
+  CreateHabit,
+  Habit,
+  Habits,
+  DeleteHabit,
+  UpdateHabitInput,
+  UpdateHabit,
+  UpdateDoneHabit,
+  UpdateUndoneHabit,
+} from "~/gql/graphql";
 
 class habitService {
   async createHabit(data: CreateHabitInput) {

@@ -76,24 +76,36 @@
                   :activator="selectedElement"
                   offset-x
                 >
-
-                  <v-card color="grey lighten-4" min-width="350px" flat v-if="selectedEvent.type === 'habit'">
+                  <v-card
+                    color="grey lighten-4"
+                    min-width="350px"
+                    flat
+                    v-if="selectedEvent.type === 'habit'"
+                  >
                     <v-toolbar :color="selectedEvent.color" dark>
-                      <v-toolbar-title
-                      >{{ selectedEvent.name }}</v-toolbar-title>
-                      <v-spacer></v-spacer>      
-                      <v-btn v-if="selectedEvent.done === false"
-                      :color="selectedEvent.color" elevation="0" @click="handleUpdateUndoneHabit(selectedEvent)">
+                      <v-toolbar-title>{{
+                        selectedEvent.name
+                      }}</v-toolbar-title>
+                      <v-spacer></v-spacer>
+                      <v-btn
+                        v-if="selectedEvent.done === false"
+                        :color="selectedEvent.color"
+                        elevation="0"
+                        @click="handleUpdateDoneHabit()"
+                      >
                         <v-icon>mdi-check-bold</v-icon>
-                      </v-btn>  
+                      </v-btn>
 
-                      <v-btn v-else-if="selectedEvent.done === true"
-                      :color="selectedEvent.color" elevation="0" @click="handleUpdateUndoneHabit(selectedEvent)">
+                      <v-btn
+                        v-else-if="selectedEvent.done === true"
+                        :color="selectedEvent.color"
+                        elevation="0"
+                        @click="handleUpdateUndoneHabit()"
+                      >
                         <v-icon>mdi-close</v-icon>
-                      </v-btn>                
+                      </v-btn>
                     </v-toolbar>
-                    <v-card-text> {{selectedEvent.description}}
-                    </v-card-text>
+                    <v-card-text> {{ selectedEvent.description }} </v-card-text>
                     <v-card-actions>
                       <v-btn
                         text
@@ -107,12 +119,12 @@
 
                   <v-card color="grey lighten-4" min-width="350px" flat v-else>
                     <v-toolbar :color="selectedEvent.color" dark>
-                      <v-toolbar-title
-                      >{{ selectedEvent.name }}</v-toolbar-title>
-                      <v-spacer></v-spacer>                      
+                      <v-toolbar-title>{{
+                        selectedEvent.name
+                      }}</v-toolbar-title>
+                      <v-spacer></v-spacer>
                     </v-toolbar>
-                    <v-card-text> {{selectedEvent.description}}
-                    </v-card-text>
+                    <v-card-text> {{ selectedEvent.description }} </v-card-text>
                     <v-card-actions>
                       <v-btn
                         text
@@ -122,8 +134,7 @@
                         Cancel
                       </v-btn>
                     </v-card-actions>
-                  </v-card> 
-
+                  </v-card>
                 </v-menu>
               </v-sheet>
             </v-col>
@@ -137,7 +148,14 @@
 <script lang="ts">
 import { Component, Vue, Watch } from "vue-property-decorator";
 import { namespace } from "vuex-class";
-import { Task, Tasks, User, Habit, Habits, UpdateHabitInput } from "~/gql/graphql";
+import {
+  Task,
+  Tasks,
+  User,
+  Habit,
+  Habits,
+  UpdateHabitInput,
+} from "~/gql/graphql";
 
 const Auth = namespace("AuthModule");
 const TaskModule = namespace("TaskModule");
@@ -174,18 +192,11 @@ export default class Calendar extends Vue {
     "pink",
     "violet",
     "purple",
-    "brown"
+    "brown",
   ];
-  public colorHabitPriority = [
-    "red",
-    "orange",
-    "yellow",
-    "green",
-  ];
+  public colorHabitPriority = ["red", "orange", "yellow", "green"];
 
   public colorHabit = "";
-
-
 
   @Auth.State("me")
   private me!: User;
@@ -203,7 +214,7 @@ export default class Calendar extends Vue {
   private fetchHabits!: () => Promise<void>;
   @HabitModule.Action
   private updateDoneHabit!: (data: UpdateHabitInput) => Promise<void>;
-  async handleUpdateDoneHabit(){
+  async handleUpdateDoneHabit() {
     console.log(this.selectedEvent);
     await this.updateDoneHabit({
       id: this.selectedEvent.id,
@@ -213,7 +224,7 @@ export default class Calendar extends Vue {
   }
   @HabitModule.Action
   private updateUndoneHabit!: (data: UpdateHabitInput) => Promise<void>;
-  async handleUpdateUndoneHabit(){
+  async handleUpdateUndoneHabit() {
     console.log("lo que trae del selected event x", this.selectedEvent);
     await this.updateUndoneHabit({
       id: this.selectedEvent.id,
@@ -221,8 +232,6 @@ export default class Calendar extends Vue {
     });
     await this.fetchMe();
   }
-
-  
 
   async created() {
     await this.fetchMe();
@@ -266,7 +275,6 @@ export default class Calendar extends Vue {
     return `${year}-${month}-${day}`;
   }
 
-
   showEvent({ nativeEvent, event }: { nativeEvent: Event; event: any }) {
     // Se añade el tipo de dato para los parámetros
     const open = () => {
@@ -286,6 +294,20 @@ export default class Calendar extends Vue {
     nativeEvent.stopPropagation();
   }
 
+  @Watch("me", { immediate: false, deep: true })
+  onChildChanged(val: string, oldVal: string) {
+    console.log("entro watch");
+    if (val) {
+      console.log("entro watchaaa");
+      this.updateRange({
+        start: { date: this.startClone },
+        end: { date: this.endClone },
+      });
+    }
+  }
+
+  public startClone = "";
+  public endClone = "";
   updateRange({
     start,
     end,
@@ -293,13 +315,14 @@ export default class Calendar extends Vue {
     start: { date: string };
     end: { date: string };
   }) {
+    console.log(start);
+    console.log(end);
     const events = [];
-
+    this.startClone = start.date;
+    this.endClone = end.date;
     const min = new Date(`${start.date}T00:00:00`);
     const max = new Date(`${end.date}T23:59:59`);
     const days = (max.getTime() - min.getTime()) / 86400000;
-    console.log("hola");
-    console.log(this.me);
 
     const taskCount: any[] = this.me.tasks; //se obtienen las tareas
 
@@ -314,7 +337,6 @@ export default class Calendar extends Vue {
       console.log("first", first);
       console.log("2", second);
 
-
       events.push({
         name: taskCount[i].title,
         start: first,
@@ -326,23 +348,30 @@ export default class Calendar extends Vue {
       });
     }
     this.events = events;
+    console.log("aasdasdasdasdasdasdas", this.me);
 
     const habitCount: any[] = this.me.habits; //se obtienen las tareas
 
     for (let i = 0; i < habitCount.length; i++) {
-      for(let j = 0; j < habitCount[i].dates.length; j++){
+      for (let j = 0; j < habitCount[i].dates.length; j++) {
         const allDay = this.rnd(0, 3) === 0;
 
         const first = this.formatDateHabits(habitCount[i].dates[j]);
         const second = this.formatDateHabits(habitCount[i].dates[j]);
 
-        if(habitCount[i].priority == 1 && habitCount[i].done[j] == false){
+        if (habitCount[i].priority == 1 && habitCount[i].done[j] == false) {
           this.colorHabit = this.colorHabitPriority[2];
-        } else if(habitCount[i].priority == 2 && habitCount[i].done[j] == false){
+        } else if (
+          habitCount[i].priority == 2 &&
+          habitCount[i].done[j] == false
+        ) {
           this.colorHabit = this.colorHabitPriority[1];
-        } else if(habitCount[i].priority == 3 && habitCount[i].done[j] == false){
+        } else if (
+          habitCount[i].priority == 3 &&
+          habitCount[i].done[j] == false
+        ) {
           this.colorHabit = this.colorHabitPriority[0];
-        } else if (habitCount[i].done[j] == true){
+        } else if (habitCount[i].done[j] == true) {
           this.colorHabit = this.colorHabitPriority[3];
         }
 
@@ -358,11 +387,9 @@ export default class Calendar extends Vue {
           id: habitCount[i].id,
           done: habitCount[i].done[j],
         });
-
       }
       this.events = events;
     }
-
   }
 
   /* ============================= */
@@ -392,7 +419,7 @@ export default class Calendar extends Vue {
   margin: 30%;
   display: block;
 }
-img{
+img {
   max-height: 20%;
   max-width: 20%;
 }

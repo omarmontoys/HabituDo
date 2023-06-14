@@ -224,12 +224,12 @@ class AuthModule extends VuexModule {
 
   @Mutation
   public setCreateHabit(data: Habit) {
-      if (this.me) {
+    if (this.me) {
       const copyUser = { ...this.me };
       copyUser.habits = [...copyUser.habits];
       copyUser.habits.push(data);
       this.me = copyUser;
-      }
+    }
   }
   @Mutation
   public setDeleteHabit(data: { id: string }) {
@@ -249,14 +249,14 @@ class AuthModule extends VuexModule {
   }
 
   @Mutation
-  public updateHabitSuccess(updateHabit: Habit): void{
+  public updateHabitSuccess(updateHabit: Habit): void {
     if (this.me) {
       const index = this.me.habits.findIndex((habit) => {
         return habit.id === updateHabit.id;
       });
-      if (index !== -1){
+      if (index !== -1) {
         const copyUser = { ...this.me };
-        copyUser.habits = [ ...copyUser.habits ];
+        copyUser.habits = [...copyUser.habits];
         copyUser.habits[index] = updateHabit;
         this.me = copyUser;
         console.log(this.me);
@@ -265,14 +265,14 @@ class AuthModule extends VuexModule {
   }
 
   @Mutation
-  public updateDoneHabitSuccess(updateHabit: Habit): void{
+  public updateDoneHabitSuccess(updateHabit: Habit): void {
     if (this.me) {
       const index = this.me.habits.findIndex((habit) => {
         return habit.id === updateHabit.id;
       });
-      if (index !== -1){
+      if (index !== -1) {
         const copyUser = { ...this.me };
-        copyUser.habits = [ ...copyUser.habits ];
+        copyUser.habits = [...copyUser.habits];
         copyUser.habits[index] = updateHabit;
         this.me = copyUser;
         console.log(this.me);
@@ -281,21 +281,24 @@ class AuthModule extends VuexModule {
   }
 
   @Mutation
-  public updateUndoneHabitSuccess(updateHabit: Habit): void{
+  public updateUndoneHabitSuccess(updateHabit: Habit): void {
     if (this.me) {
+      console.log(updateHabit);
+
       const index = this.me.habits.findIndex((habit) => {
         return habit.id === updateHabit.id;
       });
-      if (index !== -1){
+      if (index !== -1) {
+        console.log("llego");
+
         const copyUser = { ...this.me };
-        copyUser.habits = [ ...copyUser.habits ];
+        copyUser.habits = [...copyUser.habits];
         copyUser.habits[index] = updateHabit;
         this.me = copyUser;
         console.log(this.me);
       }
     }
   }
-    
 
   @Mutation
   public userSuccess(user: User): void {

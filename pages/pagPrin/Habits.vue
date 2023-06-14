@@ -10,7 +10,6 @@
 
     <!-- TABLA HABITOS -->
 
-
     <v-data-table
       :headers="headers"
       :items="items"
@@ -18,7 +17,6 @@
       disable-pagination
       hide-default-footer
     >
-      
       <template v-slot:top>
         <v-toolbar flat>
           <v-toolbar-title>Mi seguidor de Habitos</v-toolbar-title>
@@ -69,7 +67,6 @@
                       <v-text-field
                         outlined
                         v-model="habitInput.title"
-
                         label="Nombre del habito"
                       ></v-text-field>
                     </v-col>
@@ -80,7 +77,6 @@
                       <v-text-field
                         outlined
                         v-model="habitInput.description"
-
                         label="Descripcion del habito"
                       ></v-text-field>
                     </v-col>
@@ -169,10 +165,7 @@
                 <v-btn color="red" text @click="dialogDelete = false"
                   >Cancelar</v-btn
                 >
-                <v-btn
-                  color="success"
-                  text
-                  @click="handleDeleteHabit({ id: deleteHabitId })"
+                <v-btn color="success" text @click="handleDeleteHabit()"
                   >Aceptar</v-btn
                 >
                 <v-spacer></v-spacer>
@@ -378,7 +371,6 @@ export default class Habits extends Vue {
       .substr(0, 10),
   };
 
-
   public headers = [
     {
       text: "HABITO",
@@ -389,12 +381,10 @@ export default class Habits extends Vue {
     { text: "Actions", value: "actions", sortable: false },
   ];
   public prioritySelect = [
-
     { text: "Alta", value: 3 },
     { text: "Media", value: 2 },
     { text: "Baja", value: 1 },
   ];
-
 
   public diasSemana = [
     { text: "Domingo", value: 0 },
@@ -454,13 +444,15 @@ export default class Habits extends Vue {
   @HabitModule.Action
   private fetchHabits!: () => Promise<void>;
   @HabitModule.Action
-  private deleteHabit!: (data: { id: string }) => Promise<void>;
-  async handleDeleteHabit(Habit: { id: string }) {
+  private deleteHabit!: (id: string) => Promise<void>;
+  async handleDeleteHabit() {
     console.log("handle", Habit);
-    await this.deleteHabit(Habit);
+    await this.deleteHabit(this.idHabit);
     this.dialogDelete = false;
     this.initialize();
   }
+
+  public idHabit = "";
 
   async created() {
     await this.fetchMe();
@@ -522,11 +514,12 @@ export default class Habits extends Vue {
       .substr(0, 10),
   };
 
-  public deleteItem(item: Habit): void {
+  public deleteItem(item: string): void {
     console.log("lo que trae del boton", item);
     const deleteHabitId = item;
+    this.idHabit = item;
     console.log("const", deleteHabitId);
-    this.handleDeleteHabit(deleteHabitId);
+    /*   this.handleDeleteHabit(deleteHabitId); */
     this.dialogDelete = true;
   }
 

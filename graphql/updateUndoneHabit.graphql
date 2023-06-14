@@ -1,7 +1,14 @@
 mutation UpdateUndoneHabit($update: UpdateHabitInput!) {
-  updateDoneHabit(update: $update) {
+  updateUndoneHabit(update: $update) {
     id
+    title
+    description
     done
-    doneIndex
+    updatedAt
+    days
+    dates
+    priority
+    finishDate
+    authorId
   }
 }
