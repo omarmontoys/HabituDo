@@ -1,0 +1,10 @@
+mutation UpdateHabit($update: UpdateHabitInput!) {
+  updateHabit(update: $update) {
+    id
+    title
+    description
+    days
+    priority
+    finishDate
+  }
+}
