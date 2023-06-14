@@ -21,7 +21,7 @@ export type CreateTaskMutation = { __typename?: 'Mutation', createTask: { __type
 export type CurrentUserQueryVariables = Exact<{ [key: string]: never; }>;
 
 
-export type CurrentUserQuery = { __typename?: 'Query', currentUser: { __typename?: 'User', id: string, names: string, lastNames: string, email: string, tasks: Array<{ __typename?: 'Task', id: string, title: string, description?: string | null, status: boolean, finishDate: any, authorId: string }>, habits: Array<{ __typename?: 'Habit', id: string, title: string, description?: string | null, updatedAt: any, days: Array<number>, dates: Array<any>, priority: number, finishDate: any, authorId: string }>, sharesUser: Array<{ __typename?: 'ShareTask', id: string, usersId: Array<number>, taskId: string, sharesTask: { __typename?: 'Task', id: string, title: string, description?: string | null, status: boolean, finishDate: any, authorId: string } }> } };
+export type CurrentUserQuery = { __typename?: 'Query', currentUser: { __typename?: 'User', id: string, names: string, lastNames: string, email: string, tasks: Array<{ __typename?: 'Task', id: string, title: string, description?: string | null, status: boolean, finishDate: any, authorId: string }>, habits: Array<{ __typename?: 'Habit', id: string, title: string, description?: string | null, done: Array<boolean>, updatedAt: any, days: Array<number>, dates: Array<any>, priority: number, finishDate: any, authorId: string }>, sharesUser: Array<{ __typename?: 'ShareTask', id: string, usersId: Array<number>, taskId: string, sharesTask: { __typename?: 'Task', id: string, title: string, description?: string | null, status: boolean, finishDate: any, authorId: string } }> } };
 
 export type DeleteHabitMutationVariables = Exact<{
   id: Scalars['ID'];
@@ -168,6 +168,7 @@ export const CurrentUser = gql`
       id
       title
       description
+      done
       updatedAt
       days
       dates

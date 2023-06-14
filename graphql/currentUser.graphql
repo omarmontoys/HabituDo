@@ -16,6 +16,7 @@ query CurrentUser {
       id
       title
       description
+      done
       updatedAt
       days
       dates
