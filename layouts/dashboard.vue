@@ -4,8 +4,33 @@
       <v-list nav dense>
         <v-list-item-group
           v-model="group"
-          active-class="deep-purple--text text--accent-4"
+          active-class="primary--text text--accent-4"
         >
+          <v-list-item to="/PagPrin/Calendar">
+            <v-list-item-icon>
+              <v-icon>mdi-calendar-check</v-icon>
+            </v-list-item-icon>
+            <v-list-item-title>Calendario</v-list-item-title>
+          </v-list-item>
+
+          <v-list-item to="/PagPrin/Habits">
+            <v-list-item-icon>
+              <v-icon>mdi-run-fast</v-icon>
+            </v-list-item-icon>
+            <v-list-item-title>Habitos</v-list-item-title>
+          </v-list-item>
+          <v-list-item to="/PagPrin/Tasks">
+            <v-list-item-icon>
+              <v-icon>mdi-book-check</v-icon>
+            </v-list-item-icon>
+            <v-list-item-title>Tareas</v-list-item-title>
+          </v-list-item>
+          <v-list-item to="/PagPrin/ShareTasks">
+            <v-list-item-icon>
+              <v-icon>mdi-book-check</v-icon>
+            </v-list-item-icon>
+            <v-list-item-title>Compartidas Conmigo</v-list-item-title>
+          </v-list-item>
         </v-list-item-group>
       </v-list>
     </v-navigation-drawer>

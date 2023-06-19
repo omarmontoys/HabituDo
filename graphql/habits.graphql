@@ -1,0 +1,15 @@
+query Habits {
+    habits {
+        id
+        title
+        description
+        createdAt
+        updatedAt
+        days
+        dates
+        done
+        priority
+        finishDate
+        authorId
+    }
+}

@@ -1,0 +1,12 @@
+mutation DeleteHabit($id: ID!) {
+  deleteHabit(id: $id) {
+    id
+    title
+    description
+    updatedAt
+    days
+    priority
+    finishDate
+    authorId
+  }
+}

@@ -1,0 +1,15 @@
+query Habit($id: ID!) {
+    habit(id: $id) {
+        id
+        title
+        description
+        createdAt
+        updatedAt
+        days
+        dates
+        done
+        priority
+        finishDate
+        authorId
+    }
+}

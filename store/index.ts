@@ -1,5 +1,8 @@
 import Vuex, { Store } from "vuex";
 import AuthModule from "./modules/auth.module";
+import TaskModule from "./modules/task.module";
+import HabitModule from "./modules/habit.module";
+
 export interface RootState {}
 export const store = new Vuex.Store<RootState>({
   actions: {
@@ -7,6 +10,8 @@ export const store = new Vuex.Store<RootState>({
   },
   modules: {
     AuthModule,
+    TaskModule,
+    HabitModule,
   },
 });
 const createStore = (): Store<RootState> => {

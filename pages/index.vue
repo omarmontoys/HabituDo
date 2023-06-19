@@ -35,7 +35,6 @@
                     :type="show1 ? 'text' : 'password'"
                     name="input-10-2"
                     label="Contraseña"
-                    filled
                     outlined
                     @click:append="show1 = !show1"
                   ></v-text-field>
@@ -59,7 +58,6 @@
                         dense
                         block
                         @click="handleLogin()"
-                        :loading="loadingLoginStatus"
                       >
                         Iniciar Sesión
                       </v-btn>
