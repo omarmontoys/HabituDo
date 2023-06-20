@@ -17,7 +17,7 @@
             <v-list-item-icon>
               <v-icon>mdi-run-fast</v-icon>
             </v-list-item-icon>
-            <v-list-item-title>Habitos</v-list-item-title>
+            <v-list-item-title>Hábitos</v-list-item-title>
           </v-list-item>
           <v-list-item to="/PagPrin/Tasks">
             <v-list-item-icon>

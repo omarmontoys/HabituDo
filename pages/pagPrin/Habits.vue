@@ -373,12 +373,12 @@ export default class Habits extends Vue {
 
   public headers = [
     {
-      text: "HABITO",
+      text: "HÁBITO",
       align: "start",
       sortable: true,
       value: "title",
     },
-    { text: "Actions", value: "actions", sortable: false },
+    { text: "Acciones", value: "actions", sortable: false },
   ];
   public prioritySelect = [
     { text: "Alta", value: 3 },
