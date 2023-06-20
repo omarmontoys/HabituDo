@@ -48,7 +48,7 @@
             ><br />
             <v-card-text>
               <v-text-field
-                label="Titulo"
+                label="Título"
                 outlined
                 v-model="cloneTask.title"
               ></v-text-field>
@@ -70,7 +70,7 @@
               >
                 <template v-slot:activator="{ on, attrs }">
                   <v-text-field
-                    label="Fecha Limite"
+                    label="Fecha Límite"
                     hint="YYYY/MM/DD format"
                     persistent-hint
                     prepend-icon="mdi-calendar"
@@ -126,12 +126,12 @@
             <br />
 
             <v-card-text>
-              <h4>Descripcion</h4>
+              <h4>Descripción</h4>
               {{ task.description }}
             </v-card-text>
             <v-divider></v-divider>
             <v-card-text>
-              <h4>Fecha limite</h4>
+              <h4>Fecha límite</h4>
               {{ formatDate(task.finishDate) }}
             </v-card-text>
             <v-divider></v-divider>
@@ -157,7 +157,7 @@
 
           <v-card>
             <v-card-title class="text-h5 red lighten-9"
-              >¿Esta seguro que quiere eliminar la tarea?</v-card-title
+              >¿Está seguro que quiere eliminar la tarea?</v-card-title
             ><br />
             <v-divider></v-divider>
 

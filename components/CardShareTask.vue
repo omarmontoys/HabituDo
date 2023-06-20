@@ -10,7 +10,7 @@
         <br />
         <br />
         <v-list-item-subtitle class="ml-3">
-          Fecha Limite: {{ formatDate(task.finishDate) }}</v-list-item-subtitle
+          Fecha Límite: {{ formatDate(task.finishDate) }}</v-list-item-subtitle
         >
 
         <v-list-item-subtitle class="ml-3" v-if="userShared">
@@ -48,12 +48,12 @@
             <br />
 
             <v-card-text>
-              <h4>Descripcion</h4>
+              <h4>Descripción</h4>
               {{ task.description }}
             </v-card-text>
             <v-divider></v-divider>
             <v-card-text>
-              <h4>Fecha limite</h4>
+              <h4>Fecha límite</h4>
               {{ formatDate(task.finishDate) }}
             </v-card-text>
             <v-divider></v-divider>

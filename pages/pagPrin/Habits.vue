@@ -19,7 +19,7 @@
     >
       <template v-slot:top>
         <v-toolbar flat>
-          <v-toolbar-title>Mi seguidor de Habitos</v-toolbar-title>
+          <v-toolbar-title>Mi seguidor de Hábitos</v-toolbar-title>
           <v-divider class="mx-4" inset vertical></v-divider>
           <v-spacer></v-spacer>
 
@@ -52,12 +52,12 @@
           <v-dialog v-model="dialog" max-width="500px">
             <template v-slot:activator="{ on, attrs }">
               <v-btn color="primary" dark class="mb-2" v-bind="attrs" v-on="on">
-                Nuevo habito
+                Nuevo hábito
               </v-btn>
             </template>
             <v-card>
               <v-card-title class="text-h5 lighten-2">
-                <span class="text-h5"> Crear Nuevo Habito</span>
+                <span class="text-h5"> Crear Nuevo Hábito</span>
               </v-card-title>
 
               <v-card-text>
@@ -67,7 +67,7 @@
                       <v-text-field
                         outlined
                         v-model="habitInput.title"
-                        label="Nombre del habito"
+                        label="Nombre del hábito"
                       ></v-text-field>
                     </v-col>
                   </v-row>
@@ -77,7 +77,7 @@
                       <v-text-field
                         outlined
                         v-model="habitInput.description"
-                        label="Descripcion del habito"
+                        label="Descripción del hábito"
                       ></v-text-field>
                     </v-col>
                   </v-row>
@@ -100,7 +100,7 @@
                         v-model="habitInput.days"
                         :items="diasSemana"
                         chips
-                        label="Dias de realizacion"
+                        label="Dias de realización"
                         multiple
                         outlined
                       ></v-select>
@@ -120,7 +120,7 @@
                         <template v-slot:activator="{ on, attrs }">
                           <v-text-field
                             outlined
-                            label="Fecha Limite"
+                            label="Fecha Límite"
                             hint="YYYY/MM/DD format"
                             persistent-hint
                             v-bind="attrs"
@@ -177,7 +177,7 @@
           <v-dialog v-model="dialogEdit" max-width="500px">
             <v-card>
               <v-card-title class="text-h5 lighten-2">
-                <span class="text-h5"> Editar Habito</span>
+                <span class="text-h5"> Editar Hábito</span>
               </v-card-title>
 
               <v-card-text>
@@ -187,7 +187,7 @@
                       <v-text-field
                         outlined
                         v-model="cloneHabit.title"
-                        label="Nombre del habito"
+                        label="Nombre del hábito"
                       ></v-text-field>
                     </v-col>
                   </v-row>
@@ -197,7 +197,7 @@
                       <v-text-field
                         outlined
                         v-model="cloneHabit.description"
-                        label="Descripcion del habito"
+                        label="Descripción del hábito"
                       ></v-text-field>
                     </v-col>
                   </v-row>
@@ -220,7 +220,7 @@
                         v-model="cloneHabit.days"
                         :items="diasSemana"
                         chips
-                        label="Dias de realizacion"
+                        label="Dias de realización"
                         multiple
                         outlined
                       ></v-select>
@@ -240,7 +240,7 @@
                         <template v-slot:activator="{ on, attrs }">
                           <v-text-field
                             outlined
-                            label="Fecha Limite"
+                            label="Fecha Límite"
                             hint="YYYY/MM/DD format"
                             persistent-hint
                             v-bind="attrs"
@@ -276,7 +276,7 @@
           <v-dialog v-model="dialogSee" max-width="800px">
             <v-card>
               <v-card-title class="text-h5"
-                >Detalles de habito: {{ cloneHabit.title }}</v-card-title
+                >Detalles de hábito: {{ cloneHabit.title }}</v-card-title
               >
               <v-col cols="6">
                 <v-card-text>
@@ -335,7 +335,7 @@
         <v-icon small @click="deleteItem(item.id)"> mdi-delete </v-icon>
       </template>
       <template v-slot:no-data>
-        <v-btn color="primary"> No tienes habitos registrados </v-btn>
+        <v-btn color="primary"> No tienes hábitos registrados </v-btn>
       </template>
     </v-data-table>
   </v-container>

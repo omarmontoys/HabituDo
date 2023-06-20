@@ -59,12 +59,12 @@
             </v-card-title>
             <v-card-text>
               <v-text-field
-                label="Titulo"
+                label="Título"
                 outlined
                 v-model="taskInput.title"
               ></v-text-field>
               <v-textarea
-                label="Descripcion"
+                label="Descripción"
                 auto-grow
                 outlined
                 v-model="taskInput.description"
@@ -79,7 +79,7 @@
               >
                 <template v-slot:activator="{ on, attrs }">
                   <v-text-field
-                    label="Fecha Limite"
+                    label="Fecha Límite"
                     hint="YYYY/MM/DD format"
                     persistent-hint
                     prepend-icon="mdi-calendar"
