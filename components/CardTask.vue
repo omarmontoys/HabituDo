@@ -8,17 +8,7 @@
             @change="prueba"
             :input-value="task.status"
           ></v-checkbox>
-          <!--    <v-checkbox
-            class="ml-3"
-            @change="prueba"
-            v-if="!task.status"
-          ></v-checkbox> -->
-          <!--       <v-checkbox
-            class="ml-3"
-            :input-value="task.status"
-            disabled
-            v-else-if="task.status"
-          ></v-checkbox> -->
+
           <v-list-item-title v-if="task.title" class="text-h7">
             {{ task.title }}</v-list-item-title
           >
